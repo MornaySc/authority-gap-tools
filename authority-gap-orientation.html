@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Authority Gap Orientation — Yabda Collective</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='24' fill='%23FFFFFF' stroke='%231A1A1A' stroke-width='2.5'/%3E%3Cpath d='M 32 8 A 24 24 0 0 1 56 32 L 32 32 Z' fill='%234F8C8C' fill-opacity='0.9'/%3E%3Cpath d='M 32 32 L 56 32 A 24 24 0 0 1 32 56 Z' fill='%23D98368' fill-opacity='0.22'/%3E%3Cpath d='M 32 32 L 32 56 A 24 24 0 0 1 8 32 Z' fill='%233D1F3D' fill-opacity='0.16'/%3E%3Cline x1='32' y1='32' x2='46' y2='18' stroke='%231A1A1A' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='32' cy='32' r='4.5' fill='%231A1A1A'/%3E%3Ccircle cx='46' cy='18' r='4' fill='%234F8C8C' stroke='%23FFFFFF' stroke-width='1'/%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cream: #F5F0E8;
+  --ink: #2C2A25;
+  --muted: #9A9488;
+  --border: #DDD8CE;
+  --sage: #7A9E7E;
+  --sage-light: #EAF0EA;
+  --terracotta: #C47D5A;
+  --white: #FFFFFF;
+}
+
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  background-color: var(--cream);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.65;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.032'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0;
+}
+
+.container {
+  position: relative; z-index: 1;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 64px 32px 96px;
+}
+
+/* ── Wordmark ── */
+.wordmark {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 52px;
+}
+
+.mark-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 52px;
+}
+
+.mark-wheel { flex-shrink: 0; }
+
+.mark-eyebrow {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.mark-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 1.08;
+  color: var(--ink);
+}
+
+.mark-qualifier {
+  font-style: italic;
+  font-weight: 500;
+}
+
+.mark-qualifier-teal { color: #4F8C8C; }
+.mark-qualifier-terracotta { color: #D98368; }
+
+@media (max-width: 480px) {
+  .mark-title { font-size: 20px; }
+  .mark-wheel { width: 40px; height: 40px; }
+}
+
+/* ── Intro screen ── */
+#introScreen { display: block; }
+
+.title-rule {
+  border-top: 1.5px solid var(--ink);
+  padding-top: 28px;
+  margin-bottom: 36px;
+}
+
+.title-rule h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-size: clamp(38px, 7vw, 56px);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  margin-bottom: 14px;
+}
+
+.title-rule h1 em {
+  font-style: italic;
+  font-weight: 400;
+}
+
+.title-meta {
+  font-size: 13px;
+  color: var(--muted);
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 17px;
+}
+
+.intro-body {
+  border-left: 2px solid var(--border);
+  padding-left: 20px;
+  margin-bottom: 48px;
+}
+
+.intro-body p {
+  font-size: 15px;
+  line-height: 1.75;
+  margin-bottom: 14px;
+  color: var(--ink);
+}
+.intro-body p:last-child { margin-bottom: 0; }
+
+.dimension-strip {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 48px;
+}
+
+.dim-pill {
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 10px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  background: var(--white);
+}
+
+.dim-pill span {
+  display: block;
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--border);
+  margin-bottom: 3px;
+}
+
+.begin-btn {
+  background: var(--ink);
+  color: var(--cream);
+  border: none;
+  border-radius: 2px;
+  padding: 16px 44px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.begin-btn:hover { background: #1a1917; }
+
+.intro-footer {
+  margin-top: 20px;
+  font-size: 12px;
+  color: var(--muted);
+  font-style: italic;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+}
+
+/* ── Question screen ── */
+#questionScreen { display: none; }
+
+.progress-bar-wrap { margin-bottom: 48px; }
+
+.progress-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+}
+
+.progress-track {
+  height: 1.5px;
+  background: var(--border);
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--sage);
+  transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+  width: 0%;
+}
+
+.dim-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sage);
+  margin-bottom: 8px;
+}
+
+.question-card {
+  margin-bottom: 0;
+  animation: fadeUp 0.35s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.question-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: clamp(20px, 3.5vw, 26px);
+  line-height: 1.35;
+  margin-bottom: 32px;
+  color: var(--ink);
+}
+
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 40px;
+}
+
+.choice-btn {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 2px;
+  padding: 14px 18px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  transition: border-color 0.15s, background 0.15s;
+  -webkit-appearance: none;
+}
+
+.choice-btn:hover {
+  border-color: var(--sage);
+  background: var(--sage-light);
+}
+
+.choice-btn.selected {
+  border-color: var(--sage);
+  background: var(--sage);
+  color: var(--white);
+}
+
+.choice-letter {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 15px;
+  color: var(--muted);
+  min-width: 16px;
+  padding-top: 1px;
+  transition: color 0.15s;
+}
+
+.choice-btn.selected .choice-letter { color: rgba(255,255,255,0.7); }
+.choice-btn:hover:not(.selected) .choice-letter { color: var(--sage); }
+
+.nav-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
+}
+
+.nav-btn {
+  background: none;
+  border: 1.5px solid var(--border);
+  border-radius: 2px;
+  padding: 10px 24px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.nav-btn:hover { border-color: var(--ink); color: var(--ink); }
+.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.nav-btn.primary {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--cream);
+}
+.nav-btn.primary:hover { background: #1a1917; }
+.nav-btn.primary:disabled { opacity: 0.3; }
+
+.q-counter {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+}
+
+/* ── Email screen ── */
+#emailScreen { display: none; }
+
+.email-intro {
+  margin-bottom: 36px;
+}
+
+.email-intro h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-size: clamp(26px, 4vw, 36px);
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+.email-intro p {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.7;
+  font-style: italic;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+}
+
+.field-wrap { margin-bottom: 20px; }
+
+.field-wrap label {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+.field-wrap input {
+  width: 100%;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 2px;
+  padding: 13px 16px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  font-size: 15px;
+  color: var(--ink);
+  transition: border-color 0.15s;
+  -webkit-appearance: none;
+}
+
+.field-wrap input:focus { outline: none; border-color: var(--sage); }
+.field-wrap input::placeholder { color: var(--border); }
+
+.field-error {
+  font-size: 12px;
+  color: var(--terracotta);
+  margin-top: 5px;
+  display: none;
+}
+.field-error.show { display: block; }
+
+.submit-btn {
+  background: var(--ink);
+  color: var(--cream);
+  border: none;
+  border-radius: 2px;
+  padding: 16px 44px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s, opacity 0.2s;
+  margin-top: 8px;
+}
+.submit-btn:hover { background: #1a1917; }
+.submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── Results screen ── */
+#resultsScreen { display: none; }
+
+.results-eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sage);
+  margin-bottom: 20px;
+}
+
+.results-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-size: clamp(28px, 5vw, 42px);
+  line-height: 1.1;
+  margin-bottom: 40px;
+}
+
+/* Spider diagram */
+.spider-wrap {
+  margin: 0 auto 48px;
+  max-width: 420px;
+  position: relative;
+}
+
+.spider-wrap canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.spider-legend {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 20px;
+  margin-bottom: 48px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.legend-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--sage);
+  flex-shrink: 0;
+}
+
+/* Pattern read */
+.pattern-read {
+  border-left: 2px solid var(--sage);
+  padding-left: 20px;
+  margin-bottom: 48px;
+}
+
+.pattern-read-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sage);
+  margin-bottom: 12px;
+}
+
+.pattern-read p {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+.pattern-read p:last-child { margin-bottom: 0; }
+
+/* Dimension scores */
+.score-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 48px;
+}
+
+.score-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 16px;
+}
+
+.score-card-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.score-card-bar-track {
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.score-card-bar-fill {
+  height: 100%;
+  background: var(--sage);
+  border-radius: 2px;
+  width: 0%;
+  transition: width 1s cubic-bezier(0.4,0,0.2,1);
+}
+
+.score-card-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--ink);
+}
+
+.score-card-number span {
+  font-size: 13px;
+  color: var(--muted);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+}
+
+/* Next steps */
+.next-steps {
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+
+.next-steps-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+
+.tier-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.tier-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 18px 20px;
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.tier-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-style: italic;
+  font-size: 28px;
+  color: var(--border);
+  line-height: 1;
+  min-width: 24px;
+  padding-top: 2px;
+}
+
+.tier-content {}
+
+.tier-name {
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.tier-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.cta-btn {
+  display: inline-block;
+  background: var(--ink);
+  color: var(--cream);
+  text-decoration: none;
+  border-radius: 2px;
+  padding: 15px 36px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: background 0.2s;
+}
+.cta-btn:hover { background: #1a1917; }
+
+/* ── Sending overlay ── */
+.sending-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(245,240,232,0.9);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.sending-overlay.active { display: flex; }
+
+.spinner {
+  width: 28px; height: 28px;
+  border: 2px solid var(--border);
+  border-top-color: var(--sage);
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+  margin-bottom: 14px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.spinner-text {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+}
+
+/* ── Page footer ── */
+.page-footer {
+  margin-top: 64px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 480px) {
+  .container { padding: 40px 20px 72px; }
+  .score-grid { grid-template-columns: 1fr 1fr; }
+  .dimension-strip { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="sending-overlay" id="sendingOverlay">
+  <div class="spinner"></div>
+  <div class="spinner-text">Sending</div>
+</div>
+
+<div class="container">
+  <div class="mark-header">
+    <svg width="48" height="48" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" class="mark-wheel">
+      <circle cx="32" cy="32" r="24" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="1.25"/>
+      <path d="M 32 8 A 24 24 0 0 1 56 32 L 32 32 Z" fill="#4F8C8C" fill-opacity="0.9"/>
+      <path d="M 32 32 L 56 32 A 24 24 0 0 1 32 56 Z" fill="#D98368" fill-opacity="0.22"/>
+      <path d="M 32 32 L 32 56 A 24 24 0 0 1 8 32 Z" fill="#3D1F3D" fill-opacity="0.16"/>
+      <circle cx="32" cy="32" r="24" fill="none" stroke="#1A1A1A" stroke-width="1.25"/>
+      <line x1="32" y1="32" x2="46" y2="18" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="32" cy="32" r="3.5" fill="#1A1A1A"/>
+      <circle cx="46" cy="18" r="3" fill="#4F8C8C" stroke="#FFFFFF" stroke-width="1"/>
+    </svg>
+    <div class="mark-text">
+      <div class="mark-eyebrow">Yabda Collective</div>
+      <div class="mark-title">Authority Gap<br><span class="mark-qualifier mark-qualifier-teal">Orientation</span></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       INTRO SCREEN
+  ═════════════════════════════════════════════ -->
+  <div id="introScreen">
+    <div class="title-rule">
+      <h1>Authority Gap<br><em>Orientation</em></h1>
+      <p class="title-meta">Twelve questions. No right or wrong answers — only honest ones.</p>
+    </div>
+
+    <div class="intro-body">
+      <p>You are performing well. You are not advancing. The gap between the two is not about effort or ability — it is structural.</p>
+      <p>This orientation maps your situation across four dimensions. At the end you will see exactly where your contribution is landing and where it is not. Most people complete it in under ten minutes.</p>
+      <p>Answer from where you actually are. Your first instinct is usually the most accurate read.</p>
+    </div>
+
+    <div class="dimension-strip">
+      <div class="dim-pill"><span>Dimension 1</span>Contribution Visibility</div>
+      <div class="dim-pill"><span>Dimension 2</span>Attribution Stability</div>
+      <div class="dim-pill"><span>Dimension 3</span>Solution Posture</div>
+      <div class="dim-pill"><span>Dimension 4</span>Contribution Articulation</div>
+    </div>
+
+    <button class="begin-btn" onclick="startDiagnostic()">Begin Orientation</button>
+    <p class="intro-footer">Free. No registration required. Results sent to your email.</p>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       QUESTION SCREEN
+  ═════════════════════════════════════════════ -->
+  <div id="questionScreen">
+    <div class="progress-bar-wrap">
+      <div class="progress-top">
+        <span id="dimLabel" class="dim-label"></span>
+        <span id="qCounter" class="q-counter"></span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
+
+    <div class="question-card" id="questionCard">
+      <p class="question-text" id="questionText"></p>
+      <div class="choices" id="choicesWrap"></div>
+      <div class="nav-row">
+        <button class="nav-btn" id="backBtn" onclick="goBack()">Back</button>
+        <span class="q-counter" id="qNum"></span>
+        <button class="nav-btn primary" id="nextBtn" onclick="goNext()" disabled>Next</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       EMAIL SCREEN
+  ═════════════════════════════════════════════ -->
+  <div id="emailScreen">
+    <div class="email-intro">
+      <h2>Almost there.</h2>
+      <p>Your pattern is ready. Leave your email address and it will be sent to you — along with a short written read of what the pattern means.</p>
+    </div>
+
+    <div class="field-wrap">
+      <label for="nameInput">Your name</label>
+      <input type="text" id="nameInput" placeholder="First name is fine" autocomplete="given-name">
+    </div>
+
+    <div class="field-wrap">
+      <label for="emailInput">Email address</label>
+      <input type="email" id="emailInput" placeholder="you@example.com" autocomplete="email">
+      <div class="field-error" id="emailError">Please enter a valid email address.</div>
+    </div>
+
+    <button class="submit-btn" id="submitBtn" onclick="submitForm()">See my results</button>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       RESULTS SCREEN
+  ═════════════════════════════════════════════ -->
+  <div id="resultsScreen">
+    <div class="results-eyebrow">Your pattern</div>
+    <h2 class="results-title" id="resultsTitle">Your Authority Gap Map</h2>
+
+    <div class="spider-wrap">
+      <canvas id="spiderCanvas" width="420" height="420"></canvas>
+    </div>
+
+    <div class="spider-legend">
+      <div class="legend-item"><div class="legend-dot"></div>Contribution Visibility</div>
+      <div class="legend-item"><div class="legend-dot"></div>Attribution Stability</div>
+      <div class="legend-item"><div class="legend-dot"></div>Solution Posture</div>
+      <div class="legend-item"><div class="legend-dot"></div>Contribution Articulation</div>
+    </div>
+
+    <div class="score-grid" id="scoreGrid"></div>
+
+    <div class="pattern-read" id="patternRead">
+      <div class="pattern-read-label">What this pattern means</div>
+      <div id="patternReadText"></div>
+    </div>
+
+    <div class="next-steps">
+      <div class="next-steps-label">Where to go from here</div>
+      <div class="tier-cards">
+        <div class="tier-card">
+          <div class="tier-number">1</div>
+          <div class="tier-content">
+            <div class="tier-name">Strategic Role Assessment</div>
+            <div class="tier-desc">Two sessions over 30 days. If something is not moving and you need a clear read on what it is — and what to do about it. One decision at the end: stay, reposition, or move.</div>
+          </div>
+        </div>
+        <div class="tier-card">
+          <div class="tier-number">2</div>
+          <div class="tier-content">
+            <div class="tier-name">90-Day Position Conversion</div>
+            <div class="tier-desc">Six sessions. For professionals already delivering at a high level whose work is not converting into progression. Reframe, strengthen attribution, enter the decision spaces that matter.</div>
+          </div>
+        </div>
+        <div class="tier-card">
+          <div class="tier-number">3</div>
+          <div class="tier-content">
+            <div class="tier-name">Structural Repositioning</div>
+            <div class="tier-desc">Eight sessions over four months. For professionals who have outgrown incremental progression and are ready to design deliberately where they go next.</div>
+          </div>
+        </div>
+      </div>
+      <a href="https://whop.com/joined/yabda-collective/strategic-career-navigation-overview-xpyVNEgOFCIgfR/app/" class="cta-btn" target="_blank" rel="noopener">See the tiers</a>
+    </div>
+  </div>
+
+  <div class="page-footer">Yabda Collective &middot; Strategic Orientation &amp; Advisory &middot; mornay@yabda.co</div>
+</div>
+
+<!-- EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+// ─────────────────────────────────────────────────────────────
+// EMAILJS — replace these four values with your real credentials
+// ─────────────────────────────────────────────────────────────
+const EJ_PUBLIC_KEY        = "YOUR_PUBLIC_KEY";
+const EJ_SERVICE_ID        = "YOUR_SERVICE_ID";
+const EJ_TEMPLATE_ADVISOR  = "YOUR_ADVISOR_TEMPLATE_ID";
+const EJ_TEMPLATE_CLIENT   = "YOUR_CLIENT_TEMPLATE_ID";
+// ─────────────────────────────────────────────────────────────
+
+emailjs.init({ publicKey: EJ_PUBLIC_KEY });
+
+// ── Questions data ────────────────────────────────────────────
+const QUESTIONS = [
+  // CONTRIBUTION VISIBILITY (Q1–Q3)
+  {
+    dim: "Contribution Visibility", dimCode: "CV",
+    text: "When the people who control progression decisions think about your work, what do you believe they actually see?",
+    options: [
+      { letter: "A", text: "I do not think they think about my work at all — I am not on their radar", score: 1 },
+      { letter: "B", text: "They know I exist but not what I specifically deliver", score: 2 },
+      { letter: "C", text: "They see the output but associate it with my team or function rather than with me personally", score: 3 },
+      { letter: "D", text: "They have a sense of what I do but not the full picture of the level I am operating at", score: 4 },
+      { letter: "E", text: "They see my contribution clearly and at the right level", score: 5 },
+    ]
+  },
+  {
+    dim: "Contribution Visibility", dimCode: "CV",
+    text: "How often do you find yourself in direct conversations with senior people about work you are leading or driving?",
+    options: [
+      { letter: "A", text: "Rarely or never — I do not have that kind of access", score: 1 },
+      { letter: "B", text: "Occasionally, but only when specifically invited or asked", score: 2 },
+      { letter: "C", text: "Sometimes, but the conversation stays at delivery level rather than my specific contribution", score: 3 },
+      { letter: "D", text: "Regularly, though I am not always sure they retain a clear picture of what I own", score: 4 },
+      { letter: "E", text: "Consistently — I am in those conversations and they know what I am responsible for", score: 5 },
+    ]
+  },
+  {
+    dim: "Contribution Visibility", dimCode: "CV",
+    text: "When you look at how your role is understood by the people above you, what do you see?",
+    options: [
+      { letter: "A", text: "They see me as someone who executes what they are told", score: 1 },
+      { letter: "B", text: "They see me as reliable but do not have a clear view of my actual scope", score: 2 },
+      { letter: "C", text: "They know I deliver more than my title suggests but have not named or formalised it", score: 3 },
+      { letter: "D", text: "They see that I operate at a higher level but there is no formal structure around it", score: 4 },
+      { letter: "E", text: "My contribution is clearly understood and formally recognised at the level I am actually working", score: 5 },
+    ]
+  },
+  // ATTRIBUTION STABILITY (Q4–Q6)
+  {
+    dim: "Attribution Stability", dimCode: "AS",
+    text: "When a project or initiative you drove is referenced later, what typically happens?",
+    options: [
+      { letter: "A", text: "It tends to get absorbed into the team, department, or organisational narrative — my name is not attached", score: 1 },
+      { letter: "B", text: "My manager or a senior colleague tends to represent it without specifically crediting me", score: 2 },
+      { letter: "C", text: "I am sometimes credited but not consistently — it depends on who is telling the story", score: 3 },
+      { letter: "D", text: "I am usually credited but it requires me to be present or to have documented it clearly", score: 4 },
+      { letter: "E", text: "My contribution is reliably attached to the outcome regardless of who is telling the story", score: 5 },
+    ]
+  },
+  {
+    dim: "Attribution Stability", dimCode: "AS",
+    text: "When you receive recognition for your work, what form does it typically take?",
+    options: [
+      { letter: "A", text: "I rarely receive recognition — my work passes without comment", score: 1 },
+      { letter: "B", text: "I receive verbal acknowledgment privately but nothing that travels beyond my immediate manager", score: 2 },
+      { letter: "C", text: "I am recognised informally but it does not translate into anything formal or visible", score: 3 },
+      { letter: "D", text: "I receive positive feedback but it is not connected to any concrete change in my role or standing", score: 4 },
+      { letter: "E", text: "Recognition is formal, documented, and has moved things forward in a visible way", score: 5 },
+    ]
+  },
+  {
+    dim: "Attribution Stability", dimCode: "AS",
+    text: "If a senior leader in your organisation were asked what you are known for, what do you think they would say?",
+    options: [
+      { letter: "A", text: "They would not have a clear answer — they do not know me well enough", score: 1 },
+      { letter: "B", text: "They would describe my role title or function rather than what I specifically do", score: 2 },
+      { letter: "C", text: "They would say something broadly positive but vague — hardworking, reliable, good at what they do", score: 3 },
+      { letter: "D", text: "They would describe what I do but not at the level I am actually operating", score: 4 },
+      { letter: "E", text: "They would name a specific thing I am known for that reflects my actual contribution", score: 5 },
+    ]
+  },
+  // SOLUTION POSTURE (Q7–Q9)
+  {
+    dim: "Solution Posture", dimCode: "SP",
+    text: "When you see a problem or gap in your organisation, what do you typically do?",
+    options: [
+      { letter: "A", text: "I wait to see if someone else picks it up or if I am asked to deal with it", score: 1 },
+      { letter: "B", text: "I flag it to my manager and wait for direction on how to proceed", score: 2 },
+      { letter: "C", text: "I raise it and offer some initial thinking about how it might be addressed", score: 3 },
+      { letter: "D", text: "I bring a clear recommendation along with the problem when I raise it", score: 4 },
+      { letter: "E", text: "By the time anyone else has named the problem, I have usually already started working on the solution", score: 5 },
+    ]
+  },
+  {
+    dim: "Solution Posture", dimCode: "SP",
+    text: "How would you describe your relationship to the agenda in the rooms you operate in?",
+    options: [
+      { letter: "A", text: "I respond to the agenda that is set for me", score: 1 },
+      { letter: "B", text: "I contribute to discussions when asked but do not tend to shape what gets discussed", score: 2 },
+      { letter: "C", text: "I occasionally bring things to the table but it is not a consistent pattern", score: 3 },
+      { letter: "D", text: "I regularly bring proposals that shape what gets discussed in my area", score: 4 },
+      { letter: "E", text: "I set or significantly influence the agenda — the direction in my area reflects my thinking", score: 5 },
+    ]
+  },
+  {
+    dim: "Solution Posture", dimCode: "SP",
+    text: "When you think about the work you do beyond your formal role, how did most of it start?",
+    options: [
+      { letter: "A", text: "It was assigned to me — I was told to take it on", score: 1 },
+      { letter: "B", text: "It evolved gradually as I proved myself and more was added over time", score: 2 },
+      { letter: "C", text: "I saw opportunities and raised them, and was given permission to pursue them", score: 3 },
+      { letter: "D", text: "I identified gaps and moved into them before anyone asked me to", score: 4 },
+      { letter: "E", text: "I created the need — I proposed work that did not exist until I named it", score: 5 },
+    ]
+  },
+  // CONTRIBUTION ARTICULATION (Q10–Q12)
+  {
+    dim: "Contribution Articulation", dimCode: "CA",
+    text: "If you had to describe your most important contribution of the past year in two sentences, what would happen?",
+    options: [
+      { letter: "A", text: "I would not know where to start — it is hard to separate out what is specifically mine", score: 1 },
+      { letter: "B", text: "I could describe what I did but would struggle to explain why it mattered beyond my immediate area", score: 2 },
+      { letter: "C", text: "I could give a general account but it would not feel precise enough to stand on its own", score: 3 },
+      { letter: "D", text: "I could describe it clearly but am not sure it would land with someone who does not already know the context", score: 4 },
+      { letter: "E", text: "I could state it precisely, explain what would not have happened without me, and connect it to an outcome the organisation cares about", score: 5 },
+    ]
+  },
+  {
+    dim: "Contribution Articulation", dimCode: "CA",
+    text: "When you talk about your work with senior people, how do you tend to frame it?",
+    options: [
+      { letter: "A", text: "I talk about what the team delivered rather than what I specifically did", score: 1 },
+      { letter: "B", text: "I describe my responsibilities and areas of focus rather than specific contributions", score: 2 },
+      { letter: "C", text: "I can name what I did but struggle to articulate why it was significant at an organisational level", score: 3 },
+      { letter: "D", text: "I am specific about what I did but do not always connect it to the outcomes that followed", score: 4 },
+      { letter: "E", text: "I am specific, I explain the impact, and I frame it in language the organisation understands and values", score: 5 },
+    ]
+  },
+  {
+    dim: "Contribution Articulation", dimCode: "CA",
+    text: "How clearly can you connect what you do to what your organisation is trying to achieve?",
+    options: [
+      { letter: "A", text: "I know my work matters but I would struggle to articulate exactly how it connects", score: 1 },
+      { letter: "B", text: "I can see the connection but have not put it into language I would use in a senior conversation", score: 2 },
+      { letter: "C", text: "I can make the connection but it feels general rather than specific to my own contribution", score: 3 },
+      { letter: "D", text: "I can connect my work to organisational outcomes clearly, though I do not always say it out loud", score: 4 },
+      { letter: "E", text: "I make that connection explicitly and consistently — it is how I frame my work in every conversation that matters", score: 5 },
+    ]
+  },
+];
+
+const DIM_NAMES  = ["Contribution Visibility","Attribution Stability","Solution Posture","Contribution Articulation"];
+const DIM_CODES  = ["CV","AS","SP","CA"];
+const DIM_SHORT  = ["Visibility","Attribution","Solution Posture","Articulation"];
+
+let answers      = new Array(12).fill(null);
+let currentQ     = 0;
+let scores       = {};
+let respondentName = "";
+let respondentEmail = "";
+
+// ── Navigation ────────────────────────────────────────────────
+function startDiagnostic() {
+  document.getElementById('introScreen').style.display = 'none';
+  document.getElementById('questionScreen').style.display = 'block';
+  renderQuestion(0);
+}
+
+function renderQuestion(idx) {
+  const q = QUESTIONS[idx];
+  document.getElementById('questionCard').style.animation = 'none';
+  requestAnimationFrame(() => {
+    document.getElementById('questionCard').style.animation = '';
+    document.getElementById('dimLabel').textContent = q.dim;
+    document.getElementById('qCounter').textContent = (idx + 1) + ' / 12';
+    document.getElementById('qNum').textContent = (idx + 1) + ' of 12';
+    document.getElementById('questionText').textContent = q.text;
+    document.getElementById('progressFill').style.width = (idx / 12 * 100) + '%';
+
+    const wrap = document.getElementById('choicesWrap');
+    wrap.innerHTML = '';
+    q.options.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'choice-btn' + (answers[idx] === opt.score ? ' selected' : '');
+      btn.innerHTML = `<span class="choice-letter">${opt.letter}</span><span>${opt.text}</span>`;
+      btn.addEventListener('click', () => {
+        answers[idx] = opt.score;
+        wrap.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        document.getElementById('nextBtn').disabled = false;
+      });
+      wrap.appendChild(btn);
+    });
+
+    document.getElementById('nextBtn').disabled = answers[idx] === null;
+    document.getElementById('backBtn').disabled = idx === 0;
+    document.getElementById('nextBtn').textContent = idx === 11 ? 'See results' : 'Next';
+  });
+}
+
+function goBack() {
+  if (currentQ > 0) { currentQ--; renderQuestion(currentQ); }
+}
+
+function goNext() {
+  if (answers[currentQ] === null) return;
+  if (currentQ < 11) {
+    currentQ++;
+    renderQuestion(currentQ);
+  } else {
+    showEmailScreen();
+  }
+}
+
+function showEmailScreen() {
+  document.getElementById('questionScreen').style.display = 'none';
+  document.getElementById('emailScreen').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Scoring ───────────────────────────────────────────────────
+function calculateScores() {
+  return {
+    CV: answers[0] + answers[1] + answers[2],
+    AS: answers[3] + answers[4] + answers[5],
+    SP: answers[6] + answers[7] + answers[8],
+    CA: answers[9] + answers[10] + answers[11],
+  };
+}
+
+// ── Pattern read ──────────────────────────────────────────────
+function getPatternRead(s) {
+  const vals = [s.CV, s.AS, s.SP, s.CA];
+  const min = Math.min(...vals);
+  const allHigh = vals.every(v => v >= 11);
+  const allMid  = vals.every(v => v >= 6) && !allHigh;
+
+  if (allHigh) return `<p>The infrastructure is largely in place. Your contribution is visible, attributed, and articulately framed. The stall is not in any of these dimensions — it is structural or environmental. The next step is a precise read of where the break actually is. The Authority Gap Baseline is that instrument.</p>`;
+
+  if (allMid) return `<p>The gap is real but it is not catastrophic. Something is working — and something is not converting. The pattern tells you where the break is. The work is not about fixing what is broken. It is about locating the specific point where your contribution stops landing, and closing it deliberately.</p>`;
+
+  let reads = [];
+
+  if (s.CV === min || s.CV <= 5) reads.push(`<p><strong>Contribution Visibility.</strong> Your work is not reaching the people who control what happens next. This is not about working harder or delivering more — it is about how your contribution travels through the system. The gap between what you do and what is seen is a structural problem. It is fixable.</p>`);
+  if (s.AS === min || s.AS <= 5) reads.push(`<p><strong>Attribution Stability.</strong> Your contribution is happening. It is just not staying attached to you. Work you drove gets absorbed into the team narrative or represented by someone else. This is not about fairness — it is about how credit travels, and right now it is travelling away from you. That is an architecture problem, not a performance one.</p>`);
+  if (s.SP === min || s.SP <= 5) reads.push(`<p><strong>Solution Posture.</strong> You are responding to problems more than you are originating answers. The people above you see someone who delivers what is asked — which is not wrong, but it is not what creates the kind of recognition that moves things forward. The shift is structural. It is learnable.</p>`);
+  if (s.CA === min || s.CA <= 5) reads.push(`<p><strong>Contribution Articulation.</strong> You cannot yet state what you did with enough precision that no one else could claim it. Articulation is not self-promotion. It is the mechanism by which credit stays attached to the person who earned it. Most people who are stuck here have never been shown what precise articulation actually looks like.</p>`);
+
+  if (reads.length === 0) reads.push(`<p>Your pattern shows a moderate gap across multiple dimensions. No single point has collapsed — but none is fully working either. The Baseline will locate the specific break with more precision.</p>`);
+
+  reads.push(`<p>None of this is a performance problem. Your work is real. The gap is in how it is structured to travel — and that is exactly what the advisory addresses.</p>`);
+  return reads.join('');
+}
+
+// ── Spider diagram ────────────────────────────────────────────
+function drawSpider(scores) {
+  const canvas = document.getElementById('spiderCanvas');
+  const dpr = window.devicePixelRatio || 1;
+  const size = 420;
+  canvas.width = size * dpr;
+  canvas.height = size * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  const cx = size / 2, cy = size / 2;
+  const maxR = 155;
+  const levels = 5;
+  const dims = 4;
+  const angles = Array.from({length: dims}, (_, i) => -Math.PI/2 + (i * 2 * Math.PI / dims));
+
+  const scoreArr = [scores.CV, scores.AS, scores.SP, scores.CA];
+
+  // Grid rings
+  for (let l = 1; l <= levels; l++) {
+    const r = (l / levels) * maxR;
+    ctx.beginPath();
+    angles.forEach((a, i) => {
+      const x = cx + r * Math.cos(a);
+      const y = cy + r * Math.sin(a);
+      i === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    });
+    ctx.closePath();
+    ctx.strokeStyle = l === levels ? '#DDD8CE' : '#E8E3D8';
+    ctx.lineWidth = l === levels ? 1.5 : 0.8;
+    ctx.stroke();
+  }
+
+  // Axis lines
+  angles.forEach(a => {
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(cx + maxR * Math.cos(a), cy + maxR * Math.sin(a));
+    ctx.strokeStyle = '#DDD8CE';
+    ctx.lineWidth = 0.8;
+    ctx.stroke();
+  });
+
+  // Axis labels
+  const labels = ['Visibility', 'Attribution', 'Articulation', 'Solution'];
+  const labelAngles = [-Math.PI/2, 0, Math.PI/2, Math.PI];
+  ctx.font = '500 11px "DM Sans", sans-serif';
+  ctx.fillStyle = '#9A9488';
+  ctx.textAlign = 'center';
+  labelAngles.forEach((a, i) => {
+    const dist = maxR + 26;
+    const x = cx + dist * Math.cos(a);
+    const y = cy + dist * Math.sin(a);
+    ctx.fillText(labels[i], x, y + 4);
+  });
+
+  // Data shape — animated
+  let progress = 0;
+  const duration = 900;
+  const startTime = performance.now();
+
+  function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+
+  function frame(now) {
+    progress = Math.min((now - startTime) / duration, 1);
+    const t = easeOut(progress);
+
+    // Clear data area
+    ctx.clearRect(0, 0, size, size);
+
+    // Redraw grid
+    for (let l = 1; l <= levels; l++) {
+      const r = (l / levels) * maxR;
+      ctx.beginPath();
+      angles.forEach((a, i) => {
+        const x = cx + r * Math.cos(a);
+        const y = cy + r * Math.sin(a);
+        i === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+      });
+      ctx.closePath();
+      ctx.strokeStyle = l === levels ? '#DDD8CE' : '#E8E3D8';
+      ctx.lineWidth = l === levels ? 1.5 : 0.8;
+      ctx.stroke();
+    }
+    angles.forEach(a => {
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx + maxR * Math.cos(a), cy + maxR * Math.sin(a));
+      ctx.strokeStyle = '#DDD8CE';
+      ctx.lineWidth = 0.8;
+      ctx.stroke();
+    });
+    ctx.font = '500 11px "DM Sans", sans-serif';
+    ctx.fillStyle = '#9A9488';
+    ctx.textAlign = 'center';
+    labelAngles.forEach((a, i) => {
+      const dist = maxR + 26;
+      const x = cx + dist * Math.cos(a);
+      const y = cy + dist * Math.sin(a);
+      ctx.fillText(labels[i], x, y + 4);
+    });
+
+    // Data polygon
+    ctx.beginPath();
+    scoreArr.forEach((s, i) => {
+      const r = (s / 15) * maxR * t;
+      const x = cx + r * Math.cos(angles[i]);
+      const y = cy + r * Math.sin(angles[i]);
+      i === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    });
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(122,158,126,0.18)';
+    ctx.fill();
+    ctx.strokeStyle = '#7A9E7E';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Dots
+    scoreArr.forEach((s, i) => {
+      const r = (s / 15) * maxR * t;
+      const x = cx + r * Math.cos(angles[i]);
+      const y = cy + r * Math.sin(angles[i]);
+      ctx.beginPath();
+      ctx.arc(x, y, 4, 0, Math.PI * 2);
+      ctx.fillStyle = '#7A9E7E';
+      ctx.fill();
+      ctx.strokeStyle = '#F5F0E8';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    });
+
+    if (progress < 1) requestAnimationFrame(frame);
+  }
+
+  requestAnimationFrame(frame);
+}
+
+// ── Score bars ────────────────────────────────────────────────
+function renderScoreGrid(s) {
+  const grid = document.getElementById('scoreGrid');
+  grid.innerHTML = '';
+  const items = [
+    { label: 'Contribution Visibility', score: s.CV },
+    { label: 'Attribution Stability',   score: s.AS },
+    { label: 'Solution Posture',         score: s.SP },
+    { label: 'Contribution Articulation', score: s.CA },
+  ];
+  items.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'score-card';
+    card.innerHTML = `
+      <div class="score-card-label">${item.label}</div>
+      <div class="score-card-bar-track"><div class="score-card-bar-fill" data-target="${Math.round((item.score/15)*100)}"></div></div>
+      <div class="score-card-number">${item.score} <span>/ 15</span></div>`;
+    grid.appendChild(card);
+  });
+  // Animate bars
+  setTimeout(() => {
+    grid.querySelectorAll('.score-card-bar-fill').forEach(el => {
+      el.style.width = el.dataset.target + '%';
+    });
+  }, 200);
+}
+
+// ── Submit ────────────────────────────────────────────────────
+async function submitForm() {
+  const nameEl  = document.getElementById('nameInput');
+  const emailEl = document.getElementById('emailInput');
+  const errEl   = document.getElementById('emailError');
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  respondentName  = nameEl.value.trim() || 'there';
+  respondentEmail = emailEl.value.trim();
+
+  if (!emailRe.test(respondentEmail)) {
+    errEl.classList.add('show');
+    emailEl.focus();
+    return;
+  }
+  errEl.classList.remove('show');
+
+  const s = calculateScores();
+  scores = s;
+
+  // Build summary for advisor email
+  const summary = QUESTIONS.map((q, i) => {
+    const chosen = q.options.find(o => o.score === answers[i]);
+    return `Q${i+1} [${q.dimCode}] — ${q.text}\n→ ${chosen ? chosen.letter + ': ' + chosen.text : '—'} (score: ${answers[i]})`;
+  }).join('\n\n');
+
+  const scoresSummary = `CV: ${s.CV}/15 | AS: ${s.AS}/15 | SP: ${s.SP}/15 | CA: ${s.CA}/15\nTotal: ${s.CV+s.AS+s.SP+s.CA}/60`;
+
+  document.getElementById('sendingOverlay').classList.add('active');
+  document.getElementById('submitBtn').disabled = true;
+
+  try {
+    await emailjs.send(EJ_SERVICE_ID, EJ_TEMPLATE_ADVISOR, {
+      to_email:         'mornay@yabda.co',
+      respondent_name:  respondentName,
+      respondent_email: respondentEmail,
+      scores_summary:   scoresSummary,
+      answers_summary:  summary,
+    });
+
+    await emailjs.send(EJ_SERVICE_ID, EJ_TEMPLATE_CLIENT, {
+      to_email:        respondentEmail,
+      respondent_name: respondentName,
+    });
+
+    document.getElementById('sendingOverlay').classList.remove('active');
+    showResults(s);
+
+  } catch(err) {
+    document.getElementById('sendingOverlay').classList.remove('active');
+    document.getElementById('submitBtn').disabled = false;
+    alert('Something went wrong. Please try again or email mornay@yabda.co directly.');
+    console.error(err);
+  }
+}
+
+// ── Show results ──────────────────────────────────────────────
+function showResults(s) {
+  document.getElementById('emailScreen').style.display = 'none';
+  document.getElementById('resultsScreen').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  document.getElementById('patternReadText').innerHTML = getPatternRead(s);
+  renderScoreGrid(s);
+
+  setTimeout(() => drawSpider(s), 100);
+}
+</script>
+</body>
+</html>

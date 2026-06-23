@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Authority Gap Baseline — Yabda Collective</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='24' fill='%23FFFFFF' stroke='%231A1A1A' stroke-width='2.5'/%3E%3Cpath d='M 32 8 A 24 24 0 0 1 56 32 L 32 32 Z' fill='%234F8C8C' fill-opacity='0.22'/%3E%3Cpath d='M 32 32 L 56 32 A 24 24 0 0 1 32 56 Z' fill='%23D98368' fill-opacity='0.9'/%3E%3Cpath d='M 32 32 L 32 56 A 24 24 0 0 1 8 32 Z' fill='%233D1F3D' fill-opacity='0.16'/%3E%3Cline x1='32' y1='32' x2='46' y2='46' stroke='%231A1A1A' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='32' cy='32' r='4.5' fill='%231A1A1A'/%3E%3Ccircle cx='46' cy='46' r='4' fill='%23D98368' stroke='%23FFFFFF' stroke-width='1'/%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cream: #F5F0E8;
+  --ink: #2C2A25;
+  --muted: #9A9488;
+  --border: #DDD8CE;
+  --sage: #7A9E7E;
+  --sage-light: #EAF0EA;
+  --terracotta: #C47D5A;
+  --white: #FFFFFF;
+  --flag-bg: #FDF4F0;
+}
+
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  background-color: var(--cream);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.65;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.032'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0;
+}
+
+.container {
+  position: relative; z-index: 1;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 64px 32px 96px;
+}
+
+.wordmark {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 52px;
+}
+
+.mark-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 52px;
+}
+
+.mark-wheel { flex-shrink: 0; }
+
+.mark-eyebrow {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.mark-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 1.08;
+  color: var(--ink);
+}
+
+.mark-qualifier {
+  font-style: italic;
+  font-weight: 500;
+}
+
+.mark-qualifier-teal { color: #4F8C8C; }
+.mark-qualifier-terracotta { color: #D98368; }
+
+@media (max-width: 480px) {
+  .mark-title { font-size: 20px; }
+  .mark-wheel { width: 40px; height: 40px; }
+}
+
+/* ── Intro ── */
+.title-rule {
+  border-top: 1.5px solid var(--ink);
+  padding-top: 28px;
+  margin-bottom: 36px;
+}
+
+.title-rule h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-size: clamp(36px, 6vw, 52px);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  margin-bottom: 12px;
+}
+
+.title-rule h1 em { font-style: italic; font-weight: 400; }
+
+.title-meta {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 17px;
+  color: var(--muted);
+}
+
+.intro-block {
+  border-left: 2px solid var(--border);
+  padding-left: 20px;
+  margin-bottom: 52px;
+}
+
+.intro-block p {
+  font-size: 15px;
+  line-height: 1.75;
+  margin-bottom: 12px;
+}
+.intro-block p:last-child { margin-bottom: 0; }
+
+/* ── Sections ── */
+.section-block {
+  margin-bottom: 56px;
+}
+
+.section-rule {
+  border-top: 1px solid var(--ink);
+  padding-top: 20px;
+  margin-bottom: 32px;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.section-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 13px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.section-title {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+/* ── Questions ── */
+.question-block {
+  margin-bottom: 36px;
+}
+
+.question-label {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  color: var(--ink);
+}
+
+.q-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: var(--muted);
+  margin-right: 6px;
+  font-size: 16px;
+}
+
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.choice-btn {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 2px;
+  padding: 12px 16px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  transition: border-color 0.12s, background 0.12s;
+  -webkit-appearance: none;
+}
+
+.choice-btn:hover { border-color: var(--sage); background: var(--sage-light); }
+.choice-btn.selected { border-color: var(--sage); background: var(--sage); color: var(--white); }
+
+.choice-letter {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 15px;
+  color: var(--muted);
+  min-width: 14px;
+  padding-top: 1px;
+  transition: color 0.12s;
+  flex-shrink: 0;
+}
+
+.choice-btn.selected .choice-letter { color: rgba(255,255,255,0.65); }
+.choice-btn:hover:not(.selected) .choice-letter { color: var(--sage); }
+
+.unanswered-marker {
+  font-size: 11px;
+  color: var(--terracotta);
+  margin-top: 6px;
+  display: none;
+}
+.unanswered-marker.show { display: block; }
+
+/* ── Written account ── */
+.written-section {
+  margin-bottom: 56px;
+}
+
+.written-label {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.written-note {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 16px;
+  color: var(--muted);
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+textarea {
+  width: 100%;
+  min-height: 260px;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 2px;
+  padding: 18px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  color: var(--ink);
+  line-height: 1.7;
+  resize: vertical;
+  transition: border-color 0.15s;
+  -webkit-appearance: none;
+}
+
+textarea:focus { outline: none; border-color: var(--sage); }
+textarea::placeholder { color: var(--border); }
+
+.word-count {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 6px;
+  letter-spacing: 0.04em;
+}
+
+.word-count.met { color: var(--sage); }
+
+/* ── Submit section ── */
+.submit-section {
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
+  margin-bottom: 0;
+}
+
+.submit-note {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 17px;
+  color: var(--muted);
+  margin-bottom: 28px;
+  line-height: 1.65;
+}
+
+.field-wrap { margin-bottom: 16px; }
+
+.field-wrap label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+
+.field-wrap input {
+  width: 100%;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 2px;
+  padding: 13px 16px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  font-size: 15px;
+  color: var(--ink);
+  transition: border-color 0.15s;
+  -webkit-appearance: none;
+}
+
+.field-wrap input:focus { outline: none; border-color: var(--sage); }
+.field-wrap input::placeholder { color: var(--border); }
+
+.field-error { font-size: 12px; color: var(--terracotta); margin-top: 5px; display: none; }
+.field-error.show { display: block; }
+
+.submit-btn {
+  background: var(--ink);
+  color: var(--cream);
+  border: none;
+  border-radius: 2px;
+  padding: 16px 44px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s, opacity 0.2s;
+  margin-top: 12px;
+}
+.submit-btn:hover { background: #1a1917; }
+.submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── Results screen ── */
+#resultsScreen { display: none; }
+
+.results-eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sage);
+  margin-bottom: 18px;
+}
+
+.results-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-size: clamp(28px, 5vw, 42px);
+  line-height: 1.1;
+  margin-bottom: 40px;
+}
+
+.spider-wrap {
+  margin: 0 auto 40px;
+  max-width: 420px;
+}
+
+.spider-wrap canvas { width: 100%; height: auto; display: block; }
+
+.spider-legend {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 20px;
+  margin-bottom: 40px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.legend-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--sage);
+  flex-shrink: 0;
+}
+
+.score-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 40px;
+}
+
+.score-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 16px;
+}
+
+.score-card-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.score-card-bar-track {
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.score-card-bar-fill {
+  height: 100%;
+  background: var(--sage);
+  border-radius: 2px;
+  width: 0%;
+  transition: width 1s cubic-bezier(0.4,0,0.2,1);
+}
+
+.score-card-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--ink);
+}
+
+.score-card-number span {
+  font-size: 13px;
+  color: var(--muted);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+}
+
+.results-note {
+  border-left: 2px solid var(--sage);
+  padding-left: 20px;
+  margin-bottom: 40px;
+}
+
+.results-note p {
+  font-size: 15px;
+  line-height: 1.75;
+  margin-bottom: 12px;
+}
+.results-note p:last-child { margin-bottom: 0; }
+
+.results-footer {
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 15px;
+  color: var(--muted);
+}
+
+/* ── Sending overlay ── */
+.sending-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(245,240,232,0.9);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.sending-overlay.active { display: flex; }
+
+.spinner {
+  width: 28px; height: 28px;
+  border: 2px solid var(--border);
+  border-top-color: var(--sage);
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+  margin-bottom: 14px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner-text { font-size: 12px; color: var(--muted); letter-spacing: 0.08em; }
+
+/* ── Page footer ── */
+.page-footer {
+  margin-top: 64px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 480px) {
+  .container { padding: 40px 20px 72px; }
+  .score-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="sending-overlay" id="sendingOverlay">
+  <div class="spinner"></div>
+  <div class="spinner-text">Sending your baseline</div>
+</div>
+
+<div class="container">
+  <div class="mark-header">
+    <svg width="48" height="48" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" class="mark-wheel">
+      <circle cx="32" cy="32" r="24" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="1.25"/>
+      <path d="M 32 8 A 24 24 0 0 1 56 32 L 32 32 Z" fill="#4F8C8C" fill-opacity="0.22"/>
+      <path d="M 32 32 L 56 32 A 24 24 0 0 1 32 56 Z" fill="#D98368" fill-opacity="0.9"/>
+      <path d="M 32 32 L 32 56 A 24 24 0 0 1 8 32 Z" fill="#3D1F3D" fill-opacity="0.16"/>
+      <circle cx="32" cy="32" r="24" fill="none" stroke="#1A1A1A" stroke-width="1.25"/>
+      <line x1="32" y1="32" x2="46" y2="46" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="32" cy="32" r="3.5" fill="#1A1A1A"/>
+      <circle cx="46" cy="46" r="3" fill="#D98368" stroke="#FFFFFF" stroke-width="1"/>
+    </svg>
+    <div class="mark-text">
+      <div class="mark-eyebrow">Yabda Collective</div>
+      <div class="mark-title">Authority Gap<br><span class="mark-qualifier mark-qualifier-terracotta">Baseline</span></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       FORM
+  ═════════════════════════════════════════════ -->
+  <div id="formWrap">
+
+    <div class="title-rule">
+      <h1>Authority Gap<br><em>Baseline</em></h1>
+      <p class="title-meta">Pre-session instrument. Twenty-three questions plus written account.</p>
+    </div>
+
+    <div class="intro-block">
+      <p>This is the foundation of your first session. There are no right or wrong answers — only honest ones. The more accurately you describe your situation, the more useful the session will be.</p>
+      <p>Work through the questions in order. Do not overthink your answers — your first instinct is usually the most accurate read. Most people complete this in 25 to 35 minutes.</p>
+      <p>Everything you share here is strictly confidential.</p>
+    </div>
+
+    <!-- ── Section 1 ── -->
+    <div class="section-block">
+      <div class="section-rule">
+        <span class="section-number">Section 1</span>
+        <span class="section-title">Role and Responsibility</span>
+      </div>
+
+      <div class="question-block" id="qb1">
+        <p class="question-label"><span class="q-num">Q1.</span>How long have you been in your current role?</p>
+        <div class="choices" data-q="q1" data-dim="CV">
+          <button type="button" class="choice-btn" data-letter="A" data-score="2" data-var="RG">A — 2 to 4 years</button>
+          <button type="button" class="choice-btn" data-letter="B" data-score="1" data-var="C">B — Less than 6 months</button>
+          <button type="button" class="choice-btn" data-letter="C" data-score="1" data-var="RG,E">C — More than 4 years</button>
+          <button type="button" class="choice-btn" data-letter="D" data-score="1" data-var="C">D — 6 to 12 months</button>
+          <button type="button" class="choice-btn" data-letter="E" data-score="2" data-var="St1,St2">E — 1 to 2 years</button>
+        </div>
+        <div class="unanswered-marker" id="err-q1">Please select an answer before submitting.</div>
+      </div>
+
+      <div class="question-block" id="qb2">
+        <p class="question-label"><span class="q-num">Q2.</span>How would you describe the gap between what your role title says you do and what you actually do?</p>
+        <div class="choices" data-q="q2" data-dim="CV">
+          <button type="button" class="choice-btn" data-letter="A" data-score="2" data-var="St2,RG" data-flag="1">A — I regularly operate one to two levels above my formal role</button>
+          <button type="button" class="choice-btn" data-letter="B" data-score="3" data-var="C,SP">B — My title accurately reflects my responsibilities</button>
+          <button type="button" class="choice-btn" data-letter="C" data-score="1" data-var="L,RG" data-flag="1">C — There is no clear connection between my title and my actual contribution</button>
+          <button type="button" class="choice-btn" data-letter="D" data-score="2" data-var="St1">D — I do slightly more than my title suggests</button>
+          <button type="button" class="choice-btn" data-letter="E" data-score="1" data-var="L,Ac" data-flag="1">E — I have taken on responsibilities that belong to a different function entirely</button>
+        </div>
+        <div class="unanswered-marker" id="err-q2">Please select an answer before submitting.</div>
+      </div>
+
+      <div class="question-block" id="qb3">
+        <p class="question-label"><span class="q-num">Q3.</span>How were your current responsibilities determined?</p>
+        <div class="choices" data-q="q3" data-dim="SP">
+          <button type="button" class="choice-btn" data-letter="A" data-score="2" data-var="E">A — They were assigned to me by my manager in response to organisational need</button>
+          <button type="button" class="choice-btn" data-letter="B" data-score="5" data-var="St1,SP">B — I identified gaps and stepped into them without being asked</button>
+          <button type="button" class="choice-btn" data-letter="C" data-score="1" data-var="L,EO" data-flag="1">C — I am not entirely sure how I ended up responsible for what I carry</button>
+          <button type="button" class="choice-btn" data-letter="D" data-score="2" data-var="E">D — They were defined by my job description when I was hired</button>
+          <button type="button" class="choice-btn" data-letter="E" data-score="3" data-var="St1,A">E — They evolved organically as I proved myself over time</button>
+        </div>
+        <div class="unanswered-marker" id="err-q3">Please select an answer before submitting.</div>
+      </div>
+
+      <div class="question-block" id="qb4">
+        <p class="question-label"><span class="q-num">Q4.</span>How formally recognised are the responsibilities you carry beyond your stated role?</p>
+        <div class="choices" data-q="q4" data-dim="AS">
+          <button type="button" class="choice-btn" data-letter="A" data-score="2" data-var="RG,L">A — They are assumed but never acknowledged</button>
+          <button type="button" class="choice-btn" data-letter="B" data-score="5" data-var="St3">B — They are documented and formally acknowledged</button>
+          <button type="button" class="choice-btn" data-letter="C" data-score="1" data-var="E" data-flag="1">C — I have been told to focus on my formal role despite consistently delivering more</button>
+          <button type="button" class="choice-btn" data-letter="D" data-score="3" data-var="RG,A">D — They are acknowledged informally but not documented</button>
+          <button type="button" class="choice-btn" data-letter="E" data-score="1" data-var="SP" data-flag="1">E — I have never raised it — I assumed that delivering was enough</button>
+        </div>
+        <div class="unanswered-marker" id="err-q4">Please select an answer before submitting.</div>
+      </div>
+    </div>
+
+    <!-- ── Section 2 ── -->
+    <div class="section-block">
+      <div class="section-rule">
+        <span class="section-number">Section 2</span>
+        <span class="section-title">Your Environment</span>
+      </div>
+
+      <div class="question-block" id="qb5">
+        <p class="question-label"><span class="q-num">Q5.</span>How are key decisions made in your organisation?</p>
+        <div class="choices" data-q="q5" data-dim="CV">
+          <button type="button" class="choice-btn" data-letter="A" data-score="1" data-var="EO" data-flag="1">A — I am genuinely unsure — decisions seem to happen without clear logic</button>
+          <button type="button" class="choice-btn" data-letter="B" data-score="4" data-var="E">B — Through formal processes with clear criteria</button>
+          <button type="button" class="choice-btn" data-letter="C" data-score="2" data-var="Ac,L">C — Primarily through relationships and proximity to decision-makers</button>
+          <button type="button" class="choice-btn" data-letter="D" data-score="3" data-var="Ac,A">D — Through formal processes, but relationships influence outcomes</button>
+          <button type="button" class="choice-btn" data-letter="E" data-score="1" data-var="EO" data-flag="1">E — Different decisions happen in different ways and it is difficult to read consistently</button>
+        </div>
+        <div class="unanswered-marker" id="err-q5">Please select an answer before submitting.</div>
+      </div>
+
+      <div class="question-block" id="qb6">
+        <p class="question-label"><span class="q-num">Q6.</span>How visible are you to the people who make decisions about progression?</p>
+        <div class="choices" data-q="q6" data-dim="CV">
+          <button type="button" class="choice-btn" data-letter="A" data-score="3" data-var="L,Ac">A — My work reaches them but I am not in direct contact with them</button>
+          <button type="button" class="choice-btn" data-letter="B" data-score="1" data-var="L,Ac" data-flag="1">B — I do not think they have a clear picture of who I am or what I contribute</button>
+          <button type="button" class="choice-btn" data-letter="C" data-score="5" data-var="St3,St4">C — I present regularly to senior leadership and am well known to them</button>
+          <button type="button" class="choice-btn" data-letter="D" data-score="2" data-var="Ac,SP" data-flag="1">D — I am actively trying to change this but have not made meaningful progress</button>
+          <button type="button" class="choice-btn" data-letter="E" data-score="2" data-var="L,A">E — They know I exist but not what I specifically contribute</button>
+        </div>
+        <div class="unanswered-marker" id="err-q6">Please select an answer before submitting.</div>
+      </div>
+
+      <div class="question-block" id="qb7">
+        <p class="question-label"><span class="q-num">Q7.</span>How does your organisation recognise contribution?</p>
+        <div class="choices" data-q="q7" data-dim="AS">
+          <button type="button" class="choice-btn" data-letter="A" data-score="3" data-var="EO,A">A — High performers are recognised but the criteria are not transparent</button>
+          <button type="button" class="choice-btn" data-letter="B" data-score="1" data-var="E,EO" data-flag="1">B — Recognition feels arbitrary — I cannot identify a clear or consistent pattern</button>
+          <button type="button" class="choice-btn" data-letter="C" data-score="5" data-var="I">C — Contribution is formally recognised and rewarded consistently</button>
+          <button type="button" class="choice-btn" data-letter="D" data-score="1" data-var="E" data-flag="1">D — The organisation values presence and loyalty over contribution and output</button>
+          <button type="button" class="choice-btn" data-letter="E" data-score="2" data-var="Ac,E">E — Recognition happens but inconsistently and often depends on who you know</button>
+        </div>
+        <div class="unanswered-marker" id="err-q7">Please select an answer before submitting.</div>
+      </div>
+
+      <div class="question-block" id="qb8">
+        <p class="question-label"><span class="q-num">Q8.</span>Who has the most influence over your progression?</p>
+        <div class="choices" data-q="q8" data-dim="CV">
+          <button type="button" class="choice-btn" data-letter="A" data-score="2" data-var="Ac" data-flag="1">A — Senior leaders I do not have regular or direct access to</button>
+          <button type="button" class="choice-btn" data-letter="B" data-score="3" data-var="Ac,A">B — A combination of my manager and their peers</button>
+          <button type="button" class="choice-btn" data-letter="C" data-score="1" data-var="EO,C" data-flag="1">C — I am not sure — which is part of the problem</button>
+          <button type="button" class="choice-btn" data-letter="D" data-score="3" data-var="L,A">D — My direct manager</button>
+          <button type="button" class="choice-btn" data-letter="E" data-score="1" data-var="EO,Ac" data-flag="1">E — A person or group whose criteria I do not fully understand</button>
+        </div>
+        <div class="unanswered-marker" id="err-q8">Please select an answer before submitting.</div>
+      </div>
+    </div>
+
+    <!-- ── Section 3 ── -->
+    <div class="section-block">
+      <div class="section-rule">
+        <span class="section-number">Section 3</span>
+        <span class="section-title">Your Contribution in Practice</span>
+      </div>
+
+      <div class="question-block" id="qb9">
+        <p class="question-label"><span class="q-num">Q9.</span>When a problem arises in your area of work, how do you typically respond?</p>
+        <div class="choices" data-q="q9" data-dim="SP">
+          <button type="button" class="choice-btn" data-letter="A" data-score="1" data-var="SP,C">A — I wait to be asked before acting — I am not always sure what falls within my remit</button>
+          <button type="button" class="choice-btn" data-letter="B" data-score="2" data-var="SP">B — I flag the problem to my manager and wait for direction</button>
+          <button type="button" class="choice-btn" data-letter="C" data-score="4" data-var="St2">C — I identify the problem and raise it with a proposed solution at the same time</button>
+          <button type="button" class="choice-btn" data-letter="D" data-score="5" data-var="St1 solved">D — I have usually already started working on the solution before anyone else has named the problem</button>
+          <button type="button" class="choice-btn" data-letter="E" data-score="2" data-var="L,A" data-flag="1">E — I solve problems in my area but rarely bring them to the attention of the people who need to know</button>
+        </div>
+        <div class="unanswered-marker" id="err-q9">Please select an answer before submitting.</div>
+      </div>
+
+      <div class="question-block" id="qb10">
+        <p class="question-label"><span class="q-num">Q10.</span>If a senior leader asked you right now to describe your most significant contribution in the past six months, what would happen?</p>
+        <div class="choices" data-q="q10" data-dim="CA">
+          <button type="button" class="choice-btn" data-letter="A" data-score="1" data-var="A,L">A — I would describe what the team delivered — I find it difficult to separate my part from the whole</button>
+          <button type="button" class="choice-btn" data-letter="B" data-score="2" data-var="SP,L">B — I would give a general answer about my responsibilities rather than a specific contribution</button>
+          <button type="button" class="choice-btn" data-letter="C" data-score="3" data-var="A">C — I would be able to name something specific but would struggle to explain why it mattered at an organisational level</button>
+          <button type="button" class="choice-btn" data-letter="D" data-score="5" data-var="St3">D — I would be able to name the contribution, explain what would not have happened without me, and connect it to an outcome the organisation cares about</button>
+          <button type="button" class="choice-btn" data-letter="E" data-score="1" data-var="SP,C" data-flag="1">E — I have not thought about my work in those terms before</button>
+        </div>
+        <div class="unanswered-marker" id="err-q10">Please select an answer before submitting.</div>
+      </div>
+
+      <div class="question-block" id="qb11">
+        <p class="question-label"><span class="q-num">Q11.</span>When your work is discussed in meetings or reports you are not part of, what typically happens to your name?</p>
+        <div class="choices" data-q="q11" data-dim="AS">
+          <button type="button" class="choice-btn" data-letter="A" data-score="1" data-var="A,L">A — I am rarely mentioned — the work is attributed to the team, department, function, or project</button>
+          <button type="button" class="choice-btn" data-letter="B" data-score="1" data-var="A" data-flag="1">B — The work is presented by my manager or a senior colleague without specific attribution to me</button>
+          <button type="button" class="choice-btn" data-letter="C" data-score="3" data-var="A,Ac">C — I am sometimes mentioned but not consistently — it depends on who is in the room</button>
+          <button type="button" class="choice-btn" data-letter="D" data-score="5" data-var="St3">D — I am reliably credited when my work is discussed at any level</button>
+          <button type="button" class="choice-btn" data-letter="E" data-score="1" data-var="L,EO" data-flag="1">E — I do not know — I have no visibility into how my work is represented when I am not present</button>
+        </div>
+        <div class="unanswered-marker" id="err-q11">Please select an answer before submitting.</div>
+      </div>
+    </div>
+
+    <!-- ── Section 4 ── -->
+    <div class="section-block">
+      <div class="section-rule">
+        <span class="section-number">Section 4</span>
+        <span class="section-title">What Is Not Moving</span>
+      </div>
+
+      <div class="question-block" id="qb12">
+        <p class="question-label"><span class="q-num">Q12.</span>How long has progression felt stalled or unclear?</p>
+        <div class="choices" data-q="q12" data-dim="AS">
+          <button type="button" class="choice-btn" data-letter="A" data-score="3" data-var="St1,St2">A — 6 to 12 months</button>
+          <button type="button" class="choice-btn" data-letter="B" data-score="1" data-var="E" data-flag="1">B — More than 4 years</button>
+          <button type="button" class="choice-btn" data-letter="C" data-score="4" data-var="C">C — Less than 6 months</button>
+          <button type="button" class="choice-btn" data-letter="D" data-score="1" data-var="RG,E" data-flag="1">D — 2 to 4 years</button>
+          <button type="button" class="choice-btn" data-letter="E" data-score="2" data-var="RG,L">E — 1 to 2 years</button>
+        </div>
+        <div class="unanswered-marker" id="err-q12">Please select an answer before submitting.</div>
+      </div>
+
+      <div class="question-block" id="qb13">
+        <p class="question-label"><span class="q-num">Q13.</span>What did you expect to have happened by now that has not?</p>
+        <div class="choices" data-q="q13" data-dim="CV">
+          <button type="button" class="choice-btn" data-letter="A" data-score="2" data-var="C,Ac">A — A clear and direct conversation about my future in the organisation</button>
+          <button type="button" class="choice-btn" data-letter="B" data-score="2" data-var="RG,St2">B — A formal promotion or title change</button>
+          <button type="button" class="choice-btn" data-letter="C" data-score="1" data-var="C" data-flag="1">C — All of the above — movement in any direction would represent progress</button>
+          <button type="button" class="choice-btn" data-letter="D" data-score="2" data-var="L,RG">D — Recognition that I am already operating at a higher level</button>
+          <button type="button" class="choice-btn" data-letter="E" data-score="2" data-var="Ac,St3">E — Increased authority or meaningful decision-making power</button>
+        </div>
+        <div class="unanswered-marker" id="err-q13">Please select an answer before submitting.</div>
+      </div>
+
+      <div class="question-block" id="qb14">
+        <p class="question-label"><span class="q-num">Q14.</span>What have you done to try to move things forward?</p>
+        <div class="choices" data-q="q14" data-dim="SP">
+          <button type="button" class="choice-btn" data-letter="A" data-score="1" data-var="C,SP" data-flag="1">A — I have not done anything specific — I am not sure what to do</button>
+          <button type="button" class="choice-btn" data-letter="B" data-score="3" data-var="SP,A">B — I have had direct conversations with my manager about progression</button>
+          <button type="button" class="choice-btn" data-letter="C" data-score="4" data-var="Ac,St3">C — I have built relationships with more senior people</button>
+          <button type="button" class="choice-btn" data-letter="D" data-score="2" data-var="SP" data-flag="1">D — I have raised it informally but have not had a direct or structured conversation</button>
+          <button type="button" class="choice-btn" data-letter="E" data-score="2" data-var="St1,SP" data-flag="1">E — I have increased my output and taken on more responsibility</button>
+        </div>
+        <div class="unanswered-marker" id="err-q14">Please select an answer before submitting.</div>
+      </div>
+
+      <div class="question-block" id="qb15">
+        <p class="question-label"><span class="q-num">Q15.</span>How has your organisation responded to your contribution over the past 12 months?</p>
+        <div class="choices" data-q="q15" data-dim="AS">
+          <button type="button" class="choice-btn" data-letter="A" data-score="1" data-var="E,RG" data-flag="1">A — With increased demands but no corresponding recognition or change</button>
+          <button type="button" class="choice-btn" data-letter="B" data-score="5" data-var="St3,St4">B — With formal recognition — promotion, salary increase, or expanded role</button>
+          <button type="button" class="choice-btn" data-letter="C" data-score="2" data-var="L" data-flag="1">C — With feedback that does not match my own understanding of my contribution</button>
+          <button type="button" class="choice-btn" data-letter="D" data-score="3" data-var="RG,A">D — With verbal acknowledgment but no formal change</button>
+          <button type="button" class="choice-btn" data-letter="E" data-score="1" data-var="L,Ac" data-flag="1">E — With silence — it has simply not been addressed</button>
+        </div>
+        <div class="unanswered-marker" id="err-q15">Please select an answer before submitting.</div>
+      </div>
+    </div>
+
+    <!-- ── Section 5 ── -->
+    <div class="section-block">
+      <div class="section-rule">
+        <span class="section-number">Section 5</span>
+        <span class="section-title">Your Read on the Problem</span>
+      </div>
+
+      <div class="question-block" id="qb16">
+        <p class="question-label"><span class="q-num">Q16.</span>What do you believe is the primary reason progression has not happened?</p>
+        <div class="choices" data-q="q16" data-dim="CA">
+          <button type="button" class="choice-btn" data-letter="A" data-score="1" data-var="C" data-flag="1">A — I genuinely do not know — which is part of why I am here</button>
+          <button type="button" class="choice-btn" data-letter="B" data-score="3" data-var="SP,L">B — I have not positioned myself or my work clearly enough</button>
+          <button type="button" class="choice-btn" data-letter="C" data-score="2" data-var="Ac,E">C — My manager does not advocate for me effectively</button>
+          <button type="button" class="choice-btn" data-letter="D" data-score="2" data-var="EO,E">D — There are political factors I do not fully understand</button>
+          <button type="button" class="choice-btn" data-letter="E" data-score="1" data-var="E" data-flag="1">E — The organisation is not structured in a way that rewards what I do</button>
+        </div>
+        <div class="unanswered-marker" id="err-q16">Please select an answer before submitting.</div>
+      </div>
+
+      <div class="question-block" id="qb17">
+        <p class="question-label"><span class="q-num">Q17.</span>How clearly do you understand what it would take to progress in your current environment?</p>
+        <div class="choices" data-q="q17" data-dim="CV">
+          <button type="button" class="choice-btn" data-letter="A" data-score="1" data-var="EO,E" data-flag="1">A — The criteria seem to shift — I cannot get a consistent or reliable read</button>
+          <button type="button" class="choice-btn" data-letter="B" data-score="5" data-var="SP,DR">B — I know exactly what is required and I am actively working toward it</button>
+          <button type="button" class="choice-btn" data-letter="C" data-score="1" data-var="EO,L">C — There are no clear criteria that I can identify</button>
+          <button type="button" class="choice-btn" data-letter="D" data-score="3" data-var="C,EO">D — I have a general sense but the specific criteria remain unclear</button>
+          <button type="button" class="choice-btn" data-letter="E" data-score="1" data-var="E" data-flag="1">E — I have been given criteria that I have met — but nothing has changed</button>
+        </div>
+        <div class="unanswered-marker" id="err-q17">Please select an answer before submitting.</div>
+      </div>
+
+      <div class="question-block" id="qb18">
+        <p class="question-label"><span class="q-num">Q18.</span>Have you received meaningful feedback about your progression in the past 12 months?</p>
+        <div class="choices" data-q="q18" data-dim="AS">
+          <button type="button" class="choice-btn" data-letter="A" data-score="3" data-var="L,A">A — Yes — informal feedback, but nothing specific enough to act on</button>
+          <button type="button" class="choice-btn" data-letter="B" data-score="1" data-var="Ac,E" data-flag="1">B — No meaningful feedback, despite asking for it</button>
+          <button type="button" class="choice-btn" data-letter="C" data-score="5" data-var="SP,DR">C — Yes — formal feedback that was specific and actionable</button>
+          <button type="button" class="choice-btn" data-letter="D" data-score="2" data-var="L" data-flag="1">D — The feedback I have received contradicts what I observe about how I am actually regarded</button>
+          <button type="button" class="choice-btn" data-letter="E" data-score="2" data-var="RG,A">E — Mixed — positive informally, neutral or absent formally</button>
+        </div>
+        <div class="unanswered-marker" id="err-q18">Please select an answer before submitting.</div>
+      </div>
+
+      <div class="question-block" id="qb19">
+        <p class="question-label"><span class="q-num">Q19.</span>How aligned is your self-assessment with how you believe others see you?</p>
+        <div class="choices" data-q="q19" data-dim="CA">
+          <button type="button" class="choice-btn" data-letter="A" data-score="1" data-var="L,RG">A — Significantly misaligned — I operate at a level that is not reflected in how I am regarded</button>
+          <button type="button" class="choice-btn" data-letter="B" data-score="5" data-var="SP,DR">B — Largely aligned — I believe I am seen accurately</button>
+          <button type="button" class="choice-btn" data-letter="C" data-score="2" data-var="EO,C" data-flag="1">C — I am not sure — I do not have enough signal to know</button>
+          <button type="button" class="choice-btn" data-letter="D" data-score="1" data-var="L,E" data-flag="1">D — Actively misaligned — I have been told things that directly contradict my experience</button>
+          <button type="button" class="choice-btn" data-letter="E" data-score="3" data-var="L,A">E — Slightly misaligned — I think I am underestimated in specific areas</button>
+        </div>
+        <div class="unanswered-marker" id="err-q19">Please select an answer before submitting.</div>
+      </div>
+    </div>
+
+    <!-- ── Section 6 ── -->
+    <div class="section-block">
+      <div class="section-rule">
+        <span class="section-number">Section 6</span>
+        <span class="section-title">The Decision</span>
+      </div>
+
+      <div class="question-block" id="qb20">
+        <p class="question-label"><span class="q-num">Q20.</span>Which of the following best describes the decision you are currently facing?</p>
+        <div class="choices" data-q="q20" data-dim="SP">
+          <button type="button" class="choice-btn" data-letter="A" data-score="2" data-var="DR" data-flag="1">A — Whether to leave and move to a different organisation</button>
+          <button type="button" class="choice-btn" data-letter="B" data-score="3" data-var="DR,St2,St3">B — Whether to stay and continue working toward progression where I am</button>
+          <button type="button" class="choice-btn" data-letter="C" data-score="1" data-var="C" data-flag="1">C — I am not sure what the decision is — I need clarity before I can frame it</button>
+          <button type="button" class="choice-btn" data-letter="D" data-score="2" data-var="St4,DR">D — Whether to make a more significant change — sector, function, or direction</button>
+          <button type="button" class="choice-btn" data-letter="E" data-score="4" data-var="DR,St3">E — Whether to reposition within my current organisation</button>
+        </div>
+        <div class="unanswered-marker" id="err-q20">Please select an answer before submitting.</div>
+      </div>
+
+      <div class="question-block" id="qb21">
+        <p class="question-label"><span class="q-num">Q21.</span>How urgent does this decision feel right now?</p>
+        <div class="choices" data-q="q21" data-dim="SP">
+          <button type="button" class="choice-btn" data-letter="A" data-score="3" data-var="C,SP">A — There is no urgent timeline but it weighs on me consistently</button>
+          <button type="button" class="choice-btn" data-letter="B" data-score="4" data-var="DR">B — Within the next 3 to 6 months</button>
+          <button type="button" class="choice-btn" data-letter="C" data-score="1" data-var="E" data-flag="1">C — I have been sitting with this for so long that urgency has become background noise</button>
+          <button type="button" class="choice-btn" data-letter="D" data-score="2" data-var="DR" data-flag="1">D — It needs to happen within the next month</button>
+          <button type="button" class="choice-btn" data-letter="E" data-score="3" data-var="C,DR">E — Within the next year</button>
+        </div>
+        <div class="unanswered-marker" id="err-q21">Please select an answer before submitting.</div>
+      </div>
+
+      <div class="question-block" id="qb22">
+        <p class="question-label"><span class="q-num">Q22.</span>What would a clear outcome from your first session look like for you?</p>
+        <div class="choices" data-q="q22" data-dim="CA">
+          <button type="button" class="choice-btn" data-letter="A" data-score="3" data-var="L,A">A — Understanding why my efforts and contribution have not been converting</button>
+          <button type="button" class="choice-btn" data-letter="B" data-score="3" data-var="DR,SP">B — Having a specific next step I can act on immediately after the session</button>
+          <button type="button" class="choice-btn" data-letter="C" data-score="3" data-var="C">C — Understanding exactly what is happening in my situation</button>
+          <button type="button" class="choice-btn" data-letter="D" data-score="2" data-var="C" data-flag="1">D — All of the above — I need the full picture before I can move</button>
+          <button type="button" class="choice-btn" data-letter="E" data-score="2" data-var="DR" data-flag="1">E — Knowing whether to stay or leave</button>
+        </div>
+        <div class="unanswered-marker" id="err-q22">Please select an answer before submitting.</div>
+      </div>
+
+      <div class="question-block" id="qb23">
+        <p class="question-label"><span class="q-num">Q23.</span>How would you describe your situation to someone you trust?</p>
+        <div class="choices" data-q="q23" data-dim="CA">
+          <button type="button" class="choice-btn" data-letter="A" data-score="4" data-var="C,SP">A — I know what the problem is but I do not know how to address it</button>
+          <button type="button" class="choice-btn" data-letter="B" data-score="2" data-var="E" data-flag="1">B — I am doing everything right and the system is failing me</button>
+          <button type="button" class="choice-btn" data-letter="C" data-score="3" data-var="C" data-flag="1">C — I am not sure whether the problem is me, the environment, or both</button>
+          <button type="button" class="choice-btn" data-letter="D" data-score="1" data-var="E" data-flag="1">D — I have tried everything I can think of and nothing has worked</button>
+          <button type="button" class="choice-btn" data-letter="E" data-score="4" data-var="L,SP">E — I think I am missing something — but I cannot see what it is</button>
+        </div>
+        <div class="unanswered-marker" id="err-q23">Please select an answer before submitting.</div>
+      </div>
+    </div>
+
+    <!-- ── Written account ── -->
+    <div class="written-section">
+      <div class="section-rule">
+        <span class="section-number">Written Account</span>
+        <span class="section-title">Q24</span>
+      </div>
+      <p class="written-label">In your own words — not as you would explain it to HR, not as you would write it on a CV — describe your situation as you currently understand it.</p>
+      <p class="written-note">What is actually happening? What have you tried? What do you think is driving it? Write as specifically and as honestly as you can. Do not present a polished version. The gaps, the frustrations, the things that do not make sense — those are exactly what is useful here. Minimum 400 words.</p>
+      <textarea id="writtenAccount" placeholder="Write here…" oninput="updateWordCount()"></textarea>
+      <div class="word-count" id="wordCount">0 words</div>
+      <div class="field-error" id="err-written">Please write at least 400 words before submitting.</div>
+    </div>
+
+    <!-- ── Submit ── -->
+    <div class="submit-section">
+      <p class="submit-note">Your responses will be reviewed carefully before your first session. If anything feels incomplete after you submit, you can add to it by emailing directly.</p>
+
+      <div class="field-wrap">
+        <label for="nameInput">Your name</label>
+        <input type="text" id="nameInput" placeholder="First name is fine" autocomplete="given-name">
+      </div>
+
+      <div class="field-wrap">
+        <label for="emailInput">Email address</label>
+        <input type="email" id="emailInput" placeholder="you@example.com" autocomplete="email">
+        <div class="field-error" id="err-email">Please enter a valid email address.</div>
+      </div>
+
+      <button class="submit-btn" id="submitBtn" onclick="submitBaseline()">Submit my baseline</button>
+    </div>
+
+  </div><!-- /formWrap -->
+
+  <!-- ════════════════════════════════════════════
+       RESULTS SCREEN
+  ═════════════════════════════════════════════ -->
+  <div id="resultsScreen">
+    <div class="results-eyebrow">Baseline established</div>
+    <h2 class="results-title">Your Authority Gap Baseline</h2>
+
+    <div class="spider-wrap">
+      <canvas id="spiderCanvas" width="420" height="420"></canvas>
+    </div>
+
+    <div class="spider-legend">
+      <div class="legend-item"><div class="legend-dot"></div>Contribution Visibility</div>
+      <div class="legend-item"><div class="legend-dot"></div>Attribution Stability</div>
+      <div class="legend-item"><div class="legend-dot"></div>Solution Posture</div>
+      <div class="legend-item"><div class="legend-dot"></div>Contribution Articulation</div>
+    </div>
+
+    <div class="score-grid" id="scoreGrid"></div>
+
+    <div class="results-note">
+      <p>This is your baseline. The same four dimensions will be measured again at the close of your engagement. The distance between the two diagrams is the evidence of movement — visible, not just felt.</p>
+      <p>Your written account and full responses are with Mornay. Your first session will be built from what you have submitted here.</p>
+      <p>If anything feels incomplete, email mornay@yabda.co directly before the session.</p>
+    </div>
+
+    <div class="results-footer">Mornay Schoeman &middot; Strategic Orientation &amp; Decision Advisor &middot; Yabda Collective</div>
+  </div>
+
+  <div class="page-footer">Yabda Collective &middot; Authority Gap Baseline &middot; Confidential &middot; mornay@yabda.co</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+// ─────────────────────────────────────────────────────────────
+// EMAILJS CONFIGURATION
+// ─────────────────────────────────────────────────────────────
+const EJ_PUBLIC_KEY       = "YOUR_PUBLIC_KEY";
+const EJ_SERVICE_ID       = "YOUR_SERVICE_ID";
+const EJ_TEMPLATE_ADVISOR = "YOUR_ADVISOR_TEMPLATE_ID";
+const EJ_TEMPLATE_CLIENT  = "YOUR_CLIENT_TEMPLATE_ID";
+// ─────────────────────────────────────────────────────────────
+
+emailjs.init({ publicKey: EJ_PUBLIC_KEY });
+
+// ── Choice interaction ────────────────────────────────────────
+document.querySelectorAll('.choices').forEach(group => {
+  group.querySelectorAll('.choice-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      group.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      const qId = group.dataset.q;
+      const errEl = document.getElementById('err-' + qId);
+      if (errEl) errEl.classList.remove('show');
+    });
+  });
+});
+
+// ── Word count ────────────────────────────────────────────────
+function updateWordCount() {
+  const text = document.getElementById('writtenAccount').value.trim();
+  const count = text ? text.split(/\s+/).length : 0;
+  const el = document.getElementById('wordCount');
+  el.textContent = count + ' words' + (count < 400 ? ' — minimum 400' : '');
+  el.className = 'word-count' + (count >= 400 ? ' met' : '');
+}
+
+// ── Scoring ───────────────────────────────────────────────────
+// Dimension mapping: which questions contribute to which dimension score
+// CV: Q1,Q2,Q5,Q6,Q8,Q13,Q17 — scored out of 20 (7 questions, normalised)
+// AS: Q4,Q7,Q11,Q12,Q15,Q18  — scored out of 20
+// SP: Q3,Q9,Q14,Q20,Q21      — scored out of 20
+// CA: Q10,Q16,Q19,Q22,Q23    — scored out of 20
+
+const DIM_MAP = {
+  CV: ['q1','q2','q5','q6','q8','q13','q17'],
+  AS: ['q4','q7','q11','q12','q15','q18'],
+  SP: ['q3','q9','q14','q20','q21'],
+  CA: ['q10','q16','q19','q22','q23'],
+};
+
+function getScore(qId) {
+  const group = document.querySelector(`[data-q="${qId}"]`);
+  if (!group) return 0;
+  const sel = group.querySelector('.selected');
+  return sel ? parseInt(sel.dataset.score) : 0;
+}
+
+function calculateScores() {
+  // Raw sums then normalise to /20
+  const raw = {};
+  Object.entries(DIM_MAP).forEach(([dim, qs]) => {
+    raw[dim] = qs.reduce((sum, q) => sum + getScore(q), 0);
+  });
+
+  // Max per dimension based on 5 pts per question
+  const maxRaw = { CV: 35, AS: 30, SP: 25, CA: 25 };
+  const scores = {};
+  Object.keys(raw).forEach(dim => {
+    scores[dim] = Math.round((raw[dim] / maxRaw[dim]) * 20);
+  });
+  return scores;
+}
+
+// ── Flags ─────────────────────────────────────────────────────
+function collectFlags() {
+  const flags = [];
+  document.querySelectorAll('.choice-btn.selected[data-flag="1"]').forEach(btn => {
+    const group = btn.closest('.choices');
+    const qId = group ? group.dataset.q : '?';
+    flags.push({
+      q: qId.toUpperCase(),
+      letter: btn.dataset.letter,
+      text: btn.textContent.trim(),
+      vars: btn.dataset.var || ''
+    });
+  });
+  return flags;
+}
+
+// ── Variable summary ──────────────────────────────────────────
+function collectVariables() {
+  const varCounts = {};
+  document.querySelectorAll('.choice-btn.selected').forEach(btn => {
+    const vars = (btn.dataset.var || '').split(',');
+    vars.forEach(v => {
+      v = v.trim();
+      if (v) varCounts[v] = (varCounts[v] || 0) + 1;
+    });
+  });
+  return varCounts;
+}
+
+// ── Validation ────────────────────────────────────────────────
+function validateAll() {
+  let valid = true;
+
+  // Check all 23 MCQ questions answered
+  for (let i = 1; i <= 23; i++) {
+    const group = document.querySelector(`[data-q="q${i}"]`);
+    if (!group) continue;
+    if (!group.querySelector('.selected')) {
+      const err = document.getElementById(`err-q${i}`);
+      if (err) err.classList.add('show');
+      if (valid) {
+        // Scroll to first unanswered
+        document.getElementById(`qb${i}`).scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      valid = false;
+    }
+  }
+
+  // Written account
+  const text = document.getElementById('writtenAccount').value.trim();
+  const wordCount = text ? text.split(/\s+/).length : 0;
+  if (wordCount < 400) {
+    document.getElementById('err-written').classList.add('show');
+    if (valid) document.getElementById('writtenAccount').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    valid = false;
+  }
+
+  // Email
+  const email = document.getElementById('emailInput').value.trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    document.getElementById('err-email').classList.add('show');
+    if (valid) document.getElementById('emailInput').focus();
+    valid = false;
+  }
+
+  return valid;
+}
+
+// ── Build advisor email body ───────────────────────────────────
+function buildAdvisorSummary(name, email, scores, flags, varCounts, written) {
+  const flagLines = flags.length > 0
+    ? flags.map(f => `  ${f.q} ${f.letter} [${f.vars}] — ${f.text}`).join('\n')
+    : '  None';
+
+  const varLines = Object.entries(varCounts)
+    .sort((a,b) => b[1]-a[1])
+    .map(([v,c]) => `  ${v}: ${c}`)
+    .join('\n');
+
+  const scoreLines = `CV: ${scores.CV}/20 | AS: ${scores.AS}/20 | SP: ${scores.SP}/20 | CA: ${scores.CA}/20`;
+
+  // Individual answers
+  const answerLines = [];
+  for (let i = 1; i <= 23; i++) {
+    const group = document.querySelector(`[data-q="q${i}"]`);
+    if (!group) continue;
+    const sel = group.querySelector('.selected');
+    const dim = group.dataset.dim || '';
+    if (sel) {
+      const flagMark = sel.dataset.flag === '1' ? ' ⚑' : '';
+      answerLines.push(`Q${i} [${dim}] ${sel.dataset.letter}${flagMark} [${sel.dataset.var}] — ${sel.textContent.trim()}`);
+    }
+  }
+
+  return `AUTHORITY GAP BASELINE
+Respondent: ${name}
+Email: ${email}
+
+DIMENSION SCORES
+${scoreLines}
+
+FLAGS (${flags.length})
+${flagLines}
+
+DOMINANT VARIABLES
+${varLines}
+
+ANSWER LOG
+${answerLines.join('\n')}
+
+WRITTEN ACCOUNT
+${written}`;
+}
+
+// ── Submit ────────────────────────────────────────────────────
+async function submitBaseline() {
+  if (!validateAll()) return;
+
+  const name    = document.getElementById('nameInput').value.trim() || 'there';
+  const email   = document.getElementById('emailInput').value.trim();
+  const written = document.getElementById('writtenAccount').value.trim();
+  const scores  = calculateScores();
+  const flags   = collectFlags();
+  const vars    = collectVariables();
+  const summary = buildAdvisorSummary(name, email, scores, flags, vars, written);
+
+  document.getElementById('sendingOverlay').classList.add('active');
+  document.getElementById('submitBtn').disabled = true;
+
+  try {
+    await emailjs.send(EJ_SERVICE_ID, EJ_TEMPLATE_ADVISOR, {
+      to_email:         'mornay@yabda.co',
+      respondent_name:  name,
+      respondent_email: email,
+      full_summary:     summary,
+      flag_count:       flags.length,
+    });
+
+    await emailjs.send(EJ_SERVICE_ID, EJ_TEMPLATE_CLIENT, {
+      to_email:        email,
+      respondent_name: name,
+    });
+
+    document.getElementById('sendingOverlay').classList.remove('active');
+    showResults(scores);
+
+  } catch(err) {
+    document.getElementById('sendingOverlay').classList.remove('active');
+    document.getElementById('submitBtn').disabled = false;
+    alert('Something went wrong sending your baseline. Please try again or email mornay@yabda.co directly.');
+    console.error(err);
+  }
+}
+
+// ── Spider diagram ────────────────────────────────────────────
+function drawSpider(scores) {
+  const canvas = document.getElementById('spiderCanvas');
+  const dpr = window.devicePixelRatio || 1;
+  const size = 420;
+  canvas.width = size * dpr;
+  canvas.height = size * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  const cx = size/2, cy = size/2, maxR = 155, levels = 5, dims = 4;
+  const angles = Array.from({length: dims}, (_,i) => -Math.PI/2 + i * 2*Math.PI/dims);
+  const scoreArr = [scores.CV, scores.AS, scores.SP, scores.CA];
+  const labels = ['Visibility','Attribution','Articulation','Solution'];
+  const labelAngles = [-Math.PI/2, 0, Math.PI/2, Math.PI];
+
+  function drawGrid() {
+    for (let l = 1; l <= levels; l++) {
+      const r = (l/levels)*maxR;
+      ctx.beginPath();
+      angles.forEach((a,i) => {
+        const x = cx+r*Math.cos(a), y = cy+r*Math.sin(a);
+        i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+      });
+      ctx.closePath();
+      ctx.strokeStyle = l===levels?'#DDD8CE':'#E8E3D8';
+      ctx.lineWidth = l===levels?1.5:0.8;
+      ctx.stroke();
+    }
+    angles.forEach(a=>{
+      ctx.beginPath(); ctx.moveTo(cx,cy);
+      ctx.lineTo(cx+maxR*Math.cos(a), cy+maxR*Math.sin(a));
+      ctx.strokeStyle='#DDD8CE'; ctx.lineWidth=0.8; ctx.stroke();
+    });
+    ctx.font='500 11px "DM Sans",sans-serif'; ctx.fillStyle='#9A9488'; ctx.textAlign='center';
+    labelAngles.forEach((a,i)=>{
+      const d=maxR+26, x=cx+d*Math.cos(a), y=cy+d*Math.sin(a);
+      ctx.fillText(labels[i],x,y+4);
+    });
+  }
+
+  let progress = 0;
+  const start = performance.now();
+  function ease(t){return 1-Math.pow(1-t,3);}
+
+  function frame(now) {
+    progress = Math.min((now-start)/900,1);
+    const t = ease(progress);
+    ctx.clearRect(0,0,size,size);
+    drawGrid();
+    ctx.beginPath();
+    scoreArr.forEach((s,i)=>{
+      const r=(s/20)*maxR*t, x=cx+r*Math.cos(angles[i]), y=cy+r*Math.sin(angles[i]);
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    });
+    ctx.closePath();
+    ctx.fillStyle='rgba(122,158,126,0.18)'; ctx.fill();
+    ctx.strokeStyle='#7A9E7E'; ctx.lineWidth=2; ctx.stroke();
+    scoreArr.forEach((s,i)=>{
+      const r=(s/20)*maxR*t, x=cx+r*Math.cos(angles[i]), y=cy+r*Math.sin(angles[i]);
+      ctx.beginPath(); ctx.arc(x,y,4,0,Math.PI*2);
+      ctx.fillStyle='#7A9E7E'; ctx.fill();
+      ctx.strokeStyle='#F5F0E8'; ctx.lineWidth=1.5; ctx.stroke();
+    });
+    if(progress<1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+// ── Score bars ────────────────────────────────────────────────
+function renderScoreGrid(s) {
+  const grid = document.getElementById('scoreGrid');
+  grid.innerHTML = '';
+  [
+    {label:'Contribution Visibility', score:s.CV},
+    {label:'Attribution Stability',   score:s.AS},
+    {label:'Solution Posture',         score:s.SP},
+    {label:'Contribution Articulation',score:s.CA},
+  ].forEach(item=>{
+    const card = document.createElement('div');
+    card.className = 'score-card';
+    card.innerHTML = `<div class="score-card-label">${item.label}</div>
+      <div class="score-card-bar-track"><div class="score-card-bar-fill" data-t="${Math.round((item.score/20)*100)}"></div></div>
+      <div class="score-card-number">${item.score} <span>/ 20</span></div>`;
+    grid.appendChild(card);
+  });
+  setTimeout(()=>{
+    grid.querySelectorAll('.score-card-bar-fill').forEach(el=>{ el.style.width=el.dataset.t+'%'; });
+  },200);
+}
+
+// ── Show results ──────────────────────────────────────────────
+function showResults(scores) {
+  document.getElementById('formWrap').style.display = 'none';
+  document.getElementById('resultsScreen').style.display = 'block';
+  window.scrollTo({top:0,behavior:'smooth'});
+  renderScoreGrid(scores);
+  setTimeout(()=>drawSpider(scores), 100);
+}
+</script>
+</body>
+</html>
