@@ -570,7 +570,7 @@ textarea { min-height: 280px; resize: vertical; line-height: 1.7; }
       <h2>Book your session</h2>
       <p style="margin-bottom:28px">Your results have been sent to your email. Mornay has received them and will review them before you meet. The session is where the work begins.</p>
       <!-- SWAP THIS URL FOR YOUR CALENDLY LINK WHEN READY -->
-      <a href="https://calendly.com/YOUR-CALENDLY-LINK-HERE" target="_blank" class="btn btn-teal">
+      <a href="https://calendly.com/mornayschoeman/executive-authority-gap-baseline" target="_blank" class="btn btn-teal">
         Book a session with Mornay &rarr;
       </a>
     </div>
@@ -897,18 +897,121 @@ function validateWritten() {
   err.style.display='none'; computeAndShowResults();
 }
 
-function computeAndShowResults() {
+async function computeAndShowResults() {
   const scores={CV:0,AS:0,SP:0,CA:0,TC:0};
+  const answers={};
   Object.entries(SECTION_DIMS).forEach(([s,dim])=>{
     QUESTIONS[s].forEach(q=>{
       const checked=document.querySelector('[name="q'+q.num+'"]:checked');
-      if(checked) scores[dim]+=parseInt(checked.dataset.score);
+      if(checked){
+        const val=parseInt(checked.dataset.score);
+        scores[dim]+=val;
+        answers['q'+q.num]=val;
+      }
     });
   });
+
   const fn=document.getElementById('first-name').value.trim();
-  document.getElementById('results-name').textContent=fn+"'s results";
-  document.getElementById('confirm-email').textContent=document.getElementById('email').value.trim();
+  const ln=document.getElementById('last-name').value.trim();
+  const em=document.getElementById('email').value.trim();
+  const carries=document.getElementById('carries').value.trim();
+  const written=document.getElementById('written-account').value.trim();
+
+  // Collect career timeline
+  const timelineRows=[];
+  document.querySelectorAll('#timeline-body tr').forEach(tr=>{
+    const inputs=tr.querySelectorAll('input');
+    const years=inputs[0]?inputs[0].value.trim():'';
+    const role=inputs[1]?inputs[1].value.trim():'';
+    const org=inputs[2]?inputs[2].value.trim():'';
+    if(years||role||org) timelineRows.push({years,role,org});
+  });
+
   const ranked=Object.entries(scores).map(([dim,score])=>({dim,score})).sort((a,b)=>b.score-a.score);
+  const ranking=ranked.map(r=>r.dim);
+
+  document.getElementById('results-name').textContent=fn+"'s results";
+  document.getElementById('confirm-email').textContent=em;
+
+  // POST to Supabase
+  const SUPABASE_URL='https://yyalxjwxudqzmchcbhzh.supabase.co';
+  const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5YWx4and4dWRxem1jaGNiaHpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMTI4MDEsImV4cCI6MjA5Nzc4ODgwMX0.1J9tA4GA1WzCuCRmSoF5umYzLKwxDpWCT4sfZJ_Llzs';
+
+  const payload={
+    first_name:fn,
+    last_name:ln,
+    email:em,
+    career_timeline:timelineRows,
+    carries:carries,
+    written_account:written,
+    score_cv:scores.CV,
+    score_as:scores.AS,
+    score_sp:scores.SP,
+    score_ca:scores.CA,
+    score_tc:scores.TC,
+    ranking:ranking,
+    ...answers
+  };
+
+  try {
+    await fetch(SUPABASE_URL+'/rest/v1/baseline_responses',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'apikey':SUPABASE_KEY,
+        'Authorization':'Bearer '+SUPABASE_KEY,
+        'Prefer':'return=minimal'
+      },
+      body:JSON.stringify(payload)
+    });
+  } catch(e){
+    console.error('Supabase error:',e);
+  }
+
+  // Add subscriber to MailerLite — Executive Authority Gap Baseline group
+  const ML_KEY='eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiNjQyYzlhYjFjZTdkOTcwOGFlYWZmMDA0N2QzM2JmNzgzZmNkZDFlMTA2NTkwNzU1ZDhmNTdjOGJjMWZmNGE2ODc4MzM2Y2Q1ODRkY2RkYmUiLCJpYXQiOjE3ODI2MzAzNTcuMTk0MTkyLCJuYmYiOjE3ODI2MzAzNTcuMTk0MTk0LCJleHAiOjQ5MzgzMDM5NTcuMTg5ODE4LCJzdWIiOiIxNzQ0MzEyIiwic2NvcGVzIjpbXX0.l812ghGdGwCwBHAu7ozw2McY5eJfq-KjjL0LQ3kp89YSbdl_1rAkhakjhzMadJ6LPtvkhPO0cvVEmGVQgd52xsoAgIcBcopoKqjwOqVPcJNEwgyBFMxWtzsdSwjOm2dfTVUp1d79YfbDdQfiyldFxaVBD_zgRIZKF6LjrrYpnCkEIDkWNeFOsFciLhPy7uOd1F4xIkyV7Oq7Dnxx7uNT4FxTbnIUwI_Q7jq2jtdUYqHqkv8nSBiuKVobvDX6e2J_wXNr97WV43o5MK3vTe5YYUBwEBLMbf2VGv-qeLtKlHW07DjB6Veb9QPUoFKIGbKOOZkleNO-onsIURRgWjxsXGxprGclrb_l2h8QOzGDFTpHj2FQ9g5r7M7gsBIwwIh2Sjssimq5HRj7Va1pA4N852uhf13W2zh7ObhhPOuPQ4y3E3zmSsPQqZOvK3hAlCMUbOX-bE2hApZxqfCSBZ_zvPoZw4KEaI_tWd7IzXGTuLe9GoXQ2EAwfy-0v6WayhzNwZsLgHbZi0ChztphjCaoVwy5yjIicsP71SLsMr4juakA9WszPoKcIoGNp0DKo6eR8zSnnd8INvzBCH0IJ7KwBoMBI9ajiOSVB6lVsshLgE0FkVyRraKuK4W5lkMxBYnqm-fuhLdf75hJYw4eanx0G_3lYqj41DpGJTp5-M7ZxR0';
+  const ML_GROUP='191502125498370039';
+  try {
+    await fetch('https://connect.mailerlite.com/api/subscribers',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'Accept':'application/json',
+        'Authorization':'Bearer '+ML_KEY
+      },
+      body:JSON.stringify({
+        email:em,
+        fields:{name:fn+' '+ln},
+        groups:[ML_GROUP]
+      })
+    });
+  } catch(e){
+    console.error('MailerLite error:',e);
+  }
+
+  // Build email HTML
+  let resultsHtml='';
+  ranked.forEach(({dim,score},i)=>{
+    const info=DIM_INFO[dim];
+    const para=getDimParagraph(dim,score);
+    const label=getRankInfo(i,ranked.length).label;
+    const pct=Math.round((score/24)*100);
+    resultsHtml+=`<div style="margin-bottom:32px;border-left:4px solid #5A2A45;padding-left:20px;"><div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#E27D72;margin-bottom:6px;">${label}</div><div style="font-size:20px;font-weight:600;color:#2C2A25;margin-bottom:4px;">${info.name}</div><div style="font-size:13px;color:#9A9488;margin-bottom:10px;">${info.plain}</div><div style="background:#E8E3DA;border-radius:4px;height:6px;margin-bottom:12px;"><div style="background:#5A2A45;height:6px;border-radius:4px;width:${pct}%;"></div></div><div style="font-size:13px;color:#5A2A45;font-weight:600;margin-bottom:8px;">Score: ${score} / 24</div><div style="font-size:15px;color:#2C2A25;line-height:1.7;">${para}</div></div>`;
+  });
+
+  const emailHtml=`<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#F5F0E8;padding:40px 32px;"><div style="margin-bottom:32px;"><div style="font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#9A9488;">Yabda Collective</div></div><h1 style="font-size:28px;font-weight:600;color:#2C2A25;margin-bottom:8px;">Your Executive Authority Gap Baseline Results</h1><p style="font-size:16px;color:#2C2A25;line-height:1.7;margin-bottom:32px;">Hi ${fn},<br><br>Your results are in.<br><br>You have just completed the Executive Authority Gap Baseline. Below you will find your scores across the Five Advancement Signals, ranked from your strongest to your primary gap.<br><br>Read all five. Each one tells you something specific about where you are and where the structural break is.</p>${resultsHtml}<div style="background:#5A2A45;border-radius:8px;padding:32px;margin-top:40px;text-align:center;"><div style="font-size:18px;font-weight:600;color:#F5F0E8;margin-bottom:12px;">Your next step</div><p style="font-size:15px;color:#D1BFD1;line-height:1.7;margin-bottom:24px;">Book your 45 to 60 minute session with Mornay. This is where we discuss what your results are showing, locate exactly where the break is, and map your first clear move forward.</p><a href="https://calendly.com/mornayschoeman/executive-authority-gap-baseline" style="display:inline-block;background:#E27D72;color:#ffffff;text-decoration:none;padding:14px 32px;border-radius:6px;font-weight:600;font-size:15px;">Book your session</a><p style="font-size:13px;color:#D1BFD1;margin-top:20px;">Come as you are. The baseline has already done the work.</p></div><div style="margin-top:40px;padding-top:24px;border-top:1px solid #DDD8CE;font-size:13px;color:#9A9488;"><div>Mornay Schoeman &nbsp;·&nbsp; Yabda Collective &nbsp;·&nbsp; mornay@yabda.co</div><div style="margin-top:8px;">Your results are confidential and will not be shared with anyone.</div></div></div>`;
+
+  const notifyHtml=`<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:32px;"><h2 style="color:#5A2A45;">New Baseline Submission</h2><p><strong>Name:</strong> ${fn} ${ln}</p><p><strong>Email:</strong> ${em}</p><hr><h3>Scores</h3>${ranked.map(({dim,score})=>`<p><strong>${DIM_INFO[dim].name}:</strong> ${score} / 24</p>`).join('')}<hr><h3>Career Timeline</h3>${timelineRows.map(r=>`<p>${r.years} | ${r.role} | ${r.org}</p>`).join('')}<hr><h3>What They Carry</h3><p>${carries}</p><hr><h3>Written Account</h3><p style="white-space:pre-wrap;">${written}</p></div>`;
+
+  const RESEND_KEY='re_569o5rUr_HJEcfnQpTuWLBSqvZDsaarSf';
+  try {
+    await fetch('https://api.resend.com/emails',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+RESEND_KEY},body:JSON.stringify({from:'Mornay Schoeman <mornay@yabda.co>',to:[em],subject:'Your Executive Authority Gap Baseline Results',html:emailHtml})});
+  } catch(e){ console.error('Resend client email error:',e); }
+
+  try {
+    await fetch('https://api.resend.com/emails',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+RESEND_KEY},body:JSON.stringify({from:'Authority Gap Baseline <mornay@yabda.co>',to:['mornay@yabda.co'],subject:`New Baseline: ${fn} ${ln}`,html:notifyHtml})});
+  } catch(e){ console.error('Resend notify email error:',e); }
+
   drawSpider(ranked); buildResultsDimensions(ranked); goTo('screen-results');
 }
 
