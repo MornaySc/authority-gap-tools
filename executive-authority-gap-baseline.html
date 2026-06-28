@@ -1003,14 +1003,18 @@ async function computeAndShowResults() {
 
   const notifyHtml=`<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:32px;"><h2 style="color:#5A2A45;">New Baseline Submission</h2><p><strong>Name:</strong> ${fn} ${ln}</p><p><strong>Email:</strong> ${em}</p><hr><h3>Scores</h3>${ranked.map(({dim,score})=>`<p><strong>${DIM_INFO[dim].name}:</strong> ${score} / 24</p>`).join('')}<hr><h3>Career Timeline</h3>${timelineRows.map(r=>`<p>${r.years} | ${r.role} | ${r.org}</p>`).join('')}<hr><h3>What They Carry</h3><p>${carries}</p><hr><h3>Written Account</h3><p style="white-space:pre-wrap;">${written}</p></div>`;
 
-  const RESEND_KEY='re_569o5rUr_HJEcfnQpTuWLBSqvZDsaarSf';
-  try {
-    await fetch('https://api.resend.com/emails',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+RESEND_KEY},body:JSON.stringify({from:'Mornay Schoeman <mornay@yabda.co>',to:[em],subject:'Your Executive Authority Gap Baseline Results',html:emailHtml})});
-  } catch(e){ console.error('Resend client email error:',e); }
+  const sendEmail = async (to, subject, html) => {
+    try {
+      await fetch('/.netlify/functions/send-email', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({to, subject, html})
+      });
+    } catch(e) { console.error('Email error:', e); }
+  };
 
-  try {
-    await fetch('https://api.resend.com/emails',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+RESEND_KEY},body:JSON.stringify({from:'Authority Gap Baseline <mornay@yabda.co>',to:['mornay@yabda.co'],subject:`New Baseline: ${fn} ${ln}`,html:notifyHtml})});
-  } catch(e){ console.error('Resend notify email error:',e); }
+  await sendEmail(em, 'Your Executive Authority Gap Baseline Results', emailHtml);
+  await sendEmail('mornay@yabda.co', `New Baseline: ${fn} ${ln}`, notifyHtml);
 
   drawSpider(ranked); buildResultsDimensions(ranked); goTo('screen-results');
 }
