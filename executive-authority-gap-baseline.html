@@ -1038,7 +1038,14 @@ function drawSpider(ranked) {
   ranked.forEach(({dim,score},i)=>{
     const lx=cx+Math.cos(angles[i])*(R+40),ly=cy+Math.sin(angles[i])*(R+40);
     ctx.textAlign='center'; ctx.textBaseline='middle';
-    ctx.font='700 12px Montserrat,sans-serif'; ctx.fillStyle='#5A2A45'; ctx.fillText(dim,lx,ly-8);
+    ctx.font='700 11px Montserrat,sans-serif'; ctx.fillStyle='#5A2A45';
+    const fullName=DIMS[dim].name;
+    const words=fullName.split(' ');
+    const mid=Math.ceil(words.length/2);
+    const line1=words.slice(0,mid).join(' ');
+    const line2=words.slice(mid).join(' ');
+    ctx.fillText(line1,lx,ly-18);
+    ctx.fillText(line2,lx,ly-6);
     ctx.font='500 11px Montserrat,sans-serif'; ctx.fillStyle='#9A9488'; ctx.fillText(score+'/24',lx,ly+8);
   });
 }
@@ -1098,3 +1105,4 @@ document.addEventListener('DOMContentLoaded',()=>{buildTimeline();buildQuestions
 </script>
 </body>
 </html>
+
