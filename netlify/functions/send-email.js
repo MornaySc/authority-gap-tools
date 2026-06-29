@@ -25,7 +25,7 @@ exports.handler = async function(event) {
         'Authorization': 'Bearer ' + RESEND_KEY
       },
       body: JSON.stringify({
-        from: 'Mornay Schoeman <onboarding@resend.dev>',
+        from: 'Mornay Schoeman <mornay@yabda.co>',
         to: Array.isArray(to) ? to : [to],
         subject,
         html
