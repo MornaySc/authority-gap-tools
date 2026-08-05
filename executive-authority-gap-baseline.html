@@ -916,30 +916,29 @@ textarea::placeholder { color: var(--border); }
   <!-- ════════════════════════════════════════════
        RESULTS SCREEN
   ═════════════════════════════════════════════ -->
-  <div id="resultsScreen">
-    <div class="results-eyebrow">Baseline established</div>
-    <h2 class="results-title">Your Authority Gap Baseline</h2>
+  <div id="resultsScreen" style="padding:48px 32px 96px;max-width:680px;margin:0 auto;">
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(28px,5vw,40px);font-weight:500;color:#5A2A45;margin-bottom:8px;">Your Advancement Signal profile.</h2>
+    <p style="font-size:15px;color:#9A9488;margin-bottom:48px;">Five signals. Where each one sits on the spectrum right now.</p>
 
-    <div class="spider-wrap">
-      <canvas id="spiderCanvas" width="420" height="420"></canvas>
+    <div style="display:flex;justify-content:center;margin-bottom:48px;">
+      <canvas id="spiderCanvas" width="420" height="420" style="max-width:420px;width:100%;height:auto;"></canvas>
     </div>
 
-    <div class="spider-legend">
-      <div class="legend-item"><div class="legend-dot"></div>Contribution Visibility</div>
-      <div class="legend-item"><div class="legend-dot"></div>Attribution Stability</div>
-      <div class="legend-item"><div class="legend-dot"></div>Solution Posture</div>
-      <div class="legend-item"><div class="legend-dot"></div>Contribution Articulation</div>
+    <div id="scoreGrid" style="display:flex;flex-direction:column;gap:18px;margin-bottom:48px;"></div>
+
+    <div id="signalBlocksWrap" style="margin-bottom:48px;"></div>
+
+    <div style="border-left:3px solid #4E878C;padding:24px 28px;background:#FFFFFF;margin-bottom:40px;">
+      <p style="font-size:15px;line-height:1.75;color:#2C2A25;margin-bottom:12px;">This is your baseline. Your written account and full responses are with Mornay. Your session will be built from what you have submitted here.</p>
+      <p style="font-size:15px;line-height:1.75;color:#2C2A25;">If anything feels incomplete before the session, email mornay@yabda.co directly.</p>
     </div>
 
-    <div class="score-grid" id="scoreGrid"></div>
-
-    <div class="results-note">
-      <p>This is your baseline. The same four dimensions will be measured again at the close of your engagement. The distance between the two diagrams is the evidence of movement — visible, not just felt.</p>
-      <p>Your written account and full responses are with Mornay. Your first session will be built from what you have submitted here.</p>
-      <p>If anything feels incomplete, email mornay@yabda.co directly before the session.</p>
+    <div style="text-align:center;padding:40px 0;">
+      <div style="font-size:11px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:#9A9488;margin-bottom:16px;">Book your session</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:500;color:#5A2A45;margin-bottom:12px;">One session with Mornay.</div>
+      <p style="font-size:15px;color:#2C2A25;margin-bottom:28px;line-height:1.7;">Mornay has received your results and will review them before you meet. The session is where the work begins.</p>
+      <a href="https://calendly.com/mornayschoeman/executive-authority-gap-baseline" style="display:inline-block;background:#5A2A45;color:white;font-family:'DM Sans',sans-serif;font-weight:500;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;padding:16px 40px;text-decoration:none;" target="_blank" rel="noopener">Book your session</a>
     </div>
-
-    <div class="results-footer">Mornay Schoeman &middot; Strategic Orientation &amp; Decision Advisor &middot; Yabda Collective</div>
   </div>
 
   <div class="page-footer">Yabda Collective &middot; Authority Gap Baseline &middot; Confidential &middot; mornay@yabda.co</div>
@@ -1273,25 +1272,108 @@ function drawSpider(scores) {
 }
 
 // ── Score bars ────────────────────────────────────────────────
+// ── Spectrum labels ───────────────────────────────────────────
+function getSpectrumLabel(score, max) {
+  const pct = score / max;
+  if (pct <= 0.2)  return { label: 'Not yet present', colour: '#b94a48' };
+  if (pct <= 0.4)  return { label: 'Emerging',         colour: '#C47D5A' };
+  if (pct <= 0.6)  return { label: 'Developing',        colour: '#9A9488' };
+  if (pct <= 0.8)  return { label: 'Functioning',       colour: '#4E878C' };
+  return               { label: 'Compounding',       colour: '#5A2A45' };
+}
+
+// ── Signal reads ──────────────────────────────────────────────
+const SIGNAL_READS = {
+  CV: {
+    label: "Contribution Visibility",
+    alias: "Your work is visible at the right level to the right people.",
+    strong: "Your work is reaching the people who control what happens next. That is not accidental. It means you have been doing something, consistently, that keeps your name attached to your contribution. The risk: if you cannot name what that thing is, you cannot protect it. A new manager, a restructure, a move to a different organisation, and the visibility quietly disappears because it was never a deliberate practice.",
+    weak: "Your work is not reaching the people who control what happens next. Not because you are not delivering. Because the contribution is not travelling with your name attached. The result lands. The author disappears. This is a structural gap between what you are doing and what the system is registering. It is fixable, but it requires a specific set of habits you have not yet built."
+  },
+  AS: {
+    label: "Attribution Stability",
+    alias: "Credit is landing correctly and staying attached to you over time.",
+    strong: "Credit is staying attached to you and building in the right direction. Your name travels with your work even when you are not in the room. The risk: this pattern can flatten without warning. A change in manager, a restructure, a move. If you have never named what is producing it, you will not know what you lost until the credit has already stopped travelling.",
+    weak: "Credit is not staying attached to you. Work you drove is being absorbed into the team narrative, attributed upward, or losing your name over time. The longer this runs, the harder it becomes to build a case for yourself. This is an architecture problem. The solution is not working harder. It is engineering how your contribution travels."
+  },
+  SP: {
+    label: "Solution Posture",
+    alias: "You are arriving ready with answers before anyone asks.",
+    strong: "You are arriving with answers before anyone asks. You own problems before being directed. That posture positions you as a thinker at the level above, not just an executor at the level you are at. The risk: this can feel so natural you do not register it as a deliberate behaviour. Which means you cannot protect it in an environment that discourages initiative.",
+    weak: "You are responding to problems more than you are originating answers. By the time you engage, someone else has already framed the question. And the person who frames the question gets credited with the answer. The shift from reactive to proactive is learnable. It does not require a different personality. It requires a different entry point."
+  },
+  CA: {
+    label: "Contribution Articulation",
+    alias: "You can explain clearly what you do and why it matters.",
+    strong: "You can state what you did with enough precision that no one else could claim it. That specificity is what makes credit attributable. The risk: articulation under pressure is different from articulation by instinct. If you have never consciously held this as a skill, it may disappear exactly when it matters most.",
+    weak: "You cannot yet state what you did with enough precision that no one else could claim it. Credit diffuses when the language is vague. The fix is not self-promotion. It is precision. Naming what you changed, what would not have happened without you, and why it mattered at the level the organisation cares about."
+  },
+  TC: {
+    label: "Trajectory Clarity",
+    alias: "You know where you are headed and can read your own position clearly.",
+    strong: "You can read your own position clearly enough to move deliberately. That clarity is what makes the other four signals navigational tools rather than abstract ideas. The risk: clarity without confirmation can become certainty about the wrong thing. A story that feels accurate can still be structurally wrong.",
+    weak: "The story you are telling yourself about why things are not moving may not be the accurate one. Most capable professionals who are stuck are solving the wrong problem, because the real mechanism is not visible from inside the situation. That gap between knowing something is off and being able to locate it precisely is exactly what this session is built to close."
+  }
+};
+
+function getSignalBlocks(s) {
+  const maxes = {CV:20, AS:20, SP:20, CA:20, TC:20};
+  const order = [
+    {dim:'CV', score: s.CV || 0},
+    {dim:'AS', score: s.AS || 0},
+    {dim:'SP', score: s.SP || 0},
+    {dim:'CA', score: s.CA || 0},
+    {dim:'TC', score: s.TC || 0}
+  ].sort((a,b) => b.score - a.score);
+
+  const strongest = order[0];
+  const weakest   = order[4];
+  const second    = order[3];
+
+  function block(item, type) {
+    const r = SIGNAL_READS[item.dim];
+    const isStrong = type === 'strong';
+    const typeLabel = isStrong ? 'What you are building from' : (type === 'primary' ? 'Your primary gap' : 'Your secondary gap');
+    const colour = isStrong ? '#4E878C' : '#5A2A45';
+    return `
+      <div style="margin-bottom:28px;padding:28px;background:#FFFFFF;border-left:3px solid ${colour};">
+        <div style="font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:${colour};margin-bottom:8px;">${typeLabel}</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;color:#2C2A25;margin-bottom:4px;">${r.label}</div>
+        <div style="font-size:13px;color:#9A9488;font-style:italic;margin-bottom:16px;">${r.alias}</div>
+        <p style="font-size:15px;line-height:1.75;color:#2C2A25;">${isStrong ? r.strong : r.weak}</p>
+      </div>`;
+  }
+
+  return block(strongest, 'strong') + block(weakest, 'primary') + block(second, 'secondary');
+}
+
 function renderScoreGrid(s) {
   const grid = document.getElementById('scoreGrid');
   grid.innerHTML = '';
+  const max = 20;
   [
-    {label:'Contribution Visibility', score:s.CV},
-    {label:'Attribution Stability',   score:s.AS},
-    {label:'Solution Posture',         score:s.SP},
-    {label:'Contribution Articulation',score:s.CA},
-  ].forEach(item=>{
+    {label:'Contribution Visibility',   alias:'Is your work visible at the right level to the right people', score: s.CV || 0},
+    {label:'Attribution Stability',     alias:'Is credit landing correctly and staying attached to you',      score: s.AS || 0},
+    {label:'Solution Posture',          alias:'Are you arriving ready with answers before anyone asks',       score: s.SP || 0},
+    {label:'Contribution Articulation', alias:'Can you explain clearly what you do and why it matters',       score: s.CA || 0},
+    {label:'Trajectory Clarity',        alias:'Do you know where you are headed and can you read your position', score: s.TC || 0}
+  ].forEach(item => {
+    const sp = getSpectrumLabel(item.score, max);
     const card = document.createElement('div');
-    card.className = 'score-card';
-    card.innerHTML = `<div class="score-card-label">${item.label}</div>
-      <div class="score-card-bar-track"><div class="score-card-bar-fill" data-t="${Math.round((item.score/20)*100)}"></div></div>
-      <div class="score-card-number">${item.score} <span>/ 20</span></div>`;
+    card.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">
+        <div style="font-size:13px;font-weight:500;letter-spacing:0.06em;color:#9A9488;text-transform:uppercase;">${item.label}</div>
+        <div style="font-size:12px;font-weight:500;color:${sp.colour};letter-spacing:0.06em;text-transform:uppercase;">${sp.label}</div>
+      </div>
+      <div style="font-size:12px;color:#9A9488;font-style:italic;margin-bottom:8px;">${item.alias}</div>
+      <div style="height:4px;background:#DDD8CE;margin-bottom:4px;"><div style="height:100%;background:${sp.colour};width:0%;transition:width 0.9s cubic-bezier(0.4,0,0.2,1);" data-target="${Math.round((item.score/max)*100)}"></div></div>`;
     grid.appendChild(card);
   });
-  setTimeout(()=>{
-    grid.querySelectorAll('.score-card-bar-fill').forEach(el=>{ el.style.width=el.dataset.t+'%'; });
-  },200);
+  setTimeout(() => {
+    grid.querySelectorAll('[data-target]').forEach(el => {
+      el.style.width = el.dataset.target + '%';
+    });
+  }, 200);
 }
 
 // ── Show results ──────────────────────────────────────────────
@@ -1299,6 +1381,7 @@ function showResults(scores) {
   document.getElementById('formWrap').style.display = 'none';
   document.getElementById('resultsScreen').style.display = 'block';
   window.scrollTo({top:0,behavior:'smooth'});
+  document.getElementById('signalBlocksWrap').innerHTML = getSignalBlocks(scores);
   renderScoreGrid(scores);
   setTimeout(()=>drawSpider(scores), 100);
 }
