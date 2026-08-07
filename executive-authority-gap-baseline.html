@@ -488,41 +488,94 @@ function getSpectrumLabel(score) {
 
 // Signal reads
 const SIGNAL_READS = {
-  CV:{label:"Contribution Visibility",alias:"Your work is visible at the right level to the right people.",
-    strong:"Your work is reaching the people who control what happens next. That is not a small thing. Most capable professionals operate in a structural blind spot where the people doing the work and the people making decisions about careers are not in the same room. You have closed that gap. Something you are doing consistently keeps your name attached to your contribution at the level that matters. The risk is specific: if you cannot name what that thing is, you cannot protect it. Visibility built on behaviour you have never identified is invisible to you too. A new manager arrives. A restructure happens. You move organisations. The conditions that produced your visibility shift, and you do not know what to rebuild because you never knew what you were building in the first place.",
-    weak:"Your work is not reaching the people who control what happens next. This is not a performance problem. The contribution is happening. The problem is that it is not travelling. The result lands and the author disappears into the team, the project, or the brief. What registers is the output, not the person who drove it. This gap between what you are delivering and what the system is recording is structural. It is not fixed by working harder or producing more. It is fixed by changing how your contribution moves through the organisation, who it reaches, and what your name is attached to when it arrives."},
-  AS:{label:"Attribution Stability",alias:"Credit is landing correctly and staying attached to you over time.",
-    strong:"Credit is staying with you and building in the right direction. Your name travels with your work even when you are not in the room to claim it. That is rare. Most professionals find that credit drifts the moment they step back from a project, gets absorbed into the team narrative, or gets attributed upward by default. You have built something that holds. The risk is that attribution stability is one of the most context-sensitive signals. It depends on relationships, organisational culture, and the people above you. If you have never consciously named what is producing this pattern, a change in any of those conditions can quietly dismantle it before you notice it is gone.",
-    weak:"Credit is not staying attached to you. Work you drove is being absorbed into the team narrative, attributed upward, or losing your name over time. This is one of the most corrosive patterns in a career because it is largely invisible from the inside. You know you did the work. Your immediate colleagues may know. But the people making decisions about who gets promoted, who gets the next opportunity, who is seen as operating at the level above -- they are working from a different record. The longer this runs without a structural fix, the harder it becomes to build a case for yourself. Not because the evidence does not exist. Because it was never structured to hold."},
-  SP:{label:"Solution Posture",alias:"You are arriving ready with answers before anyone asks.",
-    strong:"You are arriving with answers before anyone asks. You own problems before being directed to them. That posture is what positions a professional as a thinker at the level above, not just an executor at the level they are at. The people who get asked into the room are almost always people who have already demonstrated they do not need the room to start thinking. You are doing that. The risk is that this can feel so natural, so close to how you simply operate, that you do not register it as a deliberate behaviour. Which means you cannot teach it, cannot protect it in an environment that actively discourages initiative, and cannot explain why your influence shrinks the moment the context changes.",
-    weak:"You are responding to problems more than you are originating answers. By the time you engage, someone else has already framed the question, and the person who frames the question gets credited with the thinking even when someone else does the work. This is not about personality. It is not about being less capable. It is about entry point. Reactive professionals are evaluated on the quality of their execution. Proactive professionals are evaluated on the quality of their judgment. Those two things are compensated and recognised very differently. The shift from one to the other is learnable. It requires knowing specifically where in your current patterns the reactive habit lives."},
-  CA:{label:"Contribution Articulation",alias:"You can explain clearly what you do and why it matters.",
-    strong:"You can state what you did with enough precision that no one else could plausibly claim it. That level of specificity is what makes credit attributable. Vague language about contribution produces vague impressions of who was responsible. Precise language produces a record. You are building a record. The risk: articulation under pressure or in high-stakes moments is a different skill from articulation by instinct in comfortable contexts. If you have never consciously treated this as something you practise and protect, it may disappear exactly when it matters most, in the performance review, the promotion conversation, the moment when someone asks what you have actually done.",
-    weak:"You cannot yet state what you did with enough precision that no one else could claim it. This is the gap most professionals never locate, because they assume the work speaks for itself. It does not. Credit does not flow to the person who did the work. It flows to the person whose name is most clearly attached to a specific, consequential outcome. When the language is vague, the attribution is vague. When the attribution is vague, credit disperses across whoever is most visible. The fix is not self-promotion. It is precision. Being able to name exactly what changed because of your involvement, what would not have happened without you, and why it mattered at the level the organisation actually cares about."},
-  TC:{label:"Trajectory Clarity",alias:"You know where you are headed and can read your own position clearly.",
-    strong:"You can read your own position clearly enough to move deliberately. Most professionals cannot. They are operating on a story about their career that feels accurate from the inside but has not been stress-tested against how they are actually seen by the people who matter. You have enough clarity to navigate. That clarity is what turns the other four signals into directional tools rather than abstract observations. The risk: clarity without external confirmation can become certainty about the wrong map. A trajectory story that feels coherent can still be structurally miscalibrated, pointing toward a destination the organisation will not recognise or reward.",
-    weak:"The picture of where you are headed and where you currently stand is not yet precise enough to navigate from. That gap is more costly than most professionals realise, because the decisions you make about what to prioritise, what to invest in, and what to tolerate are all downstream of that picture. If the picture is blurred or built on assumptions rather than evidence, you are making good decisions on a bad map. Most capable professionals in this position are not stuck because they lack ability. They are stuck because the real mechanism producing their stagnation is not visible from inside the situation they are in."}
+  CV: {
+    label: "Contribution Visibility",
+    alias: "Your work is reaching the people who control what happens next.",
+    positions: {
+      "Not yet present": "Your work is not reaching the people who control what happens next with your name attached to it. The result lands somewhere. You do not. This is the most foundational of the five signals. Without your name reaching the right level, the other four have no surface to work on.",
+      "Emerging": "Your work is reaching some people at the right level, occasionally. But your name is not reliably registering as the person who drove it. The result lands. The author does not. This is not about how capable you are or how hard you work. It is about whether what you are producing is structured to travel with your name attached.",
+      "Developing": "Your work is reaching the right people sometimes. Your name is travelling with it in some situations and not others. The inconsistency is not random -- there is something specific producing it. In the situations where your name travels, something is working. In the ones where it does not, something is missing. You have not yet identified what that something is.",
+      "Functioning": "Your work is reaching the right people in your current context. Your name is travelling with it often enough that you have a reputation at the level above. The gap is portability. What is producing your visibility is tied to this organisation, this manager, these relationships. You have not yet named what is making it work, which means you cannot take it with you when the context changes.",
+      "Compounding": "Your work is reaching the people who control what happens next, and your name is travelling with it consistently enough that the record registers you as the person who drove it. That is not a default outcome. Most capable professionals produce results that reach the right level but lose their name in transit. Yours does not. The direct question: do you know what you are doing that makes that happen?"
+    }
+  },
+  AS: {
+    label: "Attribution Stability",
+    alias: "Credit is staying attached to you and holding over time.",
+    positions: {
+      "Not yet present": "Credit is not staying attached to you. Work you drove is consistently losing your name before it reaches the people who matter. The organisational record of who did what does not reliably include you. That is not about whether people respect you. It is about whether the record holds your name. Right now it largely does not.",
+      "Emerging": "Credit is drifting more than it is holding. Work you drove is losing your name over time -- absorbed into the project, the team, or whoever is most senior in the room. You may not notice it happening in the moment. You notice it later, when you try to point to something concrete and find it harder to claim than it should be.",
+      "Developing": "Credit is staying attached to you sometimes and drifting other times. Some of what you have driven still has your name on it. Some has been absorbed into the team narrative, attributed upward, or simply lost your name over time. The difference between what holds and what drifts is not random. There is a structural reason. You have not yet identified it.",
+      "Functioning": "Credit is staying attached to you in your current context. It holds with the people who know you, in the organisation you are in, under the management you have now. The risk is that none of those conditions are permanent. What is keeping credit attached to you is contextual, not structural. You have not yet built something that holds independently of the conditions producing it.",
+      "Compounding": "Credit is staying attached to you and holding over time. Your name does not drift from your work when you step back from it, when leadership changes, or when the project gets absorbed into the organisation's memory. That kind of stability is structurally rare. The direct question: do you know what you are doing that makes credit hold?"
+    }
+  },
+  SP: {
+    label: "Solution Posture",
+    alias: "You are originating answers before anyone asks for them.",
+    positions: {
+      "Not yet present": "You are waiting to be directed before engaging. The problems you solve are the ones you have been asked to solve. That means you are being evaluated on the quality of your execution, not the quality of your judgment. Those two things are compensated and recognised at very different levels.",
+      "Emerging": "You are responding to problems more than originating answers. By the time you engage, someone else has already framed the question. That matters because the person who frames the question gets credited with the thinking, even when someone else does the work. You are doing the work. The framing is happening without you.",
+      "Developing": "You are originating answers in some situations and waiting to be directed in others. When the problem is familiar and the stakes are manageable, you move first. When the problem is ambiguous, politically sensitive, or outside your defined territory, you tend to wait. The situations where you wait are almost always the ones that matter most for advancement.",
+      "Functioning": "You are originating answers in your domain and arriving at problems before being directed to them. The gap is scope. You are proactive about what sits clearly within your remit. You are not yet consistently framing problems at the level above yours, in territory that has not been assigned to you, before anyone has asked.",
+      "Compounding": "You are originating answers before anyone asks for them. You are framing problems before anyone else has named them. That positions you as someone thinking at the level above, not executing at the level you are at. The people who get pulled into senior rooms are almost always people who have already demonstrated they do not need to be directed to start thinking. The direct question: do you know what you are doing that produces that posture?"
+    }
+  },
+  CA: {
+    label: "Contribution Articulation",
+    alias: "You can name what you did with enough precision that no one else could claim it.",
+    positions: {
+      "Not yet present": "You have not yet developed the language to name your contribution in terms that make it attributable. You likely describe what your role covers, what the team delivered, or what the project achieved. That language does not put your name in the record. It puts the project's name in the record.",
+      "Emerging": "Your naming of your contribution is vague enough that credit diffuses. Not because the contribution was not real, but because the language does not give it an address. When the naming is vague, the attribution is vague. When the attribution is vague, credit goes to whoever is most visible, not whoever drove the outcome.",
+      "Developing": "You can name what you did but struggle to claim it with enough precision to make it attributable. The language tends toward the general -- what we delivered, what the project achieved -- rather than the specific. What you changed. What would not have happened without you. The contribution is real. The naming is not yet precise enough to make it yours.",
+      "Functioning": "You can name your contribution clearly in most situations. You know what you did and can explain why it mattered. The gap is the high-stakes moment -- the performance review, the promotion conversation, the unexpected question from a senior leader. Naming under pressure is a different skill from naming by instinct in a comfortable context. You have not yet made it consistent under pressure.",
+      "Compounding": "You can name what you did with enough precision that no one else could claim it. You can attribute the outcome specifically to your involvement -- what changed because of you, what would not have happened without you, why it mattered at the level the organisation cares about. That precision is what makes credit attributable and what makes your name stay in the record. The direct question: do you know what you are doing that produces that precision?"
+    }
+  },
+  TC: {
+    label: "Trajectory Clarity",
+    alias: "You can read your own position accurately enough to navigate from it.",
+    positions: {
+      "Not yet present": "You do not yet have a working read on your position. The decisions you make about what to prioritise, what to invest in, and what to tolerate are all downstream of that read. Without it, you are making decisions on a map you have not verified. Working harder on a bad map does not close the distance.",
+      "Emerging": "Your read on your position is unclear and may not be accurate. Most professionals in this position are not stuck because they lack ability. They are stuck because they are solving the wrong problem -- because the real mechanism producing their stagnation is not visible from inside the situation they are in.",
+      "Developing": "You have a general read on your position but it is not yet precise enough to navigate from deliberately. You know roughly where you want to go. You do not yet have a clear enough picture of where you actually stand to measure the distance accurately or locate what specifically needs to change.",
+      "Functioning": "You can read your position well enough to make decisions from it. You have a working picture of where you are and where you are headed. The risk is that the picture has not been tested against how you are actually seen by the people who control what happens next. A read that feels accurate from the inside can still be navigating toward the wrong destination.",
+      "Compounding": "You can read your own position accurately enough to navigate from it. You know where you are, you know what the next level actually requires, and you can locate the specific gap between the two. That clarity is what turns the other four signals into directional tools. The direct question: is that read based on evidence, or on a story that feels accurate because you built it?"
+    }
+  }
 };
 
-function getSignalBlocks(s) {
-  const order = ['CV','AS','SP','CA','TC'].map(d => ({dim:d,score:s[d]||0})).sort((a,b)=>b.score-a.score);
-  const strongest = order[0], weakest = order[4], second = order[3];
-  const sp_strong = getSpectrumLabel(strongest.score);
-  const sp_weak = getSpectrumLabel(weakest.score);
-  const sp_second = getSpectrumLabel(second.score);
 
-  function block(item, type, sp) {
-    const r = SIGNAL_READS[item.dim];
-    const isStrong = type==='strong';
-    const isPrimary = type==='primary';
-    const colour = isStrong ? '#4E878C' : '#5A2A45';
-    const typeLabel = isStrong ? 'What you are building from' : (isPrimary ? 'Your primary gap' : 'Your secondary gap');
-    const opener = isStrong
-      ? 'This is your strongest signal right now. It is doing real work in your favour. The question is whether you are doing it deliberately. If you cannot name what is producing this result, you cannot protect it when the context changes. A new manager, a restructure, a move to a different organisation, and a strength you never named quietly disappears.'
+function getSignalBlocks(s, maxScore) {
+  const order = ['CV','AS','SP','CA','TC']
+    .map(d => ({dim:d, score:s[d]||0}))
+    .sort((a,b) => b.score - a.score);
+
+  const strongest = order[0];
+  const primary   = order[4];
+  const secondary = order[3];
+
+  function block(item, type) {
+    const r   = SIGNAL_READS[item.dim];
+    const sp  = getSpectrumLabel(item.score);
+    const pos = r.positions[sp.label];
+
+    const isStrong    = type === 'strong';
+    const isPrimary   = type === 'primary';
+    const colour      = isStrong ? '#4E878C' : '#5A2A45';
+
+    const typeLabel = isStrong
+      ? 'What you are building from'
       : isPrimary
-        ? 'This is doing the most damage right now. Of the five signals, this is the one where the structural break is most active. Everything else you are working on is being shaped by what is broken here. This is where the work needs to begin.'
-        : 'This is the downstream consequence of your primary gap. It is not an independent problem. It is being compounded by what is happening in '+SIGNAL_READS[weakest.dim].label+'. Which means closing the primary gap will begin to move this one too. You do not need to fix both at once.';
+        ? 'Your primary gap'
+        : 'Your secondary gap';
+
+    const opener = isStrong
+      ? 'This is your strongest signal. It is the asset you build from. The work is not to protect it blindly -- it is to understand what is producing it so you can use it deliberately and carry it forward when the context changes.'
+      : isPrimary
+        ? 'This is doing the most damage right now. Of the five signals, this is where the structural break is most active. Start here. The other gaps will begin to shift once this one moves.'
+        : 'This is your next priority -- not your first. It is being shaped by what is broken in ' + SIGNAL_READS[primary.dim].label + '. Address the primary gap first and this one will begin to move. Then you come back to it with precision.';
+
     return '<div style="margin-bottom:28px;padding:28px;background:#FFFFFF;border-left:3px solid '+colour+';">'
       +'<div style="font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:'+colour+';margin-bottom:8px;">'+typeLabel+'</div>'
       +'<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;">'
@@ -530,12 +583,14 @@ function getSignalBlocks(s) {
       +'<div style="font-size:12px;font-weight:500;color:'+sp.colour+';letter-spacing:0.06em;text-transform:uppercase;padding-top:4px;">'+sp.label+'</div>'
       +'</div>'
       +'<div style="font-size:13px;color:#9A9488;font-style:italic;margin-bottom:16px;">'+r.alias+'</div>'
-      +'<p style="font-size:15px;line-height:1.75;color:#5A2A45;font-weight:400;margin-bottom:12px;font-style:italic;">'+opener+'</p>'
-      +'<p style="font-size:15px;line-height:1.75;color:#2C2A25;">'+(isStrong?r.strong:r.weak)+'</p>'
+      +'<p style="font-size:15px;line-height:1.75;color:'+colour+';font-weight:400;margin-bottom:12px;font-style:italic;">'+opener+'</p>'
+      +'<p style="font-size:15px;line-height:1.75;color:#2C2A25;">'+pos+'</p>'
       +'</div>';
   }
-  return block(strongest,'strong',sp_strong)+block(weakest,'primary',sp_weak)+block(second,'secondary',sp_second);
+
+  return block(strongest,'strong') + block(primary,'primary') + block(secondary,'secondary');
 }
+
 
 function renderScoreGrid(s) {
   const grid = document.getElementById('scoreGrid');
