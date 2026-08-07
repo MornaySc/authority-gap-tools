@@ -913,9 +913,11 @@ function showEmailScreen() {
 // ── Scoring ───────────────────────────────────────────────────
 function calculateScores() {
   // Q indices by dim: CV=0,5,10 | TC=1,6,12 | AS=2,7,11 | SP=3,8,13 | CA=4,9,14
+  // CV max is 14 (Q1 max is 4, not 5) — normalise to 15 for consistent scale
   const get = i => answers[i] ? answers[i].score : 0;
+  const cvRaw = get(0) + get(5) + get(10);
   return {
-    CV: get(0) + get(5)  + get(10),
+    CV: Math.round((cvRaw / 14) * 15),
     TC: get(1) + get(6)  + get(12),
     AS: get(2) + get(7)  + get(11),
     SP: get(3) + get(8)  + get(13),
@@ -1111,11 +1113,11 @@ function renderScoreGrid(s) {
   keyEl.innerHTML = '<div style="margin-bottom:28px;padding:20px 24px;background:var(--white);border:1.5px solid var(--border);">'
     + '<div style="font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;">The spectrum</div>'
     + '<div style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--ink);">'
-    + '<div><span style="color:#b94a48;font-weight:500;">Not yet present</span> <span style="color:var(--muted);">(1-3)</span> - This signal is largely absent. The structural break here is significant and active.</div>'
-    + '<div><span style="color:#C47D5A;font-weight:500;">Emerging</span> <span style="color:var(--muted);">(4-6)</span> - The signal exists in places but is not yet holding consistently.</div>'
-    + '<div><span style="color:#9A9488;font-weight:500;">Developing</span> <span style="color:var(--muted);">(7-9)</span> - Present and functional in some contexts. Not yet reliable across all situations.</div>'
-    + '<div><span style="color:#4E878C;font-weight:500;">Functioning</span> <span style="color:var(--muted);">(10-11)</span> - This signal is operating well. The work is to protect and name it deliberately.</div>'
-    + '<div><span style="color:#5A2A45;font-weight:500;">Compounding</span> <span style="color:var(--muted);">(12)</span> - This signal is working strongly and building over time. You may not know why.</div>'
+    + '<div><span style="color:#b94a48;font-weight:500;">Not yet present</span> <span style="color:var(--muted);">(1-3)</span> - This signal is largely absent from how you operate right now. The structural break here is significant.</div>'
+    + '<div><span style="color:#C47D5A;font-weight:500;">Emerging</span> <span style="color:var(--muted);">(4-6)</span> - The signal shows up in some situations but is not yet consistent. It works when conditions are right.</div>'
+    + '<div><span style="color:#9A9488;font-weight:500;">Developing</span> <span style="color:var(--muted);">(7-9)</span> - Present and functional in many contexts. Not yet reliable enough to be a deliberate tool.</div>'
+    + '<div><span style="color:#4E878C;font-weight:500;">Functioning</span> <span style="color:var(--muted);">(10-12)</span> - This signal is working. The risk is that you may not know why, which makes it fragile.</div>'
+    + '<div><span style="color:#5A2A45;font-weight:500;">Compounding</span> <span style="color:var(--muted);">(13-15)</span> - This signal is working strongly and building on itself. The work is to name it so you can protect it.</div>'
     + '</div></div>';
   grid.appendChild(keyEl);
 
@@ -1132,7 +1134,10 @@ function renderScoreGrid(s) {
     card.innerHTML = `
       <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">
         <div class="score-card-label">${item.label}</div>
-        <div style="font-size:12px;font-weight:500;color:${sp.colour};letter-spacing:0.06em;text-transform:uppercase;">${sp.label}</div>
+        <div style="display:flex;align-items:baseline;gap:8px;">
+          <div style="font-size:12px;color:var(--muted);">${item.score}/15</div>
+          <div style="font-size:12px;font-weight:500;color:${sp.colour};letter-spacing:0.06em;text-transform:uppercase;">${sp.label}</div>
+        </div>
       </div>
       <div style="font-size:12px;color:var(--muted);font-style:italic;margin-bottom:8px;">${item.alias}</div>
       <div class="score-card-bar-track"><div class="score-card-bar-fill" style="background:${sp.colour};" data-target="${Math.round((item.score/15)*100)}"></div></div>`;
