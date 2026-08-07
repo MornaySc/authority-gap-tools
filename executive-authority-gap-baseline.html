@@ -677,6 +677,15 @@ async function submitBaseline() {
 
   saveToSupabase(payload).catch(e=>console.warn('Supabase:',e));
   addToMailerLite(fn, em).catch(e=>console.warn('ML:',e));
+  fetch('/.netlify/functions/send-email', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      to: 'mornay@yabda.co',
+      subject: 'New Baseline submission: ' + fn + ' ' + ln,
+      html: '<p><strong>' + fn + ' ' + ln + '</strong> (' + em + ') has completed the Baseline.</p>'
+    })
+  }).catch(e=>console.warn('Notification:',e));
 
   document.getElementById('sendingOverlay').classList.remove('active');
   document.getElementById('signalBlocksWrap').innerHTML = getSignalBlocks(scores);
