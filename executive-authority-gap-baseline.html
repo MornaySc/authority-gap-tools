@@ -498,23 +498,70 @@ const SIGNAL_READS = {
 function getSignalBlocks(s) {
   const order = ['CV','AS','SP','CA','TC'].map(d => ({dim:d,score:s[d]||0})).sort((a,b)=>b.score-a.score);
   const strongest = order[0], weakest = order[4], second = order[3];
-  function block(item, type) {
+  const sp_strong = getSpectrumLabel(strongest.score);
+  const sp_weak = getSpectrumLabel(weakest.score);
+  const sp_second = getSpectrumLabel(second.score);
+
+  function block(item, type, sp) {
     const r = SIGNAL_READS[item.dim];
     const isStrong = type==='strong';
-    const typeLabel = isStrong ? 'What you are building from' : (type==='primary' ? 'Your primary gap' : 'Your secondary gap');
+    const isPrimary = type==='primary';
     const colour = isStrong ? '#4E878C' : '#5A2A45';
-    return '<div style="margin-bottom:28px;padding:28px;background:#FFFFFF;border-left:3px solid '+colour+';"><div style="font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:'+colour+';margin-bottom:8px;">'+typeLabel+'</div><div style="font-family:Cormorant Garamond,serif;font-size:22px;font-weight:500;color:#2C2A25;margin-bottom:4px;">'+r.label+'</div><div style="font-size:13px;color:#9A9488;font-style:italic;margin-bottom:16px;">'+r.alias+'</div><p style="font-size:15px;line-height:1.75;color:#2C2A25;">'+(isStrong?r.strong:r.weak)+'</p></div>';
+    const typeLabel = isStrong ? 'What you are building from' : (isPrimary ? 'Your primary gap' : 'Your secondary gap');
+    const opener = isStrong
+      ? 'This is your strongest signal right now. It is working in your favour, possibly without you fully realising it. That matters. A strength you cannot name is a strength you cannot protect.'
+      : isPrimary
+        ? 'This is the signal doing the most damage right now. It is the place where the structural break is most active and where the work needs to begin.'
+        : 'This is the downstream consequence of your primary gap. It is being shaped by what is happening in '+SIGNAL_READS[weakest.dim].label+'. Closing the primary gap will begin to move this one too.';
+    return '<div style="margin-bottom:28px;padding:28px;background:#FFFFFF;border-left:3px solid '+colour+';">'
+      +'<div style="font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:'+colour+';margin-bottom:8px;">'+typeLabel+'</div>'
+      +'<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;">'
+      +'<div style="font-family:Cormorant Garamond,serif;font-size:22px;font-weight:500;color:#2C2A25;">'+r.label+'</div>'
+      +'<div style="font-size:12px;font-weight:500;color:'+sp.colour+';letter-spacing:0.06em;text-transform:uppercase;padding-top:4px;">'+sp.label+'</div>'
+      +'</div>'
+      +'<div style="font-size:13px;color:#9A9488;font-style:italic;margin-bottom:16px;">'+r.alias+'</div>'
+      +'<p style="font-size:15px;line-height:1.75;color:#5A2A45;font-weight:400;margin-bottom:12px;font-style:italic;">'+opener+'</p>'
+      +'<p style="font-size:15px;line-height:1.75;color:#2C2A25;">'+(isStrong?r.strong:r.weak)+'</p>'
+      +'</div>';
   }
-  return block(strongest,'strong')+block(weakest,'primary')+block(second,'secondary');
+  return block(strongest,'strong',sp_strong)+block(weakest,'primary',sp_weak)+block(second,'secondary',sp_second);
 }
 
 function renderScoreGrid(s) {
   const grid = document.getElementById('scoreGrid');
   grid.innerHTML = '';
-  [{label:'Contribution Visibility',alias:'Is your work visible at the right level to the right people',dim:'CV'},{label:'Attribution Stability',alias:'Is credit landing correctly and staying attached to you',dim:'AS'},{label:'Solution Posture',alias:'Are you arriving ready with answers before anyone asks',dim:'SP'},{label:'Contribution Articulation',alias:'Can you explain clearly what you do and why it matters',dim:'CA'},{label:'Trajectory Clarity',alias:'Do you know where you are headed and can you read your position',dim:'TC'}].forEach(item => {
-    const sp = getSpectrumLabel(s[item.dim]||0);
+
+  // Spectrum key
+  const keyHtml = '<div style="margin-bottom:28px;padding:20px 24px;background:#FFFFFF;border:1.5px solid #DDD8CE;">'
+    +'<div style="font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:#9A9488;margin-bottom:14px;">The spectrum</div>'
+    +'<div style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:#2C2A25;">'
+    +'<div><span style="color:#b94a48;font-weight:500;">Not yet present</span> - This signal is largely absent. The structural break here is significant and active.</div>'
+    +'<div><span style="color:#C47D5A;font-weight:500;">Emerging</span> - The signal exists in places but is not yet holding consistently.</div>'
+    +'<div><span style="color:#9A9488;font-weight:500;">Developing</span> - Present and functional in some contexts. Not yet reliable across all situations.</div>'
+    +'<div><span style="color:#4E878C;font-weight:500;">Functioning</span> - This signal is operating well. The work is to protect and name it deliberately.</div>'
+    +'<div><span style="color:#5A2A45;font-weight:500;">Compounding</span> - This signal is working strongly and building over time. You may not know why.</div>'
+    +'</div></div>';
+  const keyEl = document.createElement('div');
+  keyEl.innerHTML = keyHtml;
+  grid.appendChild(keyEl);
+
+  [{label:'Contribution Visibility',alias:'Is your work visible at the right level to the right people',dim:'CV',max:24},
+   {label:'Attribution Stability',alias:'Is credit landing correctly and staying attached to you',dim:'AS',max:24},
+   {label:'Solution Posture',alias:'Are you arriving ready with answers before anyone asks',dim:'SP',max:24},
+   {label:'Contribution Articulation',alias:'Can you explain clearly what you do and why it matters',dim:'CA',max:24},
+   {label:'Trajectory Clarity',alias:'Do you know where you are headed and can you read your position',dim:'TC',max:24}
+  ].forEach(item => {
+    const score = s[item.dim]||0;
+    const sp = getSpectrumLabel(score);
     const card = document.createElement('div');
-    card.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;"><div style="font-size:13px;font-weight:500;letter-spacing:0.06em;color:#9A9488;text-transform:uppercase;">'+item.label+'</div><div style="font-size:12px;font-weight:500;color:'+sp.colour+';letter-spacing:0.06em;text-transform:uppercase;">'+sp.label+'</div></div><div style="font-size:12px;color:#9A9488;font-style:italic;margin-bottom:8px;">'+item.alias+'</div><div style="height:4px;background:#DDD8CE;"><div style="height:100%;background:'+sp.colour+';width:0%;transition:width 0.9s cubic-bezier(0.4,0,0.2,1);" data-target="'+Math.round(((s[item.dim]||0)/20)*100)+'"></div></div>';
+    card.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">'
+      +'<div style="font-size:13px;font-weight:500;letter-spacing:0.06em;color:#9A9488;text-transform:uppercase;">'+item.label+'</div>'
+      +'<div style="display:flex;align-items:baseline;gap:8px;">'
+      +'<div style="font-size:12px;color:#9A9488;">'+score+'/20</div>'
+      +'<div style="font-size:12px;font-weight:500;color:'+sp.colour+';letter-spacing:0.06em;text-transform:uppercase;">'+sp.label+'</div>'
+      +'</div></div>'
+      +'<div style="font-size:12px;color:#9A9488;font-style:italic;margin-bottom:8px;">'+item.alias+'</div>'
+      +'<div style="height:4px;background:#DDD8CE;"><div style="height:100%;background:'+sp.colour+';width:0%;transition:width 0.9s cubic-bezier(0.4,0,0.2,1);" data-target="'+Math.round((score/20)*100)+'"></div></div>';
     grid.appendChild(card);
   });
   setTimeout(()=>{grid.querySelectorAll('[data-target]').forEach(el=>{el.style.width=el.dataset.target+'%';});},200);
