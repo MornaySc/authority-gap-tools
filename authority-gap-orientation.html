@@ -497,13 +497,20 @@ body::before {
     <select class="field-select" id="demoSector">
       <option value="">Select</option>
       <option>Corporate</option>
-      <option>Education</option>
-      <option>Healthcare</option>
-      <option>Financial Services</option>
-      <option>Technology</option>
-      <option>Government</option>
-      <option>Non-profit</option>
       <option>Consulting</option>
+      <option>Education</option>
+      <option>Financial Services</option>
+      <option>Government</option>
+      <option>Healthcare</option>
+      <option>Hospitality &amp; Tourism</option>
+      <option>Legal</option>
+      <option>Logistics &amp; Supply Chain</option>
+      <option>Manufacturing</option>
+      <option>Media &amp; Communications</option>
+      <option>Non-profit</option>
+      <option>Property &amp; Real Estate</option>
+      <option>Retail &amp; Consumer</option>
+      <option>Technology</option>
       <option>Other</option>
     </select>
 
@@ -517,12 +524,8 @@ body::before {
       <option>10+ years</option>
     </select>
 
-    <label class="field-label" for="demoLanguage">Is English your first language?</label>
-    <select class="field-select" id="demoLanguage">
-      <option value="">Select</option>
-      <option>Yes</option>
-      <option>No</option>
-    </select>
+    <label class="field-label" for="demoLanguage">Which languages do you work in?</label>
+    <input class="field-input" type="text" id="demoLanguage" placeholder="e.g. English, Afrikaans, Arabic">
 
     <div class="demo-section-label">What have you already tried?</div>
     <p style="font-size:14px;color:var(--muted);margin-bottom:16px;">Select all that apply.</p>
@@ -1161,7 +1164,7 @@ async function submitForm() {
     current_level: level,
     sector,
     years_at_level: years,
-    first_language_english: language,
+    languages_spoken: language,
     already_tried: tried,
     ...answerLog,
     score_cv: s.CV,
@@ -1178,6 +1181,16 @@ async function submitForm() {
   saveToSupabase(payload).catch(err => console.warn('Supabase save failed:', err));
   // Add to MailerLite - fully non-blocking
   addToMailerLite(respondentName, respondentEmail).catch(err => console.warn('MailerLite failed:', err));
+  // Notify Mornay - non-blocking
+  fetch('/.netlify/functions/send-email', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      to: 'mornay@yabda.co',
+      subject: 'New Orientation submission: ' + respondentName,
+      html: '<p><strong>' + respondentName + '</strong> (' + respondentEmail + ') has completed the Orientation.</p>'
+    })
+  }).catch(err => console.warn('Notification failed:', err));
   // Always show results
   document.getElementById('sendingOverlay').classList.remove('active');
   showResults(s);
