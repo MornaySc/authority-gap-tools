@@ -503,7 +503,7 @@ function getSignalBlocks(s) {
     const isStrong = type==='strong';
     const typeLabel = isStrong ? 'What you are building from' : (type==='primary' ? 'Your primary gap' : 'Your secondary gap');
     const colour = isStrong ? '#4E878C' : '#5A2A45';
-    return '<div style="margin-bottom:28px;padding:28px;background:#FFFFFF;border-left:3px solid '+colour+';"><div style="font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:'+colour+';margin-bottom:8px;">'+typeLabel+'</div><div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;color:#2C2A25;margin-bottom:4px;">'+r.label+'</div><div style="font-size:13px;color:#9A9488;font-style:italic;margin-bottom:16px;">'+r.alias+'</div><p style="font-size:15px;line-height:1.75;color:#2C2A25;">'+(isStrong?r.strong:r.weak)+'</p></div>';
+    return '<div style="margin-bottom:28px;padding:28px;background:#FFFFFF;border-left:3px solid '+colour+';"><div style="font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:'+colour+';margin-bottom:8px;">'+typeLabel+'</div><div style="font-family:Cormorant Garamond,serif;font-size:22px;font-weight:500;color:#2C2A25;margin-bottom:4px;">'+r.label+'</div><div style="font-size:13px;color:#9A9488;font-style:italic;margin-bottom:16px;">'+r.alias+'</div><p style="font-size:15px;line-height:1.75;color:#2C2A25;">'+(isStrong?r.strong:r.weak)+'</p></div>';
   }
   return block(strongest,'strong')+block(weakest,'primary')+block(second,'secondary');
 }
