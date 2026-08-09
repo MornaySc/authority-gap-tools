@@ -1,4 +1,16 @@
 exports.handler = async function(event) {
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS'
+      },
+      body: ''
+    };
+  }
+
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method not allowed' };
   }
@@ -15,7 +27,7 @@ exports.handler = async function(event) {
     return { statusCode: 400, body: 'Invalid JSON' };
   }
 
-  const { to, subject, html, fromName } = data;
+  const { to, subject, html } = data;
 
   try {
     const response = await fetch('https://api.resend.com/emails', {
@@ -25,7 +37,7 @@ exports.handler = async function(event) {
         'Authorization': 'Bearer ' + RESEND_KEY
       },
       body: JSON.stringify({
-        from: 'Mornay Schoeman <mornay@yabda.co>',
+        from: 'Mornay Schoeman <mornay@send.yabda.co>',
         to: Array.isArray(to) ? to : [to],
         subject,
         html
