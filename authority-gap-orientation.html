@@ -1203,11 +1203,14 @@ async function submitForm() {
   QUESTIONS.forEach((q, i) => {
     const a = answers[i];
     const chosen = a !== null ? q.options[a.optIdx] : null;
-    answerLog['q' + (i+1)] = chosen ? chosen.letter + ': ' + chosen.text : '';
+    const key = 'q' + (i+1);
+    if (key !== 'q13') {
+      answerLog[key] = chosen ? chosen.letter + ': ' + chosen.text : '';
+    }
   });
 
   const payload = {
-    name: respondentName,
+    first_name: respondentName,
     email: respondentEmail,
     gender,
     age_range: age,
@@ -1295,3 +1298,4 @@ function showResults(s) {
 </script>
 </body>
 </html>
+
