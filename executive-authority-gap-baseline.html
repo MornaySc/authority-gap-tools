@@ -703,18 +703,10 @@ async function saveToSupabase(payload) {
 // MailerLite
 async function addToMailerLite(name, email) {
   try {
-    await fetch('https://connect.mailerlite.com/api/subscribers', {
+    await fetch('/.netlify/functions/add-to-mailerlite', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ' + MAILERLITE_API_KEY
-      },
-      body: JSON.stringify({
-        email: email,
-        fields: { name: name },
-        groups: [MAILERLITE_GROUP_ID]
-      })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, name: name, groupId: MAILERLITE_GROUP_ID })
     });
   } catch(e) {
     console.warn('MailerLite error (non-blocking):', e);
