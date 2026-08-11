@@ -941,7 +941,7 @@ async function submitBaseline() {
     email: em,
     date_of_birth: document.getElementById('dob').value.trim(),
     gender: document.getElementById('dGender').value,
-    age_range: document.getElementById('dAge').value,
+    date_of_birth: [document.getElementById('dobDay').value, document.getElementById('dobMonth').value, document.getElementById('dobYear').value].filter(Boolean).join(' '),
     current_level: document.getElementById('dLevel').value,
     sector: document.getElementById('dSector').value,
     years_at_level: document.getElementById('dYears').value,
