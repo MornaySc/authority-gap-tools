@@ -1504,9 +1504,7 @@ async function submitForm() {
     const a = answers[i];
     const chosen = a !== null ? q.options[a.optIdx] : null;
     const key = 'q' + (i+1);
-    if (key !== 'q13') {
-      answerLog[key] = chosen ? chosen.letter + ': ' + chosen.text : '';
-    }
+    answerLog[key] = chosen ? chosen.letter + ': ' + chosen.text : '';
   });
 
   const payload = {
