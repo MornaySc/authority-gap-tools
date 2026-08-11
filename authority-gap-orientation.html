@@ -1244,6 +1244,28 @@ async function submitForm() {
       html: '<p><strong>' + respondentName + '</strong> (' + respondentEmail + ') has completed the Orientation.</p>'
     })
   }).catch(err => console.warn('Notification failed:', err));
+
+  // Confirmation email to submitter
+  fetch('/.netlify/functions/send-email', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      to: respondentEmail,
+      subject: 'Your Orientation results — Yabda Collective',
+      html: `<div style="font-family: Georgia, serif; max-width: 600px; margin: 0 auto; color: #2C2A25; padding: 40px 20px;">
+        <p style="font-size: 18px; margin-bottom: 24px;">Hi ${respondentName},</p>
+        <p style="font-size: 16px; line-height: 1.7;">Thank you for completing the Authority Gap Orientation.</p>
+        <p style="font-size: 16px; line-height: 1.7;">Your results are on your screen. They show you where the structural gap is showing up across the five signals — and which one is doing the most damage to your advancement right now.</p>
+        <p style="font-size: 16px; line-height: 1.7;">If you want a precise read and one clear move mapped, the Executive Authority Gap Baseline is the next step. Thirty structured questions, one session with me, one move identified.</p>
+        <p style="margin: 32px 0;">
+          <a href="https://yabda.gumroad.com/l/executive-authority-gap-baseline-session" style="background-color: #5A2A45; color: #ffffff; padding: 14px 28px; text-decoration: none; font-family: Montserrat, sans-serif; font-size: 14px; letter-spacing: 0.05em;">Take the next step</a>
+        </p>
+        <p style="font-size: 16px; line-height: 1.7;">Mornay Schoeman<br>Yabda Collective</p>
+        <p style="font-size: 12px; color: #9A9488; margin-top: 40px;">Your results are confidential and will not be shared with anyone.</p>
+      </div>`
+    })
+  }).catch(err => console.warn('Confirmation email failed:', err));
+
   // Always show results
   document.getElementById('sendingOverlay').classList.remove('active');
   showResults(s);
