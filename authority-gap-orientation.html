@@ -1245,24 +1245,71 @@ async function submitForm() {
     })
   }).catch(err => console.warn('Notification failed:', err));
 
-  // Confirmation email to submitter
+  // Confirmation email to submitter with full results
+  const emailOrder = ['CV','AS','SP','CA','TC']
+    .map(d => ({dim:d, score:s[d]||0}))
+    .sort((a,b) => b.score - a.score);
+
+  const emailStrongest = emailOrder[0];
+  const emailPrimary   = emailOrder[4];
+  const emailSecondary = emailOrder[3];
+
+  function emailSpectrumLabel(score) {
+    if (score <= 3)  return 'Not yet present';
+    if (score <= 6)  return 'Emerging';
+    if (score <= 9)  return 'Developing';
+    if (score <= 12) return 'Functioning';
+    return 'Compounding';
+  }
+
+  function emailSignalBlock(item, type) {
+    const r = SIGNAL_READS[item.dim];
+    const sp = emailSpectrumLabel(item.score);
+    const pos = r.positions[sp];
+    const colour = type === 'strong' ? '#4E878C' : '#5A2A45';
+    const typeLabel = type === 'strong' ? 'Your strongest signal' : type === 'primary' ? 'Your primary gap' : 'Your secondary gap';
+    const opener = type === 'strong'
+      ? 'This is the asset you build from. Understand what is producing it so you can use it deliberately.'
+      : type === 'primary'
+        ? 'This is doing the most damage right now. This is where the structural break is most active. Start here.'
+        : 'This is your next priority after the primary gap. Address the primary first and this one will begin to move.';
+    return '<div style="margin-bottom:24px;padding:24px 28px;background:#ffffff;border-left:3px solid ' + colour + ';">'
+      + '<div style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:' + colour + ';margin-bottom:6px;">' + typeLabel + '</div>'
+      + '<div style="font-size:20px;font-family:Georgia,serif;color:#2C2A25;margin-bottom:2px;">' + r.label + '</div>'
+      + '<div style="font-size:12px;color:#9A9488;font-style:italic;margin-bottom:10px;">' + r.alias + '</div>'
+      + '<div style="font-size:12px;font-weight:600;color:' + colour + ';text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">' + sp + ' &nbsp;&middot;&nbsp; Score: ' + item.score + ' / 15</div>'
+      + '<p style="font-size:14px;line-height:1.75;color:' + colour + ';font-style:italic;margin-bottom:8px;">' + opener + '</p>'
+      + '<p style="font-size:14px;line-height:1.75;color:#2C2A25;margin:0;">' + pos + '</p>'
+      + '</div>';
+  }
+
+  const resultsHtml = emailSignalBlock(emailStrongest,'strong')
+    + emailSignalBlock(emailPrimary,'primary')
+    + emailSignalBlock(emailSecondary,'secondary');
+
+  const confirmHtml = '<div style="font-family:Georgia,serif;max-width:600px;margin:0 auto;color:#2C2A25;padding:40px 20px;background:#F5F0E8;">'
+    + '<div style="margin-bottom:32px;">'
+    + '<div style="font-family:Montserrat,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#9A9488;margin-bottom:8px;">Yabda Collective</div>'
+    + '<div style="font-size:28px;font-weight:400;color:#2C2A25;">Your Orientation Results</div>'
+    + '</div>'
+    + '<p style="font-size:16px;line-height:1.75;margin-bottom:24px;">Hi ' + respondentName + ',</p>'
+    + '<p style="font-size:16px;line-height:1.75;margin-bottom:32px;">You have completed the Authority Gap Orientation. Below are your three signal readings — your strongest, your primary gap, and your secondary gap.</p>'
+    + resultsHtml
+    + '<div style="margin-top:40px;padding:28px;background:#5A2A45;color:#ffffff;">'
+    + '<p style="font-size:15px;line-height:1.75;margin-bottom:20px;">The Orientation shows you where the gaps are. The Executive Authority Gap Baseline shows you exactly how deep they run and what is producing them — and maps one clear move.</p>'
+    + '<a href="https://yabda.gumroad.com/l/executive-authority-gap-baseline-session" style="display:inline-block;background:#E27D72;color:#ffffff;padding:14px 28px;text-decoration:none;font-family:Montserrat,sans-serif;font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;">Take the next step</a>'
+    + '</div>'
+    + '<p style="font-size:15px;line-height:1.75;margin-top:32px;">Mornay Schoeman<br>Yabda Collective</p>'
+    + '<p style="font-size:12px;color:#9A9488;margin-top:32px;">Your results are confidential and will not be shared with anyone.</p>'
+    + '</div>';
+
   fetch('/.netlify/functions/send-email', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       to: respondentEmail,
-      subject: 'Your Orientation results — Yabda Collective',
-      html: `<div style="font-family: Georgia, serif; max-width: 600px; margin: 0 auto; color: #2C2A25; padding: 40px 20px;">
-        <p style="font-size: 18px; margin-bottom: 24px;">Hi ${respondentName},</p>
-        <p style="font-size: 16px; line-height: 1.7;">Thank you for completing the Authority Gap Orientation.</p>
-        <p style="font-size: 16px; line-height: 1.7;">Your results are on your screen. They show you where the structural gap is showing up across the five signals — and which one is doing the most damage to your advancement right now.</p>
-        <p style="font-size: 16px; line-height: 1.7;">If you want a precise read and one clear move mapped, the Executive Authority Gap Baseline is the next step. Thirty structured questions, one session with me, one move identified.</p>
-        <p style="margin: 32px 0;">
-          <a href="https://yabda.gumroad.com/l/executive-authority-gap-baseline-session" style="background-color: #5A2A45; color: #ffffff; padding: 14px 28px; text-decoration: none; font-family: Montserrat, sans-serif; font-size: 14px; letter-spacing: 0.05em;">Take the next step</a>
-        </p>
-        <p style="font-size: 16px; line-height: 1.7;">Mornay Schoeman<br>Yabda Collective</p>
-        <p style="font-size: 12px; color: #9A9488; margin-top: 40px;">Your results are confidential and will not be shared with anyone.</p>
-      </div>`
+      subject: 'Your Authority Gap Orientation results — Yabda Collective',
+      html: confirmHtml
     })
   }).catch(err => console.warn('Confirmation email failed:', err));
 
