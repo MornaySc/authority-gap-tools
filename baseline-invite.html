@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Executive Authority Gap Baseline - Yabda Collective</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='24' fill='%23FFFFFF' stroke='%231A1A1A' stroke-width='2.5'/%3E%3Cpath d='M 32 8 A 24 24 0 0 1 56 32 L 32 32 Z' fill='%234F8C8C' fill-opacity='0.9'/%3E%3Cpath d='M 32 32 L 56 32 A 24 24 0 0 1 32 56 Z' fill='%23D98368' fill-opacity='0.22'/%3E%3Cpath d='M 32 32 L 32 56 A 24 24 0 0 1 8 32 Z' fill='%233D1F3D' fill-opacity='0.16'/%3E%3Cline x1='32' y1='32' x2='46' y2='18' stroke='%231A1A1A' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='32' cy='32' r='4.5' fill='%231A1A1A'/%3E%3Ccircle cx='46' cy='18' r='4' fill='%234F8C8C' stroke='%23FFFFFF' stroke-width='1'/%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--cream:#F5F0E8;--ink:#2C2A25;--muted:#9A9488;--border:#DDD8CE;--teal:#4E878C;--coral:#E27D72;--plum:#5A2A45;--white:#FFFFFF}
+html{font-size:16px;scroll-behavior:smooth}
+body{background:var(--cream);color:var(--ink);font-family:"DM Sans",sans-serif;font-weight:300;line-height:1.65;min-height:100vh}
+body::before{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.032'/%3E%3C/svg%3E");pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:64px 32px 96px}
+.mark-header{display:flex;align-items:center;gap:16px;margin-bottom:52px}
+.mark-eyebrow{font-size:10px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.mark-title{font-family:"Cormorant Garamond",serif;font-size:24px;font-weight:500;color:var(--ink)}
+.mark-qualifier{font-style:italic;color:var(--coral)}
+.screen{display:none}
+.screen.active{display:block}
+/* Progress */
+.progress-bar{height:2px;background:var(--border);margin-bottom:8px}
+.progress-fill{height:100%;background:var(--coral);transition:width 0.4s ease;width:0%}
+.progress-label{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:40px}
+/* Typography */
+.screen-eyebrow{font-size:11px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:var(--coral);margin-bottom:16px}
+.screen-heading{font-family:"Cormorant Garamond",serif;font-size:clamp(28px,5vw,40px);font-weight:500;color:var(--plum);margin-bottom:20px;line-height:1.15}
+.screen-body{font-size:16px;color:var(--ink);line-height:1.75;margin-bottom:16px}
+.screen-note{font-size:14px;color:var(--muted);font-style:italic;margin-bottom:36px}
+/* Fields */
+.field-label{display:block;font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.field-input{width:100%;padding:13px 16px;border:1.5px solid var(--border);background:var(--white);font-family:"DM Sans",sans-serif;font-size:15px;color:var(--ink);margin-bottom:20px;outline:none;transition:border-color 0.15s}
+.field-input:focus{border-color:var(--teal)}
+.field-select{width:100%;padding:13px 16px;border:1.5px solid var(--border);background:var(--white);font-family:"DM Sans",sans-serif;font-size:15px;color:var(--ink);margin-bottom:20px;outline:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239A9488' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;cursor:pointer;transition:border-color 0.15s}
+.field-select:focus{border-color:var(--teal)}
+.demo-section{font-size:11px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:var(--teal);margin:32px 0 16px;padding-top:32px;border-top:1px solid var(--border)}
+.research-note{font-size:14px;color:var(--ink);line-height:1.65;margin-bottom:28px;padding:16px 20px;border-left:3px solid var(--teal);background:var(--white);font-style:italic}
+.checkbox-group{display:flex;flex-direction:column;gap:10px;margin-bottom:24px}
+.checkbox-item{display:flex;align-items:flex-start;gap:12px;cursor:pointer;font-size:15px;color:var(--ink);line-height:1.5}
+.checkbox-item input{flex-shrink:0;width:18px;height:18px;margin-top:2px;accent-color:var(--teal);cursor:pointer}
+.consent-line{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:16px}
+.field-error{font-size:13px;color:#b94a48;margin-top:-14px;margin-bottom:16px;display:none}
+.field-error.show{display:block}
+/* Timeline */
+.timeline-table{width:100%;border-collapse:collapse;margin-bottom:28px}
+.timeline-table th{font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1.5px solid var(--border)}
+.timeline-table td{padding:4px 8px}
+.timeline-table input{width:100%;padding:8px;border:1px solid var(--border);background:var(--white);font-family:"DM Sans",sans-serif;font-size:14px;color:var(--ink);outline:none}
+.timeline-table input:focus{border-color:var(--teal)}
+textarea.field-input{resize:vertical;min-height:100px;font-family:"DM Sans",sans-serif;line-height:1.6}
+/* Questions */
+.q-block{margin-bottom:40px}
+.q-text{font-family:"Cormorant Garamond",serif;font-size:clamp(18px,3vw,22px);font-weight:500;color:var(--ink);line-height:1.4;margin-bottom:20px}
+.choices{display:flex;flex-direction:column;gap:8px}
+.choice-btn{display:flex;align-items:flex-start;gap:14px;padding:14px 16px;background:var(--white);border:1.5px solid var(--border);cursor:pointer;text-align:left;font-family:"DM Sans",sans-serif;font-size:14px;font-weight:300;color:var(--ink);line-height:1.5;transition:border-color 0.15s,background 0.15s;width:100%}
+.choice-btn:hover{border-color:var(--teal);background:#EAF2F2}
+.choice-btn.selected{border-color:var(--coral);background:#FDF2F1}
+.choice-letter{flex-shrink:0;width:22px;height:22px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:var(--muted);margin-top:1px}
+.choice-btn.selected .choice-letter{border-color:var(--coral);color:var(--coral)}
+/* Written account */
+.word-count{font-size:13px;color:var(--muted);text-align:right;margin-top:-14px;margin-bottom:20px}
+.word-count.met{color:var(--teal)}
+/* Buttons */
+.btn-row{display:flex;gap:12px;align-items:center;margin-top:8px}
+.btn{padding:14px 28px;font-family:"DM Sans",sans-serif;font-size:13px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;border:1.5px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.15s}
+.btn:hover:not(:disabled){border-color:var(--ink);color:var(--ink)}
+.btn:disabled{opacity:0.35;cursor:default}
+.btn.primary{background:var(--plum);border-color:var(--plum);color:var(--white)}
+.btn.primary:hover:not(:disabled){background:#4a2239}
+.btn.coral{background:var(--coral);border-color:var(--coral);color:var(--white)}
+.btn.coral:hover:not(:disabled){background:#c96a60}
+.q-error{font-size:13px;color:#b94a48;margin-top:8px;display:none}
+.q-error.show{display:block}
+/* Results */
+.results-heading{font-family:"Cormorant Garamond",serif;font-size:clamp(28px,5vw,40px);font-weight:500;color:var(--plum);margin-bottom:8px}
+.results-sub{font-size:15px;color:var(--muted);margin-bottom:48px}
+.spider-wrap{display:flex;justify-content:center;margin-bottom:48px}
+/* Sending overlay */
+.sending-overlay{display:none;position:fixed;inset:0;background:rgba(245,240,232,0.9);z-index:100;align-items:center;justify-content:center;font-family:"DM Sans",sans-serif;font-size:14px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted)}
+.sending-overlay.active{display:flex}
+@media(max-width:480px){.wrap{padding:40px 20px 72px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- MARK -->
+<div class="mark-header">
+  <svg width="48" height="48" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="32" cy="32" r="24" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="2.5"/>
+    <path d="M 32 8 A 24 24 0 0 1 56 32 L 32 32 Z" fill="#4F8C8C" fill-opacity="0.9"/>
+    <path d="M 32 32 L 56 32 A 24 24 0 0 1 32 56 Z" fill="#D98368" fill-opacity="0.22"/>
+    <path d="M 32 32 L 32 56 A 24 24 0 0 1 8 32 Z" fill="#3D1F3D" fill-opacity="0.16"/>
+    <line x1="32" y1="32" x2="46" y2="18" stroke="#1A1A1A" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="32" cy="32" r="4.5" fill="#1A1A1A"/>
+    <circle cx="46" cy="18" r="4" fill="#4F8C8C" stroke="#FFFFFF" stroke-width="1"/>
+  </svg>
+  <div>
+    <div class="mark-eyebrow">Yabda Collective</div>
+    <div class="mark-title">Executive Authority Gap <span class="mark-qualifier">Baseline</span></div>
+  </div>
+</div>
+
+<!-- SCREEN 0: LANDING -->
+<div id="s0" class="screen active">
+  <div class="screen-eyebrow">Pre-session instrument</div>
+  <h1 class="screen-heading">The gap between what you deliver and what moves your career.</h1>
+  <div style="border-left:3px solid var(--coral);padding:20px 24px;background:var(--white);margin-bottom:32px;">
+    <p style="font-size:16px;line-height:1.75;color:var(--ink);margin-bottom:10px;">You have invested in coaching. Personal development. Skills and leadership training. All of it. And you are still stuck in the same role, same place.</p>
+    <p style="font-size:16px;line-height:1.75;color:var(--muted);font-style:italic;margin-bottom:10px;">It is not because you are not good enough. It is because nobody has ever shown you exactly where your contribution is breaking down before it reaches the people who decide what happens next.</p>
+    <p style="font-size:16px;line-height:1.75;color:var(--teal);font-weight:500;">Here we map where the break is.</p>
+  </div>
+  <p class="screen-body">Thirty questions across five sections. A short written account in your own words. Thirty to forty minutes. Answer from where you are, not where you want to be.</p>
+  <p class="screen-note">Your first instinct is the most accurate read. Set aside uninterrupted time. If you close your browser your answers will be lost.</p>
+  <button class="btn primary" onclick="goTo(1)">Begin the Baseline</button>
+</div>
+
+<!-- SCREEN 1: DETAILS + DEMOGRAPHICS -->
+<div id="s1" class="screen">
+  <div class="progress-bar"><div class="progress-fill" id="pf1" style="width:5%"></div></div>
+  <div class="progress-label">Getting started</div>
+  <div class="screen-eyebrow">Before we begin</div>
+  <h2 class="screen-heading">A few details.</h2>
+  <p class="screen-body">Your results will appear on screen when you complete the Baseline. Mornay will also receive them and review them before your session.</p>
+
+  <label class="field-label" for="fn">First name</label>
+  <input class="field-input" type="text" id="fn" placeholder="Your first name" autocomplete="given-name">
+  <label class="field-label" for="ln">Last name</label>
+  <input class="field-input" type="text" id="ln" placeholder="Your last name" autocomplete="family-name">
+  <label class="field-label" for="em">Email address</label>
+  <input class="field-input" type="email" id="em" placeholder="you@yourwork.com" autocomplete="email">
+  <div class="field-error" id="emErr">Please enter a valid email address.</div>
+
+  <div class="demo-section">About you</div>
+  <div class="research-note">The questions below help us understand which advancement signals are most common across different groups of professionals. Your responses are completely confidential, are never linked to your name, and contribute to research that shapes group training built around the gaps that actually matter.</div>
+
+  <label class="field-label">Date of birth</label>
+  <div style="display:grid;grid-template-columns:1fr 2fr 1fr;gap:8px;margin-bottom:16px;">
+    <select class="field-select" id="dobDay">
+      <option value="">Day</option>
+    <option>1</option>
+    <option>2</option>
+    <option>3</option>
+    <option>4</option>
+    <option>5</option>
+    <option>6</option>
+    <option>7</option>
+    <option>8</option>
+    <option>9</option>
+    <option>10</option>
+    <option>11</option>
+    <option>12</option>
+    <option>13</option>
+    <option>14</option>
+    <option>15</option>
+    <option>16</option>
+    <option>17</option>
+    <option>18</option>
+    <option>19</option>
+    <option>20</option>
+    <option>21</option>
+    <option>22</option>
+    <option>23</option>
+    <option>24</option>
+    <option>25</option>
+    <option>26</option>
+    <option>27</option>
+    <option>28</option>
+    <option>29</option>
+    <option>30</option>
+    <option>31</option>
+    </select>
+    <select class="field-select" id="dobMonth">
+      <option value="">Month</option>
+    <option>January</option>
+    <option>February</option>
+    <option>March</option>
+    <option>April</option>
+    <option>May</option>
+    <option>June</option>
+    <option>July</option>
+    <option>August</option>
+    <option>September</option>
+    <option>October</option>
+    <option>November</option>
+    <option>December</option>
+    </select>
+    <select class="field-select" id="dobYear">
+      <option value="">Year</option>
+    <option>2007</option>
+    <option>2006</option>
+    <option>2005</option>
+    <option>2004</option>
+    <option>2003</option>
+    <option>2002</option>
+    <option>2001</option>
+    <option>2000</option>
+    <option>1999</option>
+    <option>1998</option>
+    <option>1997</option>
+    <option>1996</option>
+    <option>1995</option>
+    <option>1994</option>
+    <option>1993</option>
+    <option>1992</option>
+    <option>1991</option>
+    <option>1990</option>
+    <option>1989</option>
+    <option>1988</option>
+    <option>1987</option>
+    <option>1986</option>
+    <option>1985</option>
+    <option>1984</option>
+    <option>1983</option>
+    <option>1982</option>
+    <option>1981</option>
+    <option>1980</option>
+    <option>1979</option>
+    <option>1978</option>
+    <option>1977</option>
+    <option>1976</option>
+    <option>1975</option>
+    <option>1974</option>
+    <option>1973</option>
+    <option>1972</option>
+    <option>1971</option>
+    <option>1970</option>
+    <option>1969</option>
+    <option>1968</option>
+    <option>1967</option>
+    <option>1966</option>
+    <option>1965</option>
+    <option>1964</option>
+    <option>1963</option>
+    <option>1962</option>
+    <option>1961</option>
+    <option>1960</option>
+    <option>1959</option>
+    <option>1958</option>
+    <option>1957</option>
+    <option>1956</option>
+    <option>1955</option>
+    <option>1954</option>
+    <option>1953</option>
+    <option>1952</option>
+    <option>1951</option>
+    <option>1950</option>
+    </select>
+  </div>
+
+  <label class="field-label" for="dGender">Gender</label>
+  <select class="field-select" id="dGender">
+    <option value="">Select</option>
+    <option>Male</option><option>Female</option><option>Non-binary</option><option>Prefer not to say</option>
+  </select>
+
+  <label class="field-label" for="dLevel">Current level</label>
+  <select class="field-select" id="dLevel">
+    <option value="">Select</option>
+    <option>Senior Manager</option><option>Director</option><option>Head of Function</option>
+    <option>VP or one level below C-suite</option><option>Executive or C-suite</option>
+    <option>Founder or CEO</option><option>Other</option>
+  </select>
+
+  <label class="field-label" for="dSector">Sector</label>
+  <select class="field-select" id="dSector">
+    <option value="">Select</option>
+    <option>Corporate</option><option>Education</option><option>Healthcare</option>
+    <option>Financial Services</option><option>Technology</option><option>Government</option>
+    <option>Non-profit</option><option>Consulting</option><option>Other</option>
+  </select>
+
+  <label class="field-label" for="dYears">Years at current level</label>
+  <select class="field-select" id="dYears">
+    <option value="">Select</option>
+    <option>Less than 1 year</option><option>1-2 years</option><option>3-5 years</option>
+    <option>6-10 years</option><option>10+ years</option>
+  </select>
+
+
+  <label class="field-label" for="dNationality">Nationality</label>
+  <select class="field-select" id="dNationality">
+    <option value="">Select</option>
+    <option>Afghan</option>
+    <option>Albanian</option>
+    <option>Algerian</option>
+    <option>American</option>
+    <option>Andorran</option>
+    <option>Angolan</option>
+    <option>Antiguans</option>
+    <option>Argentinean</option>
+    <option>Armenian</option>
+    <option>Australian</option>
+    <option>Austrian</option>
+    <option>Azerbaijani</option>
+    <option>Bahamian</option>
+    <option>Bahraini</option>
+    <option>Bangladeshi</option>
+    <option>Barbadian</option>
+    <option>Belarusian</option>
+    <option>Belgian</option>
+    <option>Belizean</option>
+    <option>Beninese</option>
+    <option>Bhutanese</option>
+    <option>Bolivian</option>
+    <option>Bosnian</option>
+    <option>Brazilian</option>
+    <option>British</option>
+    <option>Bruneian</option>
+    <option>Bulgarian</option>
+    <option>Burkinabe</option>
+    <option>Burmese</option>
+    <option>Burundian</option>
+    <option>Cambodian</option>
+    <option>Cameroonian</option>
+    <option>Canadian</option>
+    <option>Cape Verdean</option>
+    <option>Central African</option>
+    <option>Chadian</option>
+    <option>Chilean</option>
+    <option>Chinese</option>
+    <option>Colombian</option>
+    <option>Comoran</option>
+    <option>Congolese</option>
+    <option>Costa Rican</option>
+    <option>Croatian</option>
+    <option>Cuban</option>
+    <option>Cypriot</option>
+    <option>Czech</option>
+    <option>Danish</option>
+    <option>Djiboutian</option>
+    <option>Dominican</option>
+    <option>Dutch</option>
+    <option>Ecuadorean</option>
+    <option>Egyptian</option>
+    <option>Emirati</option>
+    <option>Equatorial Guinean</option>
+    <option>Eritrean</option>
+    <option>Estonian</option>
+    <option>Ethiopian</option>
+    <option>Fijian</option>
+    <option>Finnish</option>
+    <option>French</option>
+    <option>Gabonese</option>
+    <option>Gambian</option>
+    <option>Georgian</option>
+    <option>German</option>
+    <option>Ghanaian</option>
+    <option>Greek</option>
+    <option>Grenadian</option>
+    <option>Guatemalan</option>
+    <option>Guinean</option>
+    <option>Guyanese</option>
+    <option>Haitian</option>
+    <option>Honduran</option>
+    <option>Hungarian</option>
+    <option>I-Kiribati</option>
+    <option>Icelandic</option>
+    <option>Indian</option>
+    <option>Indonesian</option>
+    <option>Iranian</option>
+    <option>Iraqi</option>
+    <option>Irish</option>
+    <option>Israeli</option>
+    <option>Italian</option>
+    <option>Ivorian</option>
+    <option>Jamaican</option>
+    <option>Japanese</option>
+    <option>Jordanian</option>
+    <option>Kazakhstani</option>
+    <option>Kenyan</option>
+    <option>Kuwaiti</option>
+    <option>Kyrgyz</option>
+    <option>Laotian</option>
+    <option>Latvian</option>
+    <option>Lebanese</option>
+    <option>Liberian</option>
+    <option>Libyan</option>
+    <option>Liechtenstein</option>
+    <option>Lithuanian</option>
+    <option>Luxembourger</option>
+    <option>Macedonian</option>
+    <option>Malagasy</option>
+    <option>Malawian</option>
+    <option>Malaysian</option>
+    <option>Maldivian</option>
+    <option>Malian</option>
+    <option>Maltese</option>
+    <option>Marshallese</option>
+    <option>Mauritanian</option>
+    <option>Mauritian</option>
+    <option>Mexican</option>
+    <option>Micronesian</option>
+    <option>Moldovan</option>
+    <option>Monacan</option>
+    <option>Mongolian</option>
+    <option>Montenegrin</option>
+    <option>Moroccan</option>
+    <option>Mozambican</option>
+    <option>Namibian</option>
+    <option>Nauruan</option>
+    <option>Nepalese</option>
+    <option>New Zealander</option>
+    <option>Nicaraguan</option>
+    <option>Nigerian</option>
+    <option>Nigerien</option>
+    <option>Norwegian</option>
+    <option>Omani</option>
+    <option>Pakistani</option>
+    <option>Palauan</option>
+    <option>Palestinian</option>
+    <option>Panamanian</option>
+    <option>Papua New Guinean</option>
+    <option>Paraguayan</option>
+    <option>Peruvian</option>
+    <option>Filipino</option>
+    <option>Polish</option>
+    <option>Portuguese</option>
+    <option>Qatari</option>
+    <option>Romanian</option>
+    <option>Russian</option>
+    <option>Rwandan</option>
+    <option>Saint Lucian</option>
+    <option>Salvadoran</option>
+    <option>Samoan</option>
+    <option>Saudi</option>
+    <option>Senegalese</option>
+    <option>Serbian</option>
+    <option>Seychellois</option>
+    <option>Sierra Leonean</option>
+    <option>Singaporean</option>
+    <option>Slovak</option>
+    <option>Slovenian</option>
+    <option>Solomon Islander</option>
+    <option>Somali</option>
+    <option>South African</option>
+    <option>South Korean</option>
+    <option>South Sudanese</option>
+    <option>Spanish</option>
+    <option>Sri Lankan</option>
+    <option>Sudanese</option>
+    <option>Surinamese</option>
+    <option>Swazi</option>
+    <option>Swedish</option>
+    <option>Swiss</option>
+    <option>Syrian</option>
+    <option>Taiwanese</option>
+    <option>Tajik</option>
+    <option>Tanzanian</option>
+    <option>Thai</option>
+    <option>Timorese</option>
+    <option>Togolese</option>
+    <option>Tongan</option>
+    <option>Trinidadian</option>
+    <option>Tunisian</option>
+    <option>Turkish</option>
+    <option>Turkmen</option>
+    <option>Tuvaluan</option>
+    <option>Ugandan</option>
+    <option>Ukrainian</option>
+    <option>Uruguayan</option>
+    <option>Uzbekistani</option>
+    <option>Vanuatuan</option>
+    <option>Venezuelan</option>
+    <option>Vietnamese</option>
+    <option>Yemeni</option>
+    <option>Zambian</option>
+    <option>Zimbabwean</option>
+    <option>Other</option>
+  </select>
+
+  <label class="field-label" for="dCity">City you currently work in</label>
+  <input class="field-input" type="text" id="dCity" placeholder="e.g. Dubai, Johannesburg, London">
+
+  <label class="field-label" for="dLang">Which languages do you speak? Start with your first language.</label>
+  <input class="field-input" type="text" id="dLang" placeholder="e.g. English, French, Arabic, Mandarin">
+
+  <div class="demo-section">What have you already tried?</div>
+  <p style="font-size:14px;color:var(--muted);margin-bottom:16px;">Select all that apply.</p>
+  <div class="checkbox-group">
+    <label class="checkbox-item"><input type="checkbox" value="Coaching or therapy"> Coaching or therapy</label>
+    <label class="checkbox-item"><input type="checkbox" value="Communication or presence training"> Communication or presence training</label>
+    <label class="checkbox-item"><input type="checkbox" value="Cultural awareness programmes"> Cultural awareness programmes</label>
+    <label class="checkbox-item"><input type="checkbox" value="Leadership development programmes"> Leadership development programmes</label>
+    <label class="checkbox-item"><input type="checkbox" value="Additional qualifications or certifications"> Additional qualifications or certifications</label>
+    <label class="checkbox-item"><input type="checkbox" value="None of the above"> None of the above</label>
+  </div>
+
+  <p class="consent-line">By continuing you agree that your anonymised data may be used for advancement research and that you may receive occasional invitations to Yabda Collective workshops and events. Your personal information is never shared with third parties.</p>
+  <div class="btn-row">
+    <button class="btn" onclick="goTo(0)">Back</button>
+    <button class="btn primary" onclick="validateDetails()">Continue</button>
+  </div>
+</div>
+
+<!-- SCREEN 2: CAREER TIMELINE -->
+<div id="s2" class="screen">
+  <div class="progress-bar"><div class="progress-fill" id="pf2" style="width:15%"></div></div>
+  <div class="progress-label">Career timeline</div>
+  <div class="screen-eyebrow">Before the questions</div>
+  <h2 class="screen-heading">Map your career.</h2>
+  <p class="screen-body">Role title, organisation, and years in each position. No need to go back further than 15 years. This is not a CV. It is a map of the shape of your career.</p>
+  <table class="timeline-table">
+    <thead><tr><th>Years</th><th>Role title</th><th>Organisation</th></tr></thead>
+    <tbody id="timelineBody"></tbody>
+  </table>
+  <p style="font-size:14px;color:var(--muted);margin-bottom:28px;">What are you actually responsible for right now? Not your job title - the work that would not get done if you were not there. Two sentences is enough.</p>
+  <textarea class="field-input" id="carries" rows="3" placeholder="Describe what you actually carry in your current role."></textarea>
+  <div class="btn-row">
+    <button class="btn" onclick="goTo(1)">Back</button>
+    <button class="btn primary" onclick="goTo(3)">Into the questions</button>
+  </div>
+</div>
+
+<!-- SCREENS 3-7: QUESTION SECTIONS -->
+<div id="s3" class="screen">
+  <div class="progress-bar"><div class="progress-fill" style="width:25%"></div></div>
+  <div class="progress-label">Section 1 of 5</div>
+  <div class="screen-eyebrow">Section 1 of 5</div>
+  <h2 class="screen-heading">Answer honestly. Your first instinct is the most accurate read.</h2>
+  <div id="qSection1"></div>
+  <div class="q-error" id="qErr3">Please answer all questions before continuing.</div>
+  <div class="btn-row">
+    <button class="btn" onclick="goTo(2)">Back</button>
+    <button class="btn primary" onclick="validateSection(3,1,6)">Next</button>
+  </div>
+</div>
+
+<div id="s4" class="screen">
+  <div class="progress-bar"><div class="progress-fill" style="width:41%"></div></div>
+  <div class="progress-label">Section 2 of 5</div>
+  <div class="screen-eyebrow">Section 2 of 5</div>
+  <h2 class="screen-heading">Answer honestly. Your first instinct is the most accurate read.</h2>
+  <div id="qSection2"></div>
+  <div class="q-error" id="qErr4">Please answer all questions before continuing.</div>
+  <div class="btn-row">
+    <button class="btn" onclick="goTo(3)">Back</button>
+    <button class="btn primary" onclick="validateSection(4,7,12)">Next</button>
+  </div>
+</div>
+
+<div id="s5" class="screen">
+  <div class="progress-bar"><div class="progress-fill" style="width:57%"></div></div>
+  <div class="progress-label">Section 3 of 5</div>
+  <div class="screen-eyebrow">Section 3 of 5</div>
+  <h2 class="screen-heading">Answer honestly. Your first instinct is the most accurate read.</h2>
+  <div id="qSection3"></div>
+  <div class="q-error" id="qErr5">Please answer all questions before continuing.</div>
+  <div class="btn-row">
+    <button class="btn" onclick="goTo(4)">Back</button>
+    <button class="btn primary" onclick="validateSection(5,13,18)">Next</button>
+  </div>
+</div>
+
+<div id="s6" class="screen">
+  <div class="progress-bar"><div class="progress-fill" style="width:73%"></div></div>
+  <div class="progress-label">Section 4 of 5</div>
+  <div class="screen-eyebrow">Section 4 of 5</div>
+  <h2 class="screen-heading">Answer honestly. Your first instinct is the most accurate read.</h2>
+  <div id="qSection4"></div>
+  <div class="q-error" id="qErr6">Please answer all questions before continuing.</div>
+  <div class="btn-row">
+    <button class="btn" onclick="goTo(5)">Back</button>
+    <button class="btn primary" onclick="validateSection(6,19,24)">Next</button>
+  </div>
+</div>
+
+<div id="s7" class="screen">
+  <div class="progress-bar"><div class="progress-fill" style="width:89%"></div></div>
+  <div class="progress-label">Section 5 of 5</div>
+  <div class="screen-eyebrow">Section 5 of 5</div>
+  <h2 class="screen-heading">Answer honestly. Your first instinct is the most accurate read.</h2>
+  <div id="qSection5"></div>
+  <div class="q-error" id="qErr7">Please answer all questions before continuing.</div>
+  <div class="btn-row">
+    <button class="btn" onclick="goTo(6)">Back</button>
+    <button class="btn primary" onclick="validateSection(7,25,30)">Next</button>
+  </div>
+</div>
+
+<!-- SCREEN 8: WRITTEN ACCOUNT -->
+<div id="s8" class="screen">
+  <div class="progress-bar"><div class="progress-fill" style="width:95%"></div></div>
+  <div class="progress-label">Final step</div>
+  <div class="screen-eyebrow">In your own words</div>
+  <h2 class="screen-heading">Something is not working. You know it.</h2>
+  <p class="screen-body">This is not the place for the polished version. Not how you would explain it to HR, not how you would frame it in a performance review. This is the place for what is actually happening, as clearly as you can say it.</p>
+  <p class="screen-body">Write about the specific moments that have stayed with you. The conversation that did not go the way it should have. The result that landed without your name on it. The room you were not in. Write about what you have tried, and what happened. What you think is driving it. What you want, not in abstract terms, but specifically.</p>
+  <p class="screen-note">Minimum 400 words. No maximum. The gaps, the frustrations, the things that do not make sense - those are exactly what is useful here.</p>
+  <textarea class="field-input" id="writtenAccount" rows="14" placeholder="Write here..." oninput="updateWordCount()"></textarea>
+  <div class="word-count" id="wordCount">0 words</div>
+  <p class="consent-line" style="margin-top:16px;">Take a screenshot of your results when they appear - they display once on screen. A summary will be emailed to you.</p>
+  <div class="btn-row">
+    <button class="btn" onclick="goTo(7)">Back</button>
+    <button class="btn coral" id="submitBtn" onclick="submitBaseline()">Submit and see my results</button>
+  </div>
+  <p id="warnWords" style="font-size:13px;color:#b94a48;margin-top:8px;display:none;">Please write at least 400 words before submitting.</p>
+</div>
+
+<!-- SCREEN 9: RESULTS -->
+<div id="s9" class="screen">
+  <h2 class="results-heading">Your Advancement Signal profile.</h2>
+  <p class="results-sub">Five signals. Where each one sits on the spectrum right now.</p>
+  <div class="spider-wrap"><canvas id="spiderCanvas" width="420" height="420" style="max-width:420px;width:100%;height:auto;"></canvas></div>
+  <div id="scoreGrid" style="display:flex;flex-direction:column;gap:18px;margin-bottom:48px;"></div>
+  <div id="signalBlocksWrap" style="margin-bottom:48px;"></div>
+  <div style="border-left:3px solid var(--teal);padding:24px 28px;background:var(--white);margin-bottom:40px;">
+    <p style="font-size:15px;line-height:1.75;color:var(--ink);margin-bottom:12px;">This is your baseline. Your written account and full responses are with Mornay. Your session will be built from what you have submitted here.</p>
+    <p style="font-size:15px;line-height:1.75;color:var(--ink);">If anything feels incomplete before the session, email mornay@yabda.co directly.</p>
+  </div>
+  <div id="sessionBlock"></div>
+</div>
+
+<script>
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const tier = params.get('tier');
+  const block = document.getElementById('sessionBlock');
+
+  if (tier === 'session') {
+    // $99 buyer — show Calendly booking
+    block.innerHTML = '<div style="text-align:center;padding:40px 0;">'
+      + '<div style="font-size:11px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;">Book your session</div>'
+      + '<div style="font-family:\'Cormorant Garamond\',serif;font-size:28px;font-weight:500;color:var(--plum);margin-bottom:12px;">One session with Mornay.</div>'
+      + '<p style="font-size:15px;color:var(--ink);margin-bottom:28px;line-height:1.7;">Mornay has received your results and will review them before you meet. The session is where the work begins.</p>'
+      + '<a href="https://calendly.com/mornayschoeman/executive-authority-gap-baseline" style="display:inline-block;background:var(--plum);color:white;font-family:\'DM Sans\',sans-serif;font-weight:500;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;padding:16px 40px;text-decoration:none;" target="_blank" rel="noopener">Book your session</a>'
+      + '</div>';
+  } else {
+    // $49 buyer (or no tier) — show $50 session upsell
+    block.innerHTML = '<div style="margin-top:12px;padding:32px;background:var(--white);border:1.5px solid var(--border);">'
+      + '<div style="font-size:11px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;">The next move</div>'
+      + '<div style="font-family:\'Cormorant Garamond\',serif;font-size:28px;font-weight:500;color:var(--plum);margin-bottom:12px;">Map your first move with Mornay.</div>'
+      + '<p style="font-size:15px;color:var(--ink);margin-bottom:8px;line-height:1.7;">You have your results. The next question is where to start. In one 60-minute session, Mornay reads your pattern, names the specific break, and maps exactly what needs to change first.</p>'
+      + '<p style="font-family:\'Cormorant Garamond\',serif;font-size:32px;font-weight:500;color:var(--plum);margin:20px 0 24px;">$50</p>'
+      + '<a href="https://calendly.com/mornayschoeman/executive-authority-gap-baseline" style="display:inline-block;background:var(--plum);color:white;font-family:\'DM Sans\',sans-serif;font-weight:500;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;padding:16px 40px;text-decoration:none;" target="_blank" rel="noopener">Book your session — $50</a>'
+      + '</div>';
+  }
+})();
+</script>
+
+</div><!-- /wrap -->
+<div class="sending-overlay" id="sendingOverlay">Submitting your baseline...</div>
+
+<script>
+// CONFIG
+const SUPABASE_URL = "https://yyalxjwxudqzmchcbhzh.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5YWx4and4dWRxem1jaGNiaHpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMTI4MDEsImV4cCI6MjA5Nzc4ODgwMX0.1J9tA4GA1WzCuCRmSoF5umYzLKwxDpWCT4sfZJ_Llzs";
+const MAILERLITE_API_KEY = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiNzk0NDE4NjEyM2UyYjBiY2JjZDM0ODIyZDU0MWRhNGMwZjBhZTAxN2YzNjJjMDJjOGU0OTUxMWMyNDkxNzAyNzYxNDczMjdhODEyZGU0ZGMiLCJpYXQiOjE3ODIyOTIyMDQuNTIzODIzLCJuYmYiOjE3ODIyOTIyMDQuNTIzODI2LCJleHAiOjQ5Mzc5NjU4MDQuNTE4NTA4LCJzdWIiOiIxNzQ0MzEyIiwic2NvcGVzIjpbXX0.mk6cTqhx6xfePhZyE4ym2m8CTlTI7z32nGuvkgcy4jy6yoBeA9kKzjNBRbmO_QBzpLVRVKN2Hz4kSqdmTtobEK97p6Rag3uzXejDtTGLn2mPm-qtohPsE6n02fXgUyYCLn9PVucEhnWO7N0AU0RzLZ-qIxDkah24OGFURzqtTluEwVbKEmPdhtbuPAw7yxgc6h2HKmF-NxR_pKia9aJ6NEOWXDrX1ltREpcu9ew1KduHPJKA3Gw_3FbnQ94LLTAXRO67xYnJBGigrRCceSgU80cafzP0cXfnUulR7jA82Uk_PWTa17awh5dTXP5e6zpXEsr4V87Bv0_UrUCZVijGT66nSIRnb2ogzNSTCl_GM1OXcqE3NZgCKVEAzPvVPE5jfQMBoyKiAvgq0iSMmR-QmdCEibLE7Qt10KdhLQ_AGLoUR81CVPmN7CZowTjyuY99pJwKrHm4KRMuRwku2lbSjbx-xO_66_Cs8fAvezrU7oYiIqZsHS3z2_jtDaN85tbhg_HsoTBqDwEU-_GFYqdo8268Cb5eGDewMIhKXFcu59i3mVTDcpqTDiYCKDXgkmcNLg8LSGfYH2LUMmRfNzwwXQt3phPBt27vA9XMzt9L9myWbkMDgdLurQk0Z-rLvSBJxewNRy2fpZPQzGIc1FzEmrZ8Tuy1C9QJtnWmZprsZDA";
+const MAILERLITE_GROUP_ID = "191502125498370039";
+
+// QUESTIONS
+const QUESTIONS = [
+  // Section 1 - CV (Q1-6)
+  {id:1,dim:"CV",text:"When your work contributes to a significant outcome, how does that outcome typically get described in your organisation?",opts:["As a team achievement, with no specific individuals named","As something my manager delivered, with the team's support","With my name attached sometimes, depending on who is telling the story","With my name attached consistently, regardless of who is in the room","I genuinely do not know how my work gets described when I am not there"],scores:[0,0,2,4,1]},
+  {id:2,dim:"CV",text:"Think about the senior leaders two levels above you. If asked to describe your specific contribution to the organisation, what would they say?",opts:["They would give a strong and specific account of what I do and what I have built","They would know my name and have a general sense that I am capable","They would know I exist but could not describe what I specifically contribute","They would likely not be able to place me clearly","I have no real sense of what picture they have of me"],scores:[4,2,1,0,1]},
+  {id:3,dim:"CV",text:"When you have driven a strategy or initiative forward through your own judgement and navigation - not just following a plan - how is that typically recognised?",opts:["Both the result and my role in navigating it are specifically acknowledged","The result is recognised but the thinking behind how I got there is not","The result is credited to whoever wrote the original brief or strategy","It is not recognised at all - results land without any attribution to me","I have not thought about the distinction between delivering a result and navigating one"],scores:[4,2,0,0,1]},
+  {id:4,dim:"CV",text:"How often do opportunities - projects, conversations, invitations - come to you directly because someone specifically thought of you for them?",opts:["Regularly - I am named for things because of what I am known to do","Occasionally - it happens but not consistently enough to feel reliable","Rarely - opportunities tend to come through my manager rather than directly to me","Almost never - I usually have to put myself forward or ask","I am not sure - I cannot tell whether I am being specifically thought of or just available"],scores:[4,2,1,0,1]},
+  {id:5,dim:"CV",text:"When you are not in a meeting where your work is being discussed, what do you believe typically happens?",opts:["My contribution is represented accurately and attributed to me specifically","My work is mentioned but my name is not attached to it","My manager or a senior colleague presents it without specific reference to me","My work is absorbed into a broader team or project narrative","I do not know - I have no visibility into how my work travels without me"],scores:[4,1,0,0,1]},
+  {id:6,dim:"CV",text:"Over the past two years, how would you describe the relationship between what you have delivered and how specifically you are known for it?",opts:["Strong - what I have built has made me specifically recognisable for particular things","Partial - some of what I have delivered has attached to my name, but not consistently","Weak - I have delivered a great deal but I am known in general terms rather than for specific things","Absent - my delivery has not made me more specifically visible","I have not considered whether my delivery is making me more specifically known"],scores:[4,2,1,0,1]},
+  // Section 2 - AS (Q7-12)
+  {id:7,dim:"AS",text:"When you think about the credit attached to your most significant contributions over the past three years, where does that credit sit today?",opts:["It is still clearly attached to me and continues to open doors","Some of it has stayed with me, but a good portion has been absorbed by the team or organisation","It felt attributed at the time but has faded - I would struggle to point to it now","It was never clearly attributed to me in the first place","I have not tracked whether credit has stayed attached to me over time"],scores:[4,2,1,0,1]},
+  {id:8,dim:"AS",text:"How does your organisation typically describe the work you have done when it references past results or uses them as examples?",opts:["My name is part of the story - people know who built it","The work is referenced but without a specific author","It has become standard practice or organisational knowledge, with no originating name","It is referenced under my manager's name or the team's name","I am not sure how past work I have done gets referenced - I have not been in those conversations"],scores:[4,2,0,0,1]},
+  {id:9,dim:"AS",text:"If you were to leave your current organisation tomorrow, what would remain specifically attributed to you?",opts:["A clear body of work that people would continue to associate with my name","Some things, but not as much as I have actually contributed","Very little - most of what I have built would quickly become the organisation's rather than mine","Nothing specific - my contributions have been absorbed into the collective","I have not thought about this before"],scores:[4,2,1,0,1]},
+  {id:10,dim:"AS",text:"How would you describe the arc of your recognition over the past three years - has it been building, staying flat, or consolidating around where you already are?",opts:["Building - each year I am more specifically known for more things","Staying flat - I am recognised at the same level I was three years ago","Consolidating - I am more deeply valued where I am, but not moving upward","Declining - I feel less specifically recognised now than I did","I have not thought about recognition in terms of an arc before"],scores:[4,1,0,1,1]},
+  {id:11,dim:"AS",text:"When your organisation needs someone for a high-stakes opportunity at the level above yours, what typically happens with your name?",opts:["I am considered as a genuine candidate for the opportunity","I am mentioned but usually as someone who could support the person doing it, not as the person doing it","I am suggested as the person who should train or brief whoever takes it on","My name does not come up in those conversations","I do not know whether my name comes up - I have no visibility into those discussions"],scores:[4,2,0,0,1]},
+  {id:12,dim:"AS",text:"How would you describe what your organisation most values you for right now?",opts:["For the specific thinking and direction I bring - they see me as someone who shapes outcomes","For my reliability and delivery - they know I will execute well","For my institutional knowledge - they need me where I am","For being available and capable - I fill gaps when needed","I am not sure what they most value me for"],scores:[4,2,0,1,1]},
+  // Section 3 - SP (Q13-18)
+  {id:13,dim:"SP",text:"When a significant problem arises in your area of work, what most accurately describes what happens next?",opts:["I have usually identified the problem and started working on it before anyone else has named it","I identify the problem and bring it to the relevant person with a proposed solution at the same time","I identify the problem and flag it, then wait to see how it should be handled","I wait until the problem is brought to me before I engage with it","I am not always sure what falls within my remit, so I tend to wait for direction"],scores:[4,3,2,1,0]},
+  {id:14,dim:"SP",text:"When you walk into a meeting where a decision needs to be made, what best describes how you typically arrive?",opts:["With a clear view already formed - I know what I think and why","With a general sense of the issue but no firm position yet","Ready to listen and contribute once I have heard what others think","Prepared to support whatever direction the senior person in the room takes","It depends on whether I was specifically asked to have a view"],scores:[4,2,1,0,1]},
+  {id:15,dim:"SP",text:"In the past six months, how often have you shaped the framing of a problem - not just solved it, but defined what the problem actually was?",opts:["Regularly - I am often the person who names what the real issue is","Occasionally - I have done it but it is not how I am typically positioned","Rarely - problems tend to arrive already framed by someone above me","Almost never - my role is to solve the problems I am given, not define them","I have not thought about whether I frame problems or receive them already framed"],scores:[4,2,1,0,1]},
+  {id:16,dim:"SP",text:"When you have a strong view about something that needs to change in your organisation, what do you typically do with it?",opts:["I bring it forward with a clear recommendation and make the case directly","I raise it when the right moment arises, but I do not force the conversation","I mention it informally but do not push it as a formal position","I keep it to myself unless someone asks for my opinion","I am not sure it is my place to bring forward views about things outside my direct area"],scores:[4,2,1,0,0]},
+  {id:17,dim:"SP",text:"At what point in a project or initiative are you typically brought in?",opts:["At the beginning - when the problem is still being defined and the direction is being set","Once the direction is set but before execution begins","When things are already in motion and an extra pair of hands is needed","When something has gone wrong and needs fixing","It varies and I have not identified a consistent pattern"],scores:[4,3,1,0,1]},
+  {id:18,dim:"SP",text:"When you look at the people in your organisation who are advancing, what is the most visible difference between how they operate and how you operate?",opts:["There is no significant difference - I operate at the same level they do","They seem to own problems before being asked to - they are already in motion when I am still waiting","They are more visible in senior rooms - access seems to be the difference, not capability","They are more deliberate about positioning themselves - they manage perception in ways I do not","I am not sure - I have not been able to identify what they are doing that I am not"],scores:[4,1,2,2,1]},
+  // Section 4 - CA (Q19-24)
+  {id:19,dim:"CA",text:"If a senior leader asked you right now to describe your most significant contribution in the past six months, what would happen?",opts:["I would name the contribution, explain what would not have happened without me, and connect it to an outcome the organisation cares about","I would be able to name something specific but would struggle to explain why it mattered at an organisational level","I would give a general answer about my responsibilities rather than a specific contribution","I would describe what the team delivered - I find it difficult to separate my part from the whole","I have not thought about my work in those terms before"],scores:[4,2,1,0,0]},
+  {id:20,dim:"CA",text:"When you describe a project you led or contributed to significantly, what do you typically focus on?",opts:["What I specifically changed - the decisions I made, the direction I set, the outcome I produced","What the project achieved - the result, the impact, the team's effort","What the project involved - the scope, the timeline, the stakeholders","What the organisation wanted - I frame my contribution in terms of what was asked of me","I describe it differently depending on who is asking"],scores:[4,2,1,1,1]},
+  {id:21,dim:"CA",text:"When you think about the strategic thinking embedded in your execution - the judgements you made, the problems you solved that were not in the brief - how often do you name that explicitly?",opts:["Regularly - I make a point of naming the thinking, not just the doing","Occasionally - when it feels relevant or when someone asks","Rarely - I tend to let the results speak and do not go into the thinking behind them","Almost never - it feels like overclaiming to describe the thinking rather than just the outcome","I have not thought about separating the thinking from the execution before"],scores:[4,2,1,0,0]},
+  {id:22,dim:"CA",text:"How specific is your language when you describe your own contribution?",opts:["Very specific - I name what I did, what changed because of it, and what would not have happened without me","Fairly specific - I name what I did but I do not always connect it to the broader outcome","Fairly general - I describe my role rather than my specific contribution","General - I use plural language and describe what the team or organisation achieved","I adjust my level of specificity depending on context and have not thought about whether that is working for me"],scores:[4,3,2,0,1]},
+  {id:23,dim:"CA",text:"When credit for a result is distributed in your organisation - in a meeting, a report, a conversation - how do you typically respond?",opts:["I ensure my specific contribution is named clearly, without waiting for others to do it","I will clarify my role if directly asked, but I do not proactively name it","I let the credit land where it lands - I am uncomfortable drawing attention to my own part","I actively attribute credit to the team rather than to myself","I have not thought about how I respond in those moments before"],scores:[4,2,1,0,1]},
+  {id:24,dim:"CA",text:"If you were asked to write two sentences describing what you specifically contributed to your organisation's most important result in the past year, what would happen?",opts:["I could write them immediately - I know exactly what I did and why it mattered","I could write something but it would take me a while to find the right level of specificity","I would find it difficult - I know what the result was but struggle to separate my part from the team's","I would not know where to start - I have never framed my contribution that way","I would write about the project rather than my specific contribution to it"],scores:[4,2,1,0,0]},
+  // Section 5 - TC (Q25-30)
+  {id:25,dim:"TC",text:"When you think about why progression has not happened at the pace you expected, what is the most honest answer you have?",opts:["I have a clear structural read - I know what the specific break is and where it lives","I have a partial read - I can see some of what is happening but not all of it","I have a story - but I am not sure whether it is accurate or just the most available explanation","I genuinely do not know - which is a significant part of why I am here","I have tried many explanations and none of them have fully satisfied me"],scores:[4,3,2,0,1]},
+  {id:26,dim:"TC",text:"How well can you read the culture of your organisation - the unspoken rules about how credit travels, how decisions get made, and what actually determines who advances?",opts:["Very well - I have a clear and accurate map of how the system actually works","Reasonably well - I understand most of it but there are parts that remain opaque","Partially - I can see some of it but I am aware there is a lot I cannot read","Poorly - the system feels inconsistent or deliberately unclear to me","I have not tried to read it systematically - I have focused on doing my work well"],scores:[4,3,2,1,0]},
+  {id:27,dim:"TC",text:"When you receive feedback about your progression - or the absence of it - how do you typically make sense of it?",opts:["I analyse it against what I observe and form a clear view of what it means structurally","I take it at face value and try to act on it, even when it feels vague","I find it difficult to reconcile with my own experience of what I am doing and delivering","I tend to internalise it - if things are not moving, I assume it is something I need to fix in myself","I have stopped expecting meaningful feedback - it has not been useful enough to act on"],scores:[4,2,2,0,1]},
+  {id:28,dim:"TC",text:"How clearly can you articulate the specific structural reason your progression has stalled - not a general sense, but the precise mechanism?",opts:["Very clearly - I can name the specific break and describe exactly how it operates","Fairly clearly - I have a strong hypothesis but I am not certain it is the whole picture","Vaguely - I have a general sense but it remains imprecise","Not clearly at all - I know something is wrong but I cannot locate it","I have a clear explanation but I am not confident it is the right one"],scores:[4,3,2,0,1]},
+  {id:29,dim:"TC",text:"When you think about the next level - the room above the one you are currently in - how clearly can you see what it would take to get there?",opts:["Very clearly - I know exactly what needs to change and I am working on it deliberately","Fairly clearly - I have a general map but the specific steps are not fully defined","Partially - I can see the destination but the route is unclear","Not clearly - the criteria seem to shift or remain deliberately vague","I am not sure the next level is the right question - I need clarity on that before I can answer this"],scores:[4,3,2,1,0]},
+  {id:30,dim:"TC",text:"How would you describe the gap between how you see yourself and how you believe the people who control your progression see you?",opts:["Small - I believe I am being read accurately at the level I am operating","Moderate - I think I am somewhat underestimated but not significantly misread","Significant - I am operating at a level that is not being reflected in how I am regarded","Large - what I know I am doing and what the organisation sees are substantially different","I do not know - I do not have enough signal to assess how I am being read"],scores:[4,3,2,1,0]}
+];
+
+// Answers store
+const answers = {};
+
+// Navigation
+function goTo(n) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('s'+n).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// Build timeline table
+function buildTimeline() {
+  const tbody = document.getElementById('timelineBody');
+  if (tbody.children.length > 0) return;
+  for (let i=0; i<7; i++) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = '<td><input type="text" placeholder="e.g. 2018-2021"></td><td><input type="text" placeholder="Role title"></td><td><input type="text" placeholder="Organisation"></td>';
+    tbody.appendChild(tr);
+  }
+}
+
+// Build question sections
+function buildQuestions() {
+  const sections = {1:[1,6], 2:[7,12], 3:[13,18], 4:[19,24], 5:[25,30]};
+  Object.entries(sections).forEach(([sec, [start, end]]) => {
+    const container = document.getElementById('qSection'+sec);
+    for (let i=start; i<=end; i++) {
+      const q = QUESTIONS[i-1];
+      const div = document.createElement('div');
+      div.className = 'q-block';
+      div.innerHTML = '<p class="q-text">'+i+'. '+q.text+'</p><div class="choices" data-q="q'+i+'"></div>';
+      const choicesDiv = div.querySelector('.choices');
+      const letters = ['A','B','C','D','E'];
+      q.opts.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'choice-btn';
+        btn.dataset.qid = i;
+        btn.dataset.score = q.scores[idx];
+        btn.dataset.dim = q.dim;
+        btn.dataset.letter = letters[idx];
+        btn.innerHTML = '<span class="choice-letter">'+letters[idx]+'</span><span>'+opt+'</span>';
+        btn.addEventListener('click', function() {
+          choicesDiv.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
+          this.classList.add('selected');
+          answers['q'+i] = {score: parseInt(this.dataset.score), dim: this.dataset.dim, letter: this.dataset.letter, text: opt};
+        });
+        choicesDiv.appendChild(btn);
+      });
+      container.appendChild(div);
+    }
+  });
+}
+
+// Validate details
+function validateDetails() {
+  const fn = document.getElementById('fn').value.trim();
+  const em = document.getElementById('em').value.trim();
+  const errEl = document.getElementById('emErr');
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!fn || !re.test(em)) {
+    errEl.classList.add('show');
+    return;
+  }
+  errEl.classList.remove('show');
+  buildTimeline();
+  goTo(2);
+}
+
+// Validate section
+function validateSection(nextScreen, start, end) {
+  for (let i=start; i<=end; i++) {
+    if (!answers['q'+i]) {
+      document.getElementById('qErr'+nextScreen).classList.add('show');
+      return;
+    }
+  }
+  document.getElementById('qErr'+nextScreen).classList.remove('show');
+  goTo(nextScreen+1);
+}
+
+// Word count
+function updateWordCount() {
+  const text = document.getElementById('writtenAccount').value.trim();
+  const count = text ? text.split(/\s+/).length : 0;
+  const el = document.getElementById('wordCount');
+  el.textContent = count + ' words';
+  el.className = 'word-count' + (count >= 400 ? ' met' : '');
+}
+
+// Calculate scores
+function calculateScores() {
+  const sums = {CV:0, AS:0, SP:0, CA:0, TC:0};
+  const counts = {CV:0, AS:0, SP:0, CA:0, TC:0};
+  for (let i=1; i<=30; i++) {
+    if (answers['q'+i]) {
+      const a = answers['q'+i];
+      sums[a.dim] += a.score;
+      counts[a.dim]++;
+    }
+  }
+  // Max per section is 6 questions x 4 = 24
+  const result = {};
+  ['CV','AS','SP','CA','TC'].forEach(dim => {
+    result[dim] = Math.round(sums[dim]);
+  });
+  return result;
+}
+
+// Spectrum label
+function getSpectrumLabel(score) {
+  const pct = score / 24;
+  if (pct <= 0.2)  return {label:'Not yet present', colour:'#b94a48'};
+  if (pct <= 0.4)  return {label:'Emerging',         colour:'#C47D5A'};
+  if (pct <= 0.6)  return {label:'Developing',        colour:'#9A9488'};
+  if (pct <= 0.8)  return {label:'Functioning',       colour:'#4E878C'};
+  return               {label:'Compounding',       colour:'#5A2A45'};
+}
+
+// Signal reads
+const SIGNAL_READS = {
+  CV: {
+    label: "Contribution Visibility",
+    alias: "Is your work visible at the right level to the right people.",
+    positions: {
+      "Not yet present": "Your work is not reaching the people who control what happens next with your name attached to it. The result lands somewhere. You do not. This is the most foundational of the five signals. Without your name reaching the right level, the other four have no surface to work on.",
+      "Emerging": "Your work is reaching some people at the right level, occasionally. But your name is not reliably registering as the person who drove it. The result lands. The author does not. This is not about how capable you are or how hard you work. It is about whether what you are producing is structured to travel with your name attached.",
+      "Developing": "Your work is reaching the right people sometimes. Your name is travelling with it in some situations and not others. The inconsistency is not random -- there is something specific producing it. In the situations where your name travels, something is working. In the ones where it does not, something is missing. You have not yet identified what that something is.",
+      "Functioning": "Your work is reaching the right people in your current context. Your name is travelling with it often enough that you have a reputation at the level above. The gap is portability. What is producing your visibility is tied to this organisation, this manager, these relationships. You have not yet named what is making it work, which means you cannot take it with you when the context changes.",
+      "Compounding": "Your work is reaching the people who control what happens next, and your name is travelling with it consistently enough that the record registers you as the person who drove it. That is not a default outcome. Most capable professionals produce results that reach the right level but lose their name in transit. Yours does not. The direct question: do you know what you are doing that makes that happen?"
+    }
+  },
+  AS: {
+    label: "Attribution Stability",
+    alias: "Is credit landing correctly and staying attached to you.",
+    positions: {
+      "Not yet present": "Credit is not staying attached to you. Work you drove is consistently losing your name before it reaches the people who matter. The organisational record of who did what does not reliably include you. That is not about whether people respect you. It is about whether the record holds your name. Right now it largely does not.",
+      "Emerging": "Credit is drifting more than it is holding. Work you drove is losing your name over time -- absorbed into the project, the team, or whoever is most senior in the room. You may not notice it happening in the moment. You notice it later, when you try to point to something concrete and find it harder to claim than it should be.",
+      "Developing": "Credit is staying attached to you sometimes and drifting other times. Some of what you have driven still has your name on it. Some has been absorbed into the team narrative, attributed upward, or simply lost your name over time. The difference between what holds and what drifts is not random. There is a structural reason. You have not yet identified it.",
+      "Functioning": "Credit is staying attached to you in your current context. It holds with the people who know you, in the organisation you are in, under the management you have now. The risk is that none of those conditions are permanent. What is keeping credit attached to you is contextual, not structural. You have not yet built something that holds independently of the conditions producing it.",
+      "Compounding": "Credit is staying attached to you and holding over time. Your name does not drift from your work when you step back from it, when leadership changes, or when the project gets absorbed into the organisation's memory. That kind of stability is structurally rare. The direct question: do you know what you are doing that makes credit hold?"
+    }
+  },
+  SP: {
+    label: "Solution Posture",
+    alias: "Are you arriving ready with answers before anyone asks.",
+    positions: {
+      "Not yet present": "You are waiting to be directed before engaging. The problems you solve are the ones you have been asked to solve. That means you are being evaluated on the quality of your execution, not the quality of your judgment. Those two things are compensated and recognised at very different levels.",
+      "Emerging": "You are responding to problems more than originating answers. By the time you engage, someone else has already framed the question. That matters because the person who frames the question gets credited with the thinking, even when someone else does the work. You are doing the work. The framing is happening without you.",
+      "Developing": "You are originating answers in some situations and waiting to be directed in others. When the problem is familiar and the stakes are manageable, you move first. When the problem is ambiguous, politically sensitive, or outside your defined territory, you tend to wait. The situations where you wait are almost always the ones that matter most for advancement.",
+      "Functioning": "You are originating answers in your domain and arriving at problems before being directed to them. The gap is scope. You are proactive about what sits clearly within your remit. You are not yet consistently framing problems at the level above yours, in territory that has not been assigned to you, before anyone has asked.",
+      "Compounding": "You are originating answers before anyone asks for them. You are framing problems before anyone else has named them. That positions you as someone thinking at the level above, not executing at the level you are at. The people who get pulled into senior rooms are almost always people who have already demonstrated they do not need to be directed to start thinking. The direct question: do you know what you are doing that produces that posture?"
+    }
+  },
+  CA: {
+    label: "Contribution Articulation",
+    alias: "Can you explain clearly what you do and why it matters.",
+    positions: {
+      "Not yet present": "You have not yet developed the language to name your contribution in terms that make it attributable. You likely describe what your role covers, what the team delivered, or what the project achieved. That language does not put your name in the record. It puts the project's name in the record.",
+      "Emerging": "Your naming of your contribution is vague enough that credit diffuses. Not because the contribution was not real, but because the language does not give it an address. When the naming is vague, the attribution is vague. When the attribution is vague, credit goes to whoever is most visible, not whoever drove the outcome.",
+      "Developing": "You can name what you did but struggle to claim it with enough precision to make it attributable. The language tends toward the general -- what we delivered, what the project achieved -- rather than the specific. What you changed. What would not have happened without you. The contribution is real. The naming is not yet precise enough to make it yours.",
+      "Functioning": "You can name your contribution clearly in most situations. You know what you did and can explain why it mattered. The gap is the high-stakes moment -- the performance review, the promotion conversation, the unexpected question from a senior leader. Naming under pressure is a different skill from naming by instinct in a comfortable context. You have not yet made it consistent under pressure.",
+      "Compounding": "You can name what you did with enough precision that no one else could claim it. You can attribute the outcome specifically to your involvement -- what changed because of you, what would not have happened without you, why it mattered at the level the organisation cares about. That precision is what makes credit attributable and what makes your name stay in the record. The direct question: do you know what you are doing that produces that precision?"
+    }
+  },
+  TC: {
+    label: "Trajectory Clarity",
+    alias: "Do you know where you are headed and can you read your own position.",
+    positions: {
+      "Not yet present": "You do not yet have a working read on your position. The decisions you make about what to prioritise, what to invest in, and what to tolerate are all downstream of that read. Without it, you are making decisions on a map you have not verified. Working harder on a bad map does not close the distance.",
+      "Emerging": "Your read on your position is unclear and may not be accurate. Most professionals in this position are not stuck because they lack ability. They are stuck because they are solving the wrong problem -- because the real mechanism producing their stagnation is not visible from inside the situation they are in.",
+      "Developing": "You have a general read on your position but it is not yet precise enough to navigate from deliberately. You know roughly where you want to go. You do not yet have a clear enough picture of where you actually stand to measure the distance accurately or locate what specifically needs to change.",
+      "Functioning": "You can read your position well enough to make decisions from it. You have a working picture of where you are and where you are headed. The risk is that the picture has not been tested against how you are actually seen by the people who control what happens next. A read that feels accurate from the inside can still be navigating toward the wrong destination.",
+      "Compounding": "You can read your own position accurately enough to navigate from it. You know where you are, you know what the next level actually requires, and you can locate the specific gap between the two. That clarity is what turns the other four signals into directional tools. The direct question: is that read based on evidence, or on a story that feels accurate because you built it?"
+    }
+  }
+};
+
+
+function getSignalBlocks(s, maxScore) {
+  const order = ['CV','AS','SP','CA','TC']
+    .map(d => ({dim:d, score:s[d]||0}))
+    .sort((a,b) => b.score - a.score);
+
+  const strongest = order[0];
+  const primary   = order[4];
+  const secondary = order[3];
+
+  function block(item, type) {
+    const r   = SIGNAL_READS[item.dim];
+    const sp  = getSpectrumLabel(item.score);
+    const pos = r.positions[sp.label];
+
+    const isStrong    = type === 'strong';
+    const isPrimary   = type === 'primary';
+    const colour      = isStrong ? '#4E878C' : '#5A2A45';
+
+    const typeLabel = isStrong
+      ? 'What you are building from'
+      : isPrimary
+        ? 'Your primary gap'
+        : 'Your secondary gap';
+
+    const opener = isStrong
+      ? 'This is your strongest signal. It is the asset you build from. The work is not to protect it blindly -- it is to understand what is producing it so you can use it deliberately and carry it forward when the context changes.'
+      : isPrimary
+        ? 'This is doing the most damage right now. Of the five signals, this is where the structural break is most active. Start here. The other gaps will begin to shift once this one moves.'
+        : 'This is your next priority -- not your first. It is being shaped by what is broken in ' + SIGNAL_READS[primary.dim].label + '. Address the primary gap first and this one will begin to move. Then you come back to it with precision.';
+
+    return '<div style="margin-bottom:28px;padding:28px;background:#FFFFFF;border-left:3px solid '+colour+';">'
+      +'<div style="font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:'+colour+';margin-bottom:8px;">'+typeLabel+'</div>'
+      +'<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;">'
+      +'<div style="font-family:Cormorant Garamond,serif;font-size:22px;font-weight:500;color:#2C2A25;">'+r.label+'</div>'
+      +'<div style="font-size:12px;font-weight:500;color:'+sp.colour+';letter-spacing:0.06em;text-transform:uppercase;padding-top:4px;">'+sp.label+'</div>'
+      +'</div>'
+      +'<div style="font-size:13px;color:#9A9488;font-style:italic;margin-bottom:16px;">'+r.alias+'</div>'
+      +'<p style="font-size:15px;line-height:1.75;color:'+colour+';font-weight:400;margin-bottom:12px;font-style:italic;">'+opener+'</p>'
+      +'<p style="font-size:15px;line-height:1.75;color:#2C2A25;">'+pos+'</p>'
+      +'</div>';
+  }
+
+  return block(strongest,'strong') + block(primary,'primary') + block(secondary,'secondary');
+}
+
+
+function renderScoreGrid(s) {
+  const grid = document.getElementById('scoreGrid');
+  grid.innerHTML = '';
+
+  // Spectrum key
+  const keyHtml = '<div style="margin-bottom:28px;padding:20px 24px;background:#FFFFFF;border:1.5px solid #DDD8CE;">'
+    +'<div style="font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:#9A9488;margin-bottom:14px;">The spectrum</div>'
+    +'<div style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:#2C2A25;">'
+    +'<div><span style="color:#b94a48;font-weight:500;">Not yet present</span> <span style="color:#9A9488;">(1-5)</span> - This signal is largely absent. The structural break here is significant and active.</div>'
+    +'<div><span style="color:#C47D5A;font-weight:500;">Emerging</span> <span style="color:#9A9488;">(6-10)</span> - The signal exists in places but is not yet holding consistently.</div>'
+    +'<div><span style="color:#9A9488;font-weight:500;">Developing</span> <span style="color:#9A9488;">(11-14)</span> - Present and functional in some contexts. Not yet reliable across all situations.</div>'
+    +'<div><span style="color:#4E878C;font-weight:500;">Functioning</span> <span style="color:#9A9488;">(15-19)</span> - This signal is operating well. The work is to protect and name it deliberately.</div>'
+    +'<div><span style="color:#5A2A45;font-weight:500;">Compounding</span> <span style="color:#9A9488;">(20-24)</span> - This signal is working strongly and building over time. You may not know why.</div>'
+    +'</div></div>';
+  const keyEl = document.createElement('div');
+  keyEl.innerHTML = keyHtml;
+  grid.appendChild(keyEl);
+
+  [{label:'Contribution Visibility',alias:'Is your work visible at the right level to the right people',dim:'CV',max:24},
+   {label:'Attribution Stability',alias:'Is credit landing correctly and staying attached to you',dim:'AS',max:24},
+   {label:'Solution Posture',alias:'Are you arriving ready with answers before anyone asks',dim:'SP',max:24},
+   {label:'Contribution Articulation',alias:'Can you explain clearly what you do and why it matters',dim:'CA',max:24},
+   {label:'Trajectory Clarity',alias:'Do you know where you are headed and can you read your position',dim:'TC',max:24}
+  ].forEach(item => {
+    const score = s[item.dim]||0;
+    const sp = getSpectrumLabel(score);
+    const card = document.createElement('div');
+    card.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">'
+      +'<div style="font-size:13px;font-weight:500;letter-spacing:0.06em;color:#9A9488;text-transform:uppercase;">'+item.label+'</div>'
+      +'<div style="display:flex;align-items:baseline;gap:8px;">'
+      +'<div style="font-size:12px;color:#9A9488;">'+score+'/24</div>'
+      +'<div style="font-size:12px;font-weight:500;color:'+sp.colour+';letter-spacing:0.06em;text-transform:uppercase;">'+sp.label+'</div>'
+      +'</div></div>'
+      +'<div style="font-size:12px;color:#9A9488;font-style:italic;margin-bottom:8px;">'+item.alias+'</div>'
+      +'<div style="height:4px;background:#DDD8CE;"><div style="height:100%;background:'+sp.colour+';width:0%;transition:width 0.9s cubic-bezier(0.4,0,0.2,1);" data-target="'+Math.round((score/24)*100)+'"></div></div>';
+    grid.appendChild(card);
+  });
+  setTimeout(()=>{grid.querySelectorAll('[data-target]').forEach(el=>{el.style.width=el.dataset.target+'%';});},200);
+}
+
+// Spider
+function drawSpider(s) {
+  const canvas = document.getElementById('spiderCanvas');
+  const dpr = window.devicePixelRatio||1;
+  const size = 420;
+  canvas.width = size*dpr; canvas.height = size*dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr,dpr);
+  const cx=size/2, cy=size/2, maxR=140, levels=5, dims=5;
+  const angles = Array.from({length:dims},(_,i)=>-Math.PI/2+(i*2*Math.PI/dims));
+  const scoreArr = [s.CV||0,s.AS||0,s.SP||0,s.CA||0,s.TC||0];
+  const labels = ['Visibility','Attribution','Solution','Articulation','Trajectory'];
+  function drawGrid(){
+    for(let l=1;l<=levels;l++){
+      const r=(l/levels)*maxR;
+      ctx.beginPath();
+      angles.forEach((a,i)=>{const x=cx+r*Math.cos(a),y=cy+r*Math.sin(a);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
+      ctx.closePath();
+      ctx.strokeStyle=l===levels?'#DDD8CE':'#E8E3D8';
+      ctx.lineWidth=l===levels?1.5:0.8;
+      ctx.stroke();
+    }
+    angles.forEach(a=>{ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+maxR*Math.cos(a),cy+maxR*Math.sin(a));ctx.strokeStyle='#DDD8CE';ctx.lineWidth=0.8;ctx.stroke();});
+    ctx.font='500 11px "DM Sans",sans-serif';ctx.fillStyle='#9A9488';ctx.textAlign='center';
+    angles.forEach((a,i)=>{const dist=maxR+28,x=cx+dist*Math.cos(a),y=cy+dist*Math.sin(a);ctx.fillText(labels[i],x,y+4);});
+  }
+  let progress=0;const startTime=performance.now();
+  function easeOut(t){return 1-Math.pow(1-t,3);}
+  function frame(now){
+    progress=Math.min((now-startTime)/900,1);const t=easeOut(progress);
+    ctx.clearRect(0,0,size,size);drawGrid();
+    ctx.beginPath();
+    scoreArr.forEach((sc,i)=>{const r=(sc/20)*maxR*t,x=cx+r*Math.cos(angles[i]),y=cy+r*Math.sin(angles[i]);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
+    ctx.closePath();ctx.fillStyle='rgba(78,135,140,0.15)';ctx.fill();ctx.strokeStyle='#4E878C';ctx.lineWidth=2;ctx.stroke();
+    scoreArr.forEach((sc,i)=>{const r=(sc/20)*maxR*t,x=cx+r*Math.cos(angles[i]),y=cy+r*Math.sin(angles[i]);ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fillStyle='#4E878C';ctx.fill();ctx.strokeStyle='#F5F0E8';ctx.lineWidth=1.5;ctx.stroke();});
+    if(progress<1)requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+// Supabase
+async function saveToSupabase(payload) {
+  const r = await fetch(SUPABASE_URL+'/rest/v1/baseline_responses',{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'},body:JSON.stringify(payload)});
+  if(!r.ok) throw new Error(await r.text());
+}
+
+// MailerLite
+async function addToMailerLite(name, email) {
+  try {
+    await fetch('/.netlify/functions/add-to-mailerlite', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, name: name, groupId: MAILERLITE_GROUP_ID })
+    });
+  } catch(e) {
+    console.warn('MailerLite error (non-blocking):', e);
+  }
+}
+
+// Submit
+async function submitBaseline() {
+  const text = document.getElementById('writtenAccount').value.trim();
+  const wordCount = text ? text.split(/\s+/).length : 0;
+  if (wordCount < 400) {
+    document.getElementById('warnWords').style.display='block';
+    return;
+  }
+  document.getElementById('warnWords').style.display='none';
+
+  const fn = document.getElementById('fn').value.trim();
+  const ln = document.getElementById('ln').value.trim();
+  const em = document.getElementById('em').value.trim();
+  const scores = calculateScores();
+
+  // Collect timeline
+  const rows = document.querySelectorAll('#timelineBody tr');
+  const timeline = [];
+  rows.forEach(r=>{const inputs=r.querySelectorAll('input');if(inputs[1].value.trim()||inputs[2].value.trim()){timeline.push({years:inputs[0].value.trim(),role:inputs[1].value.trim(),org:inputs[2].value.trim()});}});
+
+  // Collect demographics
+  const tried = Array.from(document.querySelectorAll('.checkbox-group input:checked')).map(c=>c.value).join(', ');
+
+  // Build answer log
+  const answerLog = {};
+  for(let i=1;i<=30;i++){
+    answerLog['q'+i] = answers['q'+i] ? answers['q'+i].letter+': '+answers['q'+i].text : '';
+  }
+
+  const payload = {
+    first_name: fn,
+    last_name: ln,
+    email: em,
+    date_of_birth: [document.getElementById('dobDay').value, document.getElementById('dobMonth').value, document.getElementById('dobYear').value].filter(Boolean).join(' '),
+    gender: document.getElementById('dGender').value,
+    current_level: document.getElementById('dLevel').value,
+    sector: document.getElementById('dSector').value,
+    years_at_level: document.getElementById('dYears').value,
+    languages_spoken: document.getElementById('dLang').value,
+    nationality: document.getElementById('dNationality').value,
+    work_city: document.getElementById('dCity').value,
+    already_tried: tried,
+    career_timeline: timeline,
+    carries: document.getElementById('carries').value.trim(),
+    written_account: text,
+    score_cv: scores.CV,
+    score_as: scores.AS,
+    score_sp: scores.SP,
+    score_ca: scores.CA,
+    score_tc: scores.TC,
+    ...answerLog
+  };
+
+  document.getElementById('sendingOverlay').classList.add('active');
+  document.getElementById('submitBtn').disabled = true;
+
+  saveToSupabase(payload).catch(e=>console.warn('Supabase:',e));
+  addToMailerLite(fn, em).catch(e=>console.warn('ML:',e));
+  fetch('/.netlify/functions/send-email', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      to: 'mornayschoeman@yahoo.co.uk',
+      subject: 'New Baseline submission: ' + fn + ' ' + ln,
+      html: '<p><strong>' + fn + ' ' + ln + '</strong> (' + em + ') has completed the Baseline.</p>'
+    })
+  }).catch(e=>console.warn('Notification:',e));
+
+  // Confirmation email to submitter with full results
+  const emailOrder = ['CV','AS','SP','CA','TC']
+    .map(d => ({dim:d, score:scores[d]||0}))
+    .sort((a,b) => b.score - a.score);
+
+  const emailStrongest = emailOrder[0];
+  const emailPrimary   = emailOrder[4];
+  const emailSecondary = emailOrder[3];
+
+  function emailSpectrumLabel(score) {
+    const pct = score / 24;
+    if (pct <= 0.2)  return 'Not yet present';
+    if (pct <= 0.4)  return 'Emerging';
+    if (pct <= 0.6)  return 'Developing';
+    if (pct <= 0.8)  return 'Functioning';
+    return 'Compounding';
+  }
+
+  function emailSignalBlock(item, type) {
+    const r = SIGNAL_READS[item.dim];
+    const sp = emailSpectrumLabel(item.score);
+    const pos = r.positions[sp];
+    const colour = type === 'strong' ? '#4E878C' : '#5A2A45';
+    const typeLabel = type === 'strong' ? 'Your strongest signal' : type === 'primary' ? 'Your primary gap' : 'Your secondary gap';
+    const opener = type === 'strong'
+      ? 'This is the asset you build from. Understand what is producing it so you can use it deliberately.'
+      : type === 'primary'
+        ? 'This is doing the most damage right now. This is where the structural break is most active. Start here.'
+        : 'This is your next priority after the primary gap. Address the primary first and this one will begin to move.';
+    return '<div style="margin-bottom:24px;padding:24px 28px;background:#ffffff;border-left:3px solid ' + colour + ';">'
+      + '<div style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:' + colour + ';margin-bottom:6px;">' + typeLabel + '</div>'
+      + '<div style="font-size:20px;font-family:Georgia,serif;color:#2C2A25;margin-bottom:2px;">' + r.label + '</div>'
+      + '<div style="font-size:12px;color:#9A9488;font-style:italic;margin-bottom:10px;">' + r.alias + '</div>'
+      + '<div style="font-size:12px;font-weight:600;color:' + colour + ';text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">' + sp + ' &nbsp;&middot;&nbsp; Score: ' + item.score + ' / 24</div>'
+      + '<p style="font-size:14px;line-height:1.75;color:' + colour + ';font-style:italic;margin-bottom:8px;">' + opener + '</p>'
+      + '<p style="font-size:14px;line-height:1.75;color:#2C2A25;margin:0;">' + pos + '</p>'
+      + '</div>';
+  }
+
+  const resultsHtml = emailSignalBlock(emailStrongest,'strong')
+    + emailSignalBlock(emailPrimary,'primary')
+    + emailSignalBlock(emailSecondary,'secondary');
+
+  const confirmHtml = '<div style="font-family:Georgia,serif;max-width:600px;margin:0 auto;color:#2C2A25;padding:40px 20px;background:#F5F0E8;">'
+    + '<div style="margin-bottom:32px;">'
+    + '<div style="font-family:Montserrat,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#9A9488;margin-bottom:8px;">Yabda Collective</div>'
+    + '<div style="font-size:28px;font-weight:400;color:#2C2A25;">Your Executive Authority Gap Baseline Results</div>'
+    + '</div>'
+    + '<p style="font-size:16px;line-height:1.75;margin-bottom:24px;">Hi ' + fn + ',</p>'
+    + '<p style="font-size:16px;line-height:1.75;margin-bottom:32px;">You have completed the Executive Authority Gap Baseline. Below are your three signal readings — your strongest, your primary gap, and your secondary gap. Read all five on screen. These three are where to begin.</p>'
+    + resultsHtml
+    + '<div style="margin-top:40px;padding:28px;background:#5A2A45;color:#ffffff;">'
+    + '<p style="font-size:15px;line-height:1.75;margin-bottom:20px;">Your session with Mornay is where we locate exactly where the break lives and map your first clear move. Come as you are. The Baseline has already done the work.</p>'
+    + '<p style="font-size:15px;line-height:1.75;margin:0;">Mornay will be in touch to discuss your results and map your next move.</p>'
+    + '</div>'
+    + '<p style="font-size:15px;line-height:1.75;margin-top:32px;">Mornay Schoeman<br>Yabda Collective</p>'
+    + '<p style="font-size:12px;color:#9A9488;margin-top:32px;">Your results are confidential and will not be shared with anyone.</p>'
+    + '</div>';
+
+  fetch('/.netlify/functions/send-email', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      to: em,
+      subject: 'Your Executive Authority Gap Baseline Results — Yabda Collective',
+      html: confirmHtml
+    })
+  }).catch(e=>console.warn('Confirmation email failed:',e));
+
+  document.getElementById('sendingOverlay').classList.remove('active');
+  document.getElementById('signalBlocksWrap').innerHTML = getSignalBlocks(scores);
+  renderScoreGrid(scores);
+  goTo(9);
+  setTimeout(()=>drawSpider(scores),200);
+}
+
+// Init
+buildQuestions();
+</script>
+</body>
+</html>
