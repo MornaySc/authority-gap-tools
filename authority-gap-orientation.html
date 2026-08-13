@@ -1713,6 +1713,7 @@ function submitPreReflection() {
   document.getElementById('preReflectionScreen').style.display = 'none';
   document.getElementById('resultsScreen').style.display = 'block';
   window.scrollTo({ top: 0, behavior: 'smooth' });
+  const s = window._pendingScores;
   document.getElementById('signalBlocksWrap').innerHTML = getSignalBlocks(s);
   renderScoreGrid(s);
   setTimeout(() => drawSpider(s), 100);
