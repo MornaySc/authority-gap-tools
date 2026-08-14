@@ -1724,9 +1724,11 @@ function submitPreReflection() {
   document.getElementById('resultsScreen').style.display = 'block';
   window.scrollTo({ top: 0, behavior: 'smooth' });
   const s = window._pendingScores;
-  document.getElementById('signalBlocksWrap').innerHTML = getSignalBlocks(s);
-  renderScoreGrid(s);
-  setTimeout(() => drawSpider(s), 100);
+  if (s) {
+    document.getElementById('signalBlocksWrap').innerHTML = getSignalBlocks(s);
+    renderScoreGrid(s);
+    setTimeout(() => drawSpider(s), 100);
+  }
 }
 
 function showResultsDirect(s) {
