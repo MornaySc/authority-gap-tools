@@ -1724,10 +1724,14 @@ function submitPreReflection() {
   document.getElementById('resultsScreen').style.display = 'block';
   window.scrollTo({ top: 0, behavior: 'smooth' });
   const s = window._pendingScores;
-  if (s) {
-    document.getElementById('signalBlocksWrap').innerHTML = getSignalBlocks(s);
-    renderScoreGrid(s);
-    setTimeout(() => drawSpider(s), 100);
+  try {
+    if (s) {
+      document.getElementById('signalBlocksWrap').innerHTML = getSignalBlocks(s);
+      renderScoreGrid(s);
+      setTimeout(() => drawSpider(s), 100);
+    }
+  } catch(e) {
+    console.error('Results render error:', e);
   }
 }
 
