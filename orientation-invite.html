@@ -1680,8 +1680,8 @@ function submitPreReflection() {
   document.getElementById('preRefError').style.display = 'none';
 
   const payload = {
-    email: window._respondentEmail || '',
-    name: window._respondentName || '',
+    email: document.getElementById('emailField').value.trim() || window._respondentEmail || '',
+    name: document.getElementById('nameField').value.trim() || window._respondentName || '',
     reflection_during_what_came_up: r1,
     reflection_during_uncomfortable_question: document.getElementById('preRef2').value.trim(),
     reflection_during_missing_question: document.getElementById('preRef3').value.trim()
