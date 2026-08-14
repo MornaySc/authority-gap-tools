@@ -1300,7 +1300,10 @@ function getSignalBlocks(s, maxScore) {
     .map(d => ({dim:d, score:s[d]||0}))
     .sort((a,b) => b.score - a.score);
 
-  const strongest = order[0];
+  const topScore = order[0].score;
+  const tied = order.filter(d => d.score === topScore);
+  const strongest = tied.length === 1 ? order[0] : null;
+  const tiedItems = tied.length > 1 ? tied : null;
   const primary   = order[4];
   const secondary = order[3];
 
@@ -1310,20 +1313,23 @@ function getSignalBlocks(s, maxScore) {
     const pos = r.positions[sp.label];
 
     const isStrong    = type === 'strong';
+    const isTied      = type === 'tied';
     const isPrimary   = type === 'primary';
-    const colour      = isStrong ? '#4E878C' : '#5A2A45';
+    const colour      = (isStrong || isTied) ? '#4E878C' : '#5A2A45';
 
     const typeLabel = isStrong
       ? 'What you are building from'
-      : isPrimary
-        ? 'Your primary gap'
-        : 'Your secondary gap';
+      : isTied
+        ? 'Your strongest signals - tied'
+        : isPrimary
+          ? 'Your primary gap'
+          : 'Your secondary gap';
 
-    const opener = isStrong
-      ? 'This is your strongest signal. It is the asset you build from. The work is not to protect it blindly -- it is to understand what is producing it so you can use it deliberately and carry it forward when the context changes.'
+    const opener = (isStrong || isTied)
+      ? 'This is one of your strongest signals. It is an asset you build from. The work is to understand what is producing it so you can use it deliberately and carry it forward when the context changes.'
       : isPrimary
         ? 'This is doing the most damage right now. Of the five signals, this is where the structural break is most active. Start here. The other gaps will begin to shift once this one moves.'
-        : 'This is your next priority -- not your first. It is being shaped by what is broken in ' + SIGNAL_READS[primary.dim].label + '. Address the primary gap first and this one will begin to move. Then you come back to it with precision.';
+        : 'This is your next priority - not your first. It is being shaped by what is broken in ' + SIGNAL_READS[primary.dim].label + '. Address the primary gap first and this one will begin to move. Then you come back to it with precision.';
 
     return '<div style="margin-bottom:28px;padding:28px;background:#FFFFFF;border-left:3px solid '+colour+';">'
       +'<div style="font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:'+colour+';margin-bottom:8px;">'+typeLabel+'</div>'
@@ -1337,7 +1343,10 @@ function getSignalBlocks(s, maxScore) {
       +'</div>';
   }
 
-  return block(strongest,'strong') + block(primary,'primary') + block(secondary,'secondary');
+  const strongBlock = tiedItems
+    ? tiedItems.map(d => block(d,'tied')).join('')
+    : block(strongest,'strong');
+  return strongBlock + block(primary,'primary') + block(secondary,'secondary');
 }
 
 
