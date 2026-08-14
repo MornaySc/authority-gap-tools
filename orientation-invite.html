@@ -902,7 +902,7 @@ const QUESTIONS = [
     text:"You have just driven something significant to a successful result. When that result gets talked about in a room you are not in, what happens?",
     options:[
       {letter:"A", text:"The result gets mentioned. My name does not.", score:1},
-      {letter:"B", text:"My manager or someone senior tends to represent it. My contribution is in the background.", score:2},
+      {letter:"B", text:"Someone more senior tends to represent it. My contribution is in the background.", score:2},
       {letter:"C", text:"I am credited sometimes. It depends on who is telling the story.", score:3},
       {letter:"D", text:"My name is part of how people describe it, consistently.", score:4},
       {letter:"E", text:"I have no idea how it gets described when I am not there.", score:1}
@@ -938,7 +938,7 @@ const QUESTIONS = [
     text:"Something is going wrong in your organisation. You can see it forming before anyone has named it. What do you do?",
     options:[
       {letter:"A", text:"I wait to see if someone else picks it up or if I get asked to deal with it.", score:1},
-      {letter:"B", text:"I flag it to my manager and wait to be told how to handle it.", score:2},
+      {letter:"B", text:"I flag it to someone with more authority and wait to be told how to handle it.", score:2},
       {letter:"C", text:"I raise it and offer some initial thinking about what might be done.", score:3},
       {letter:"D", text:"I bring the problem and a clear recommendation at the same time.", score:4},
       {letter:"E", text:"By the time anyone else has named it, I have usually already started.", score:5}
@@ -947,7 +947,7 @@ const QUESTIONS = [
   // Q5 - CA
   {
     dim:"CA",
-    text:"A senior leader asks you right now: what is the most important thing you have delivered in the past six months? What happens?",
+    text:"Someone whose opinion matters to your trajectory asks you right now: what is the most important thing you have delivered in the past six months? What happens?",
     options:[
       {letter:"A", text:"I describe what the team delivered. I find it hard to separate out my specific part.", score:1},
       {letter:"B", text:"I can name something but I struggle to explain why it mattered beyond my immediate area.", score:2},
@@ -959,7 +959,7 @@ const QUESTIONS = [
   // Q6 - CV
   {
     dim:"CV",
-    text:"A senior leader two levels above you runs into you. They want to have a real conversation about your work. What happens?",
+    text:"Someone influential - a peer, an investor, a board member, or a senior leader - has a real conversation with you about your work. What happens?",
     options:[
       {letter:"A", text:"They know my name but the conversation stays generic. They do not have a specific picture of what I actually do.", score:2},
       {letter:"B", text:"They are warm and interested but I leave unsure whether anything specific landed.", score:2},
@@ -971,7 +971,7 @@ const QUESTIONS = [
   // Q7 - TC
   {
     dim:"TC",
-    text:"You receive feedback about your progression - or the absence of it. You are told to raise your profile, be more strategic, develop executive presence. What do you do with that?",
+    text:"You receive feedback about your progression - from a peer, a mentor, a board member, or the market itself. You are told to raise your profile, be more strategic, develop executive presence. What do you do with that?",
     options:[
       {letter:"A", text:"I take it at face value and try to act on it even when it feels vague.", score:2},
       {letter:"B", text:"I find it hard to reconcile with what I know I am actually delivering.", score:3},
@@ -983,7 +983,7 @@ const QUESTIONS = [
   // Q8 - AS
   {
     dim:"AS",
-    text:"When a high-stakes opportunity comes up at the level above yours - a new role, a significant project, a seat at a table you have not been at - what typically happens with your name?",
+    text:"When a high-stakes opportunity comes up - a new role, a significant project, a seat at a table you have not been at - what typically happens with your name?",
     options:[
       {letter:"A", text:"I am considered as a genuine candidate.", score:5},
       {letter:"B", text:"I am mentioned but usually as someone who could support whoever takes it on.", score:3},
@@ -1019,7 +1019,7 @@ const QUESTIONS = [
   // Q11 - CV
   {
     dim:"CV",
-    text:"You have been delivering above your level for a while. The people above you know you are capable. How would you describe what they actually see?",
+    text:"You have been delivering above your current position for a while. The people who matter - peers, leaders, investors, the market - know you are capable. How would you describe what they actually see?",
     options:[
       {letter:"A", text:"They see someone reliable who does what they are told well.", score:1},
       {letter:"B", text:"They see a safe pair of hands. Capable, but without a clear picture of my actual scope.", score:2},
@@ -1049,7 +1049,7 @@ const QUESTIONS = [
       {letter:"B", text:"Fairly clearly. I have a general map but the specific steps are not yet defined.", score:4},
       {letter:"C", text:"I can see the destination but the route is unclear.", score:3},
       {letter:"D", text:"Not clearly. The criteria seem to shift or stay deliberately vague.", score:2},
-      {letter:"E", text:"I am not sure the next level is the right question. I need clarity on that before I can answer this.", score:1}
+      {letter:"E", text:"I am not sure the next level is the right question. I need clarity on that before I can answer this.", score:3}
     ]
   },
   // Q14 - SP
@@ -1071,7 +1071,7 @@ const QUESTIONS = [
     options:[
       {letter:"A", text:"I ensure my specific contribution is named clearly. I do not wait for others to do it.", score:5},
       {letter:"B", text:"I will clarify my role if someone asks directly but I do not raise it myself.", score:3},
-      {letter:"C", text:"I let it land where it lands. Drawing attention to my part feels uncomfortable.", score:2},
+      {letter:"C", text:"I let it land where it lands. Sometimes that is a deliberate choice. Sometimes it is not.", score:2},
       {letter:"D", text:"I actively attribute it to the team. That feels like the right thing to do.", score:1},
       {letter:"E", text:"I have not thought about how I respond in those moments.", score:1}
     ]
