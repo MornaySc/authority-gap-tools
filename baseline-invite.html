@@ -768,7 +768,7 @@ function buildQuestions() {
       q.opts.forEach((opt, idx) => {
         const btn = document.createElement('button');
         btn.className = 'choice-btn';
-        btn.dataset.qid = i;
+        btn.dataset.qid = q.id;
         btn.dataset.score = q.scores[idx];
         btn.dataset.dim = q.dim;
         btn.dataset.letter = letters[idx];
@@ -776,7 +776,7 @@ function buildQuestions() {
         btn.addEventListener('click', function() {
           choicesDiv.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
           this.classList.add('selected');
-          answers['q'+i] = {score: parseInt(this.dataset.score), dim: this.dataset.dim, letter: this.dataset.letter, text: opt};
+          answers['q'+q.id] = {score: parseInt(this.dataset.score), dim: this.dataset.dim, letter: this.dataset.letter, text: opt};
         });
         choicesDiv.appendChild(btn);
       });
