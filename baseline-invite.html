@@ -122,6 +122,7 @@ textarea.field-input{resize:vertical;min-height:100px;font-family:"DM Sans",sans
   <div class="progress-label">Getting started</div>
   <div class="screen-eyebrow">Before we begin</div>
   <h2 class="screen-heading">A few details.</h2>
+  <p class="screen-body">The Executive Authority Gap Baseline measures where you stand across five structural signals that determine whether capable professionals advance. It does not teach skills. It does not give you a plan. It gives you an accurate read of your position so you know exactly where to focus.</p>
   <p class="screen-body">Your results will appear on screen when you complete the Baseline. Mornay will also receive them and review them before your session.</p>
 
   <label class="field-label" for="fn">First name</label>
@@ -610,6 +611,39 @@ textarea.field-input{resize:vertical;min-height:100px;font-family:"DM Sans",sans
     <p style="font-size:15px;line-height:1.75;color:var(--ink);">If anything feels incomplete before the session, email mornay@yabda.co directly.</p>
   </div>
   <div id="sessionBlock"></div>
+
+  <div style="margin-top:48px;padding-top:32px;border-top:1px solid var(--border);text-align:center;">
+    <p style="font-size:14px;color:var(--muted);margin-bottom:16px;">One optional step. Takes two minutes.</p>
+    <button class="btn primary" onclick="goTo(10)">Share what came up for you</button>
+  </div>
+</div>
+
+<!-- SCREEN 10: REFLECTION -->
+<div id="s10" class="screen">
+  <div class="screen-eyebrow">Optional reflection</div>
+  <h2 class="screen-heading">Now that you can see where you stand.</h2>
+  <p class="screen-body">These questions are optional. Answer any or all of them. What you share helps Mornay prepare for your session and shapes how Yabda develops its work.</p>
+
+  <div class="q-block" style="margin-bottom:28px;">
+    <p class="q-text" style="margin-bottom:10px;">Now that you can see where you stand, what feels most urgent to address first?</p>
+    <textarea class="field-input" id="ref1" rows="3" placeholder="Write here..."></textarea>
+  </div>
+
+  <div class="q-block" style="margin-bottom:28px;">
+    <p class="q-text" style="margin-bottom:10px;">Now that you can see where the gap is, what kind of work feels most useful to you next: understanding the structure of why it is happening, or working through specific situations where it shows up?</p>
+    <textarea class="field-input" id="ref2" rows="3" placeholder="Write here..."></textarea>
+  </div>
+
+  <div class="q-block" style="margin-bottom:28px;">
+    <p class="q-text" style="margin-bottom:10px;">What would need to change in the next six months for you to feel like you are moving?</p>
+    <textarea class="field-input" id="ref3" rows="3" placeholder="Write here..."></textarea>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn" onclick="goTo(9)">Back to results</button>
+    <button class="btn primary" onclick="submitReflection()">Submit reflection</button>
+  </div>
+  <p id="reflectionConfirm" style="font-size:14px;color:var(--teal);margin-top:16px;display:none;">Thank you. Your reflection has been received.</p>
 </div>
 
 <script>
@@ -652,15 +686,15 @@ const MAILERLITE_GROUP_ID = "191502125498370039";
 // QUESTIONS
 const QUESTIONS = [
   // Section 1 - CV (Q1-6)
-  {id:1,dim:"CV",text:"When your work contributes to a significant outcome, how does that outcome typically get described in your organisation?",opts:["As a team achievement, with no specific individuals named","As something my manager delivered, with the team's support","With my name attached sometimes, depending on who is telling the story","With my name attached consistently, regardless of who is in the room","I genuinely do not know how my work gets described when I am not there"],scores:[0,0,2,4,1]},
-  {id:2,dim:"CV",text:"Think about the senior leaders two levels above you. If asked to describe your specific contribution to the organisation, what would they say?",opts:["They would give a strong and specific account of what I do and what I have built","They would know my name and have a general sense that I am capable","They would know I exist but could not describe what I specifically contribute","They would likely not be able to place me clearly","I have no real sense of what picture they have of me"],scores:[4,2,1,0,1]},
+  {id:1,dim:"CV",text:"When your work contributes to a significant outcome, how does that outcome typically get described in your organisation?",opts:["As a team achievement, with no specific individuals named","As something a senior person delivered, with the team's support","With my name attached sometimes, depending on who is telling the story","With my name attached consistently, regardless of who is in the room","I genuinely do not know how my work gets described when I am not there"],scores:[0,0,2,4,1]},
+  {id:2,dim:"CV",text:"Think about the people who control what happens next for you - board members, senior leaders, key stakeholders, or peers with influence. If asked to describe your specific contribution, what would they say?",opts:["They would give a strong and specific account of what I do and what I have built","They would know my name and have a general sense that I am capable","They would know I exist but could not describe what I specifically contribute","They would likely not be able to place me clearly","I have no real sense of what picture they have of me"],scores:[4,2,1,0,1]},
   {id:3,dim:"CV",text:"When you have driven a strategy or initiative forward through your own judgement and navigation - not just following a plan - how is that typically recognised?",opts:["Both the result and my role in navigating it are specifically acknowledged","The result is recognised but the thinking behind how I got there is not","The result is credited to whoever wrote the original brief or strategy","It is not recognised at all - results land without any attribution to me","I have not thought about the distinction between delivering a result and navigating one"],scores:[4,2,0,0,1]},
-  {id:4,dim:"CV",text:"How often do opportunities - projects, conversations, invitations - come to you directly because someone specifically thought of you for them?",opts:["Regularly - I am named for things because of what I am known to do","Occasionally - it happens but not consistently enough to feel reliable","Rarely - opportunities tend to come through my manager rather than directly to me","Almost never - I usually have to put myself forward or ask","I am not sure - I cannot tell whether I am being specifically thought of or just available"],scores:[4,2,1,0,1]},
-  {id:5,dim:"CV",text:"When you are not in a meeting where your work is being discussed, what do you believe typically happens?",opts:["My contribution is represented accurately and attributed to me specifically","My work is mentioned but my name is not attached to it","My manager or a senior colleague presents it without specific reference to me","My work is absorbed into a broader team or project narrative","I do not know - I have no visibility into how my work travels without me"],scores:[4,1,0,0,1]},
+  {id:4,dim:"CV",text:"How often do opportunities - projects, conversations, invitations - come to you directly because someone specifically thought of you for them?",opts:["Regularly - I am named for things because of what I am known to do","Occasionally - it happens but not consistently enough to feel reliable","Rarely - opportunities tend to come through someone else rather than directly to me","Almost never - I usually have to put myself forward or ask","I am not sure - I cannot tell whether I am being specifically thought of or just available"],scores:[4,2,1,0,1]},
+  {id:5,dim:"CV",text:"When you are not in a meeting where your work is being discussed, what do you believe typically happens?",opts:["My contribution is represented accurately and attributed to me specifically","My work is mentioned but my name is not attached to it","A senior colleague or peer presents it without specific reference to me","My work is absorbed into a broader team or project narrative","I do not know - I have no visibility into how my work travels without me"],scores:[4,1,0,0,1]},
   {id:6,dim:"CV",text:"Over the past two years, how would you describe the relationship between what you have delivered and how specifically you are known for it?",opts:["Strong - what I have built has made me specifically recognisable for particular things","Partial - some of what I have delivered has attached to my name, but not consistently","Weak - I have delivered a great deal but I am known in general terms rather than for specific things","Absent - my delivery has not made me more specifically visible","I have not considered whether my delivery is making me more specifically known"],scores:[4,2,1,0,1]},
   // Section 2 - AS (Q7-12)
   {id:7,dim:"AS",text:"When you think about the credit attached to your most significant contributions over the past three years, where does that credit sit today?",opts:["It is still clearly attached to me and continues to open doors","Some of it has stayed with me, but a good portion has been absorbed by the team or organisation","It felt attributed at the time but has faded - I would struggle to point to it now","It was never clearly attributed to me in the first place","I have not tracked whether credit has stayed attached to me over time"],scores:[4,2,1,0,1]},
-  {id:8,dim:"AS",text:"How does your organisation typically describe the work you have done when it references past results or uses them as examples?",opts:["My name is part of the story - people know who built it","The work is referenced but without a specific author","It has become standard practice or organisational knowledge, with no originating name","It is referenced under my manager's name or the team's name","I am not sure how past work I have done gets referenced - I have not been in those conversations"],scores:[4,2,0,0,1]},
+  {id:8,dim:"AS",text:"How does your organisation typically describe the work you have done when it references past results or uses them as examples?",opts:["My name is part of the story - people know who built it","The work is referenced but without a specific author","It has become standard practice or organisational knowledge, with no originating name","It is referenced under someone else's name or absorbed into the team","I am not sure how past work I have done gets referenced - I have not been in those conversations"],scores:[4,2,0,0,1]},
   {id:9,dim:"AS",text:"If you were to leave your current organisation tomorrow, what would remain specifically attributed to you?",opts:["A clear body of work that people would continue to associate with my name","Some things, but not as much as I have actually contributed","Very little - most of what I have built would quickly become the organisation's rather than mine","Nothing specific - my contributions have been absorbed into the collective","I have not thought about this before"],scores:[4,2,1,0,1]},
   {id:10,dim:"AS",text:"How would you describe the arc of your recognition over the past three years - has it been building, staying flat, or consolidating around where you already are?",opts:["Building - each year I am more specifically known for more things","Staying flat - I am recognised at the same level I was three years ago","Consolidating - I am more deeply valued where I am, but not moving upward","Declining - I feel less specifically recognised now than I did","I have not thought about recognition in terms of an arc before"],scores:[4,1,0,1,1]},
   {id:11,dim:"AS",text:"When your organisation needs someone for a high-stakes opportunity at the level above yours, what typically happens with your name?",opts:["I am considered as a genuine candidate for the opportunity","I am mentioned but usually as someone who could support the person doing it, not as the person doing it","I am suggested as the person who should train or brief whoever takes it on","My name does not come up in those conversations","I do not know whether my name comes up - I have no visibility into those discussions"],scores:[4,2,0,0,1]},
@@ -867,9 +901,16 @@ const SIGNAL_READS = {
 
 
 function getSignalBlocks(s, maxScore) {
+  // Hierarchy for tie-breaking: TC and CA are most critical, then SP, CV, AS
+  // When scores tie, the signal higher in this hierarchy ranks as the worse gap (lower position)
+  const hierarchy = ['AS','CV','SP','CA','TC']; // ascending: AS least critical gap, TC most critical gap
   const order = ['CV','AS','SP','CA','TC']
     .map(d => ({dim:d, score:s[d]||0}))
-    .sort((a,b) => b.score - a.score);
+    .sort((a,b) => {
+      if (b.score !== a.score) return b.score - a.score;
+      // Tie: higher hierarchy rank = more critical gap = should rank lower (appear later in descending sort)
+      return hierarchy.indexOf(a.dim) - hierarchy.indexOf(b.dim);
+    });
 
   const strongest = order[0];
   const primary   = order[4];
@@ -998,6 +1039,41 @@ async function saveToSupabase(payload) {
   if(!r.ok) throw new Error(await r.text());
 }
 
+async function saveReflectionToSupabase(payload) {
+  const r = await fetch(SUPABASE_URL+'/rest/v1/baseline_reflections',{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'},body:JSON.stringify(payload)});
+  if(!r.ok) throw new Error(await r.text());
+}
+
+function submitReflection() {
+  const em = document.getElementById('em').value.trim();
+  const ref1 = document.getElementById('ref1').value.trim();
+  const ref2 = document.getElementById('ref2').value.trim();
+  const ref3 = document.getElementById('ref3').value.trim();
+
+  if (!ref1 && !ref2 && !ref3) {
+    document.getElementById('reflectionConfirm').style.display = 'block';
+    document.getElementById('reflectionConfirm').textContent = 'Nothing to submit - but thank you for completing the Baseline.';
+    return;
+  }
+
+  const payload = {
+    email: em,
+    reflection_urgent: ref1,
+    reflection_work_type: ref2,
+    reflection_change: ref3
+  };
+
+  saveReflectionToSupabase(payload)
+    .then(() => {
+      document.getElementById('reflectionConfirm').style.display = 'block';
+      document.querySelector('#s10 .btn-row').style.display = 'none';
+    })
+    .catch(e => {
+      console.warn('Reflection save error:', e);
+      document.getElementById('reflectionConfirm').style.display = 'block';
+    });
+}
+
 // MailerLite
 async function addToMailerLite(name, email) {
   try {
@@ -1080,9 +1156,13 @@ async function submitBaseline() {
   }).catch(e=>console.warn('Notification:',e));
 
   // Confirmation email to submitter with full results
+  const hierarchy = ['AS','CV','SP','CA','TC'];
   const emailOrder = ['CV','AS','SP','CA','TC']
     .map(d => ({dim:d, score:scores[d]||0}))
-    .sort((a,b) => b.score - a.score);
+    .sort((a,b) => {
+      if (b.score !== a.score) return b.score - a.score;
+      return hierarchy.indexOf(a.dim) - hierarchy.indexOf(b.dim);
+    });
 
   const emailStrongest = emailOrder[0];
   const emailPrimary   = emailOrder[4];
