@@ -789,10 +789,14 @@ function buildQuestions() {
 function validateDetails() {
   const fn = document.getElementById('fn').value.trim();
   const em = document.getElementById('em').value.trim();
+  const level = document.getElementById('dLevel').value;
+  const sector = document.getElementById('dSector').value;
+  const years = document.getElementById('dYears').value;
   const errEl = document.getElementById('emErr');
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!fn || !re.test(em)) {
+  if (!fn || !re.test(em) || !level || !sector || !years) {
     errEl.classList.add('show');
+    errEl.textContent = (!fn || !re.test(em)) ? 'Please enter your name and a valid email address.' : 'Please complete your current level, sector, and years at level before continuing.';
     return;
   }
   errEl.classList.remove('show');
