@@ -997,11 +997,11 @@ function renderScoreGrid(s) {
     card.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">'
       +'<div style="font-size:13px;font-weight:500;letter-spacing:0.06em;color:#9A9488;text-transform:uppercase;">'+item.label+'</div>'
       +'<div style="display:flex;align-items:baseline;gap:8px;">'
-      +'<div style="font-size:12px;color:#9A9488;">'+score+'/24</div>'
+      +'<div style="font-size:12px;color:#9A9488;">'+score+'/30</div>'
       +'<div style="font-size:12px;font-weight:500;color:'+sp.colour+';letter-spacing:0.06em;text-transform:uppercase;">'+sp.label+'</div>'
       +'</div></div>'
       +'<div style="font-size:12px;color:#9A9488;font-style:italic;margin-bottom:8px;">'+item.alias+'</div>'
-      +'<div style="height:4px;background:#DDD8CE;"><div style="height:100%;background:'+sp.colour+';width:0%;transition:width 0.9s cubic-bezier(0.4,0,0.2,1);" data-target="'+Math.round((score/24)*100)+'"></div></div>';
+      +'<div style="height:4px;background:#DDD8CE;"><div style="height:100%;background:'+sp.colour+';width:0%;transition:width 0.9s cubic-bezier(0.4,0,0.2,1);" data-target="'+Math.round((score/30)*100)+'"></div></div>';
     grid.appendChild(card);
   });
   setTimeout(()=>{grid.querySelectorAll('[data-target]').forEach(el=>{el.style.width=el.dataset.target+'%';});},200);
@@ -1183,11 +1183,10 @@ async function submitBaseline() {
   const emailSecondary = emailOrder[3];
 
   function emailSpectrumLabel(score) {
-    const pct = score / 24;
-    if (pct <= 0.2)  return 'Not yet present';
-    if (pct <= 0.4)  return 'Emerging';
-    if (pct <= 0.6)  return 'Developing';
-    if (pct <= 0.8)  return 'Functioning';
+    if (score <= 10) return 'Not yet present';
+    if (score <= 16) return 'Emerging';
+    if (score <= 21) return 'Developing';
+    if (score <= 26) return 'Functioning';
     return 'Compounding';
   }
 
@@ -1206,7 +1205,7 @@ async function submitBaseline() {
       + '<div style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:' + colour + ';margin-bottom:6px;">' + typeLabel + '</div>'
       + '<div style="font-size:20px;font-family:Georgia,serif;color:#2C2A25;margin-bottom:2px;">' + r.label + '</div>'
       + '<div style="font-size:12px;color:#9A9488;font-style:italic;margin-bottom:10px;">' + r.alias + '</div>'
-      + '<div style="font-size:12px;font-weight:600;color:' + colour + ';text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">' + sp + ' &nbsp;&middot;&nbsp; Score: ' + item.score + ' / 24</div>'
+      + '<div style="font-size:12px;font-weight:600;color:' + colour + ';text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">' + sp + ' &nbsp;&middot;&nbsp; Score: ' + item.score + ' / 30</div>'
       + '<p style="font-size:14px;line-height:1.75;color:' + colour + ';font-style:italic;margin-bottom:8px;">' + opener + '</p>'
       + '<p style="font-size:14px;line-height:1.75;color:#2C2A25;margin:0;">' + pos + '</p>'
       + '</div>';
@@ -1225,8 +1224,7 @@ async function submitBaseline() {
     + '<p style="font-size:16px;line-height:1.75;margin-bottom:32px;">You have completed the Executive Authority Gap Baseline. Below are your three signal readings — your strongest, your primary gap, and your secondary gap. Read all five on screen. These three are where to begin.</p>'
     + resultsHtml
     + '<div style="margin-top:40px;padding:28px;background:#5A2A45;color:#ffffff;">'
-    + '<p style="font-size:15px;line-height:1.75;margin-bottom:20px;">Your session with Mornay is where we locate exactly where the break lives and map your first clear move. Come as you are. The Baseline has already done the work.</p>'
-    + '<p style="font-size:15px;line-height:1.75;margin:0;">Mornay will be in touch to discuss your results and map your next move.</p>'
+    + '<p style="font-size:15px;line-height:1.75;margin-bottom:20px;">Mornay will be in touch to discuss your results and map your next move.</p>'
     + '</div>'
     + '<p style="font-size:15px;line-height:1.75;margin-top:32px;">Mornay Schoeman<br>Yabda Collective</p>'
     + '<p style="font-size:12px;color:#9A9488;margin-top:32px;">Your results are confidential and will not be shared with anyone.</p>'
