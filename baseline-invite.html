@@ -667,32 +667,7 @@ textarea.field-input{resize:vertical;min-height:100px;font-family:"DM Sans",sans
   <p id="reflectionConfirm" style="font-size:14px;color:var(--teal);margin-top:16px;display:none;">Thank you. Your reflection has been received.</p>
 </div>
 
-<script>
-(function() {
-  const params = new URLSearchParams(window.location.search);
-  const tier = params.get('tier');
-  const block = document.getElementById('sessionBlock');
 
-  if (tier === 'session') {
-    // $99 buyer — show Calendly booking
-    block.innerHTML = '<div style="text-align:center;padding:40px 0;">'
-      + '<div style="font-size:11px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;">Book your session</div>'
-      + '<div style="font-family:\'Cormorant Garamond\',serif;font-size:28px;font-weight:500;color:var(--plum);margin-bottom:12px;">One session with Mornay.</div>'
-      + '<p style="font-size:15px;color:var(--ink);margin-bottom:28px;line-height:1.7;">Mornay has received your results and will review them before you meet. The session is where the work begins.</p>'
-      + '<a href="https://calendly.com/mornayschoeman/executive-authority-gap-baseline" style="display:inline-block;background:var(--plum);color:white;font-family:\'DM Sans\',sans-serif;font-weight:500;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;padding:16px 40px;text-decoration:none;" target="_blank" rel="noopener">Book your session</a>'
-      + '</div>';
-  } else {
-    // $49 buyer (or no tier) — show $50 session upsell
-    block.innerHTML = '<div style="margin-top:12px;padding:32px;background:var(--white);border:1.5px solid var(--border);">'
-      + '<div style="font-size:11px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;">The next move</div>'
-      + '<div style="font-family:\'Cormorant Garamond\',serif;font-size:28px;font-weight:500;color:var(--plum);margin-bottom:12px;">Map your first move with Mornay.</div>'
-      + '<p style="font-size:15px;color:var(--ink);margin-bottom:8px;line-height:1.7;">You have your results. The next question is where to start. In one 60-minute session, Mornay reads your pattern, names the specific break, and maps exactly what needs to change first.</p>'
-      + '<p style="font-family:\'Cormorant Garamond\',serif;font-size:32px;font-weight:500;color:var(--plum);margin:20px 0 24px;">$50</p>'
-      + '<a href="https://calendly.com/mornayschoeman/executive-authority-gap-baseline" style="display:inline-block;background:var(--plum);color:white;font-family:\'DM Sans\',sans-serif;font-weight:500;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;padding:16px 40px;text-decoration:none;" target="_blank" rel="noopener">Book your session — $50</a>'
-      + '</div>';
-  }
-})();
-</script>
 
 </div><!-- /wrap -->
 <div class="sending-overlay" id="sendingOverlay">Submitting your baseline...</div>
