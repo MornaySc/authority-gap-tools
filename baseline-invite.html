@@ -802,7 +802,7 @@ function validateDetails() {
 
 // Validate section
 function validateSection(nextScreen, start, end) {
-  const sec = nextScreen - 2; // screen 3=sec1, 4=sec2, etc
+  const sec = String(nextScreen - 2);
   const qIds = sectionQuestions[sec] || [];
   const unanswered = qIds.filter(id => !answers['q'+id]);
   if (unanswered.length > 0) {
