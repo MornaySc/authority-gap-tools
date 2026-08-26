@@ -915,55 +915,104 @@ const SIGNAL_READS = {
 
 
 function getSignalBlocks(s, maxScore) {
-  // Hierarchy for tie-breaking: TC and CA are most critical, then SP, CV, AS
-  // When scores tie, the signal higher in this hierarchy ranks as the worse gap (lower position)
-  const hierarchy = ['AS','CV','SP','CA','TC']; // ascending: AS least critical gap, TC most critical gap
-  const order = ['CV','AS','SP','CA','TC']
-    .map(d => ({dim:d, score:s[d]||0}))
-    .sort((a,b) => {
-      if (b.score !== a.score) return b.score - a.score;
-      // Tie: higher hierarchy rank = more critical gap = should rank lower (appear later in descending sort)
-      return hierarchy.indexOf(a.dim) - hierarchy.indexOf(b.dim);
-    });
+  // Cascade order: TC first (foundation), AS last (long game)
+  const cascade = ['TC','CA','SP','CV','AS'];
 
-  const strongest = order[0];
-  const primary   = order[4];
-  const secondary = order[3];
+  // Connection lines between signals in cascade order
+  const connections = {
+    'TC': 'When you can read your position accurately, you know what to name and claim.',
+    'CA': 'When your contribution is precisely named, arriving with answers puts your name on the thinking, not just the execution.',
+    'SP': 'When you arrive with answers, the right people start to see you as the origin of the thinking.',
+    'CV': 'When your work is visible with your name attached, credit has something to hold onto and build from.',
+    'AS': null
+  };
 
-  function block(item, type) {
-    const r   = SIGNAL_READS[item.dim];
-    const sp  = getSpectrumLabel(item.score);
-    const pos = r.positions[sp.label];
-
-    const isStrong    = type === 'strong';
-    const isPrimary   = type === 'primary';
-    const colour      = isStrong ? '#4E878C' : '#5A2A45';
-
-    const typeLabel = isStrong
-      ? 'What you are building from'
-      : isPrimary
-        ? 'Your primary gap'
-        : 'Your secondary gap';
-
-    const opener = isStrong
-      ? 'This is your strongest signal. It is the asset you build from. The work is not to protect it blindly -- it is to understand what is producing it so you can use it deliberately and carry it forward when the context changes.'
-      : isPrimary
-        ? 'This is doing the most damage right now. Of the five signals, this is where the structural break is most active. Start here. The other gaps will begin to shift once this one moves.'
-        : 'This is your next priority -- not your first. It is being shaped by what is broken in ' + SIGNAL_READS[primary.dim].label + '. Address the primary gap first and this one will begin to move. Then you come back to it with precision.';
-
-    return '<div style="margin-bottom:28px;padding:28px;background:#FFFFFF;border-left:3px solid '+colour+';">'
-      +'<div style="font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:'+colour+';margin-bottom:8px;">'+typeLabel+'</div>'
-      +'<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;">'
-      +'<div style="font-family:Cormorant Garamond,serif;font-size:22px;font-weight:500;color:#2C2A25;">'+r.label+'</div>'
-      +'<div style="font-size:12px;font-weight:500;color:'+sp.colour+';letter-spacing:0.06em;text-transform:uppercase;padding-top:4px;">'+sp.label+'</div>'
-      +'</div>'
-      +'<div style="font-size:13px;color:#9A9488;font-style:italic;margin-bottom:16px;">'+r.alias+'</div>'
-      +'<p style="font-size:15px;line-height:1.75;color:'+colour+';font-weight:400;margin-bottom:12px;font-style:italic;">'+opener+'</p>'
-      +'<p style="font-size:15px;line-height:1.75;color:#2C2A25;">'+pos+'</p>'
-      +'</div>';
+  // Find the lowest scoring signal using cascade as tiebreaker
+  let startSignal = cascade[0];
+  let lowestScore = s[cascade[0]] || 0;
+  for (let i = 1; i < cascade.length; i++) {
+    const dim = cascade[i];
+    const score = s[dim] || 0;
+    if (score < lowestScore) {
+      lowestScore = score;
+      startSignal = dim;
+    } else if (score === lowestScore) {
+      // Cascade tiebreaker: earlier in cascade = more foundational = take priority
+      startSignal = cascade[cascade.indexOf(startSignal) < cascade.indexOf(dim) ? cascade.indexOf(startSignal) : cascade.indexOf(dim)] === cascade.indexOf(startSignal) ? startSignal : dim;
+    }
   }
 
-  return block(strongest,'strong') + block(primary,'primary') + block(secondary,'secondary');
+  // Check for any Not Yet Present signals
+  const urgentSignals = cascade.filter(d => (s[d]||0) <= 10);
+
+  // Build the cascade explanation block
+  const explanationBlock = '<div style="margin-bottom:32px;padding:28px;background:#FFFFFF;border:1px solid #DDD8CE;">'
+    + '<div style="font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:#4E878C;margin-bottom:16px;">YOUR SIGNAL READ</div>'
+    + '<p style="font-size:15px;line-height:1.75;color:#2C2A25;margin-bottom:16px;">These five signals do not operate independently. They build on each other in a specific sequence. The signal at the foundation has to be present for the ones above it to compound. Your scores do not read in isolation. They read as a system.</p>'
+    + '<p style="font-size:15px;line-height:1.75;color:#5A2A45;font-style:italic;margin-bottom:16px;">Read your results from the top of the cascade down, not from your lowest score up.</p>'
+    + '<p style="font-size:15px;line-height:1.75;color:#2C2A25;margin-bottom:16px;">A high score further down the cascade does not mean you are secure. If the signals above it are weak, you are building on an unstable foundation. Your work may be visible, your credit may be travelling, but if you cannot read your own position clearly enough to direct it, the movement is not deliberate. It is circumstantial. And circumstantial movement stops when the circumstances change.</p>'
+    + '<p style="font-size:15px;line-height:1.75;color:#2C2A25;margin-bottom:16px;">A low score further down the cascade may already be in motion once you address what sits above it. Fix the right signal first and watch what happens to the ones connected to it.</p>'
+    + '<p style="font-size:15px;line-height:1.75;color:#2C2A25;margin-bottom:24px;">A high score is not automatically an asset. If you cannot name what is producing it, you cannot protect it, replicate it under pressure, or carry it with you when the context changes. A professional who is strong in a signal but has never identified it as a deliberate skill is one restructure, one new manager, or one career move away from losing it without knowing why.</p>'
+    + '<div style="border-top:1px solid #DDD8CE;padding-top:20px;">'
+    + '<div style="font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:#9A9488;margin-bottom:12px;">THE CASCADE</div>'
+    + '<div style="font-size:14px;line-height:2;color:#2C2A25;">'
+    + '<div>1. <strong>Trajectory Clarity</strong> — If you cannot read your own position, nothing else you do is deliberate.</div>'
+    + '<div>2. <strong>Contribution Articulation</strong> — If you cannot name what you do precisely, nothing can be attributed to you.</div>'
+    + '<div>3. <strong>Solution Posture</strong> — If you are not arriving with answers, you are not in the rooms where credit is assigned.</div>'
+    + '<div>4. <strong>Contribution Visibility</strong> — If the work is not being seen, attribution cannot follow.</div>'
+    + '<div>5. <strong>Attribution Stability</strong> — If visibility is present but credit is not building an arc, this is where the long game is played.</div>'
+    + '</div></div></div>';
+
+  // Build individual signal blocks in cascade order
+  function signalBlock(dim, position) {
+    const r = SIGNAL_READS[dim];
+    const score = s[dim] || 0;
+    const sp = getSpectrumLabel(score);
+    const pos = r.positions[sp.label];
+    const isStart = dim === startSignal;
+    const isUrgent = urgentSignals.includes(dim) && !isStart;
+    const connection = connections[dim];
+
+    const borderColour = isStart ? '#E27D72' : isUrgent ? '#b94a48' : '#DDD8CE';
+    const labelColour = isStart ? '#E27D72' : isUrgent ? '#b94a48' : '#9A9488';
+
+    const statusLabel = isStart
+      ? 'START HERE'
+      : isUrgent
+        ? 'URGENT'
+        : ('SIGNAL ' + position + ' OF 5');
+
+    const startNote = isStart
+      ? '<p style="font-size:14px;line-height:1.75;color:#E27D72;font-style:italic;margin-bottom:12px;">This is where the structural work begins. Address this signal first. The ones connected to it will begin to move.</p>'
+      : isUrgent
+        ? '<p style="font-size:14px;line-height:1.75;color:#b94a48;font-style:italic;margin-bottom:12px;">This signal is critically low. Even if it is not your starting point, it needs attention as soon as the primary signal begins to move.</p>'
+        : '';
+
+    const connectionLine = connection
+      ? '<div style="margin-top:16px;padding-top:16px;border-top:1px solid #DDD8CE;font-size:13px;color:#9A9488;font-style:italic;">'+connection+'</div>'
+      : '';
+
+    return '<div style="margin-bottom:20px;padding:28px;background:#FFFFFF;border-left:3px solid '+borderColour+';">'
+      + '<div style="font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:'+labelColour+';margin-bottom:8px;">'+statusLabel+'</div>'
+      + '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;">'
+      + '<div style="font-family:Cormorant Garamond,serif;font-size:22px;font-weight:500;color:#2C2A25;">'+r.label+'</div>'
+      + '<div style="text-align:right;">'
+      + '<div style="font-size:12px;font-weight:500;color:'+sp.colour+';letter-spacing:0.06em;text-transform:uppercase;">'+sp.label+'</div>'
+      + '<div style="font-size:12px;color:#9A9488;">'+score+' / 30</div>'
+      + '</div></div>'
+      + '<div style="font-size:13px;color:#9A9488;font-style:italic;margin-bottom:16px;">'+r.alias+'</div>'
+      + startNote
+      + '<p style="font-size:15px;line-height:1.75;color:#2C2A25;">'+pos+'</p>'
+      + connectionLine
+      + '</div>';
+  }
+
+  let html = explanationBlock;
+  cascade.forEach((dim, i) => {
+    html += signalBlock(dim, i + 1);
+  });
+
+  return html;
 }
 
 
