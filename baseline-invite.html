@@ -1088,9 +1088,9 @@ function drawSpider(s) {
     progress=Math.min((now-startTime)/900,1);const t=easeOut(progress);
     ctx.clearRect(0,0,size,size);drawGrid();
     ctx.beginPath();
-    scoreArr.forEach((sc,i)=>{const r=(sc/20)*maxR*t,x=cx+r*Math.cos(angles[i]),y=cy+r*Math.sin(angles[i]);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
+    scoreArr.forEach((sc,i)=>{const r=(sc/30)*maxR*t,x=cx+r*Math.cos(angles[i]),y=cy+r*Math.sin(angles[i]);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
     ctx.closePath();ctx.fillStyle='rgba(78,135,140,0.15)';ctx.fill();ctx.strokeStyle='#4E878C';ctx.lineWidth=2;ctx.stroke();
-    scoreArr.forEach((sc,i)=>{const r=(sc/20)*maxR*t,x=cx+r*Math.cos(angles[i]),y=cy+r*Math.sin(angles[i]);ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fillStyle='#4E878C';ctx.fill();ctx.strokeStyle='#F5F0E8';ctx.lineWidth=1.5;ctx.stroke();});
+    scoreArr.forEach((sc,i)=>{const r=(sc/30)*maxR*t,x=cx+r*Math.cos(angles[i]),y=cy+r*Math.sin(angles[i]);ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fillStyle='#4E878C';ctx.fill();ctx.strokeStyle='#F5F0E8';ctx.lineWidth=1.5;ctx.stroke();});
     if(progress<1)requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
@@ -1239,30 +1239,55 @@ async function submitBaseline() {
     return 'Compounding';
   }
 
-  function emailSignalBlock(item, type) {
-    const r = SIGNAL_READS[item.dim];
-    const sp = emailSpectrumLabel(item.score);
+  function emailSignalBlock(dim, score, isStart, isUrgent, position) {
+    const r = SIGNAL_READS[dim];
+    const sp = emailSpectrumLabel(score);
     const pos = r.positions[sp];
-    const colour = type === 'strong' ? '#4E878C' : '#5A2A45';
-    const typeLabel = type === 'strong' ? 'Your strongest signal' : type === 'primary' ? 'Your primary gap' : 'Your secondary gap';
-    const opener = type === 'strong'
-      ? 'This is the asset you build from. Understand what is producing it so you can use it deliberately.'
-      : type === 'primary'
-        ? 'This is doing the most damage right now. This is where the structural break is most active. Start here.'
-        : 'This is your next priority after the primary gap. Address the primary first and this one will begin to move.';
-    return '<div style="margin-bottom:24px;padding:24px 28px;background:#ffffff;border-left:3px solid ' + colour + ';">'
-      + '<div style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:' + colour + ';margin-bottom:6px;">' + typeLabel + '</div>'
+    const connections = {
+      'TC': 'When you can read your position accurately, you know what to name and claim.',
+      'CA': 'When your contribution is precisely named, arriving with answers puts your name on the thinking, not just the execution.',
+      'SP': 'When you arrive with answers, the right people start to see you as the origin of the thinking.',
+      'CV': 'When your work is visible with your name attached, credit has something to hold onto and build from.',
+      'AS': null
+    };
+    const borderColour = isStart ? '#E27D72' : isUrgent ? '#b94a48' : '#DDD8CE';
+    const labelColour = isStart ? '#E27D72' : isUrgent ? '#b94a48' : '#9A9488';
+    const statusLabel = isStart ? 'START HERE' : isUrgent ? 'URGENT' : ('SIGNAL ' + position + ' OF 5');
+    const startNote = isStart
+      ? '<p style="font-size:13px;line-height:1.75;color:#E27D72;font-style:italic;margin-bottom:8px;">This is where the structural work begins. Address this signal first.</p>'
+      : isUrgent
+        ? '<p style="font-size:13px;line-height:1.75;color:#b94a48;font-style:italic;margin-bottom:8px;">This signal is critically low. It needs attention as soon as the primary signal begins to move.</p>'
+        : '';
+    const connection = connections[dim];
+    const connectionLine = connection
+      ? '<p style="font-size:12px;color:#9A9488;font-style:italic;margin-top:12px;padding-top:12px;border-top:1px solid #DDD8CE;">' + connection + '</p>'
+      : '';
+    return '<div style="margin-bottom:20px;padding:20px 24px;background:#ffffff;border-left:3px solid ' + borderColour + ';">'
+      + '<div style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:' + labelColour + ';margin-bottom:6px;">' + statusLabel + '</div>'
       + '<div style="font-size:20px;font-family:Georgia,serif;color:#2C2A25;margin-bottom:2px;">' + r.label + '</div>'
       + '<div style="font-size:12px;color:#9A9488;font-style:italic;margin-bottom:10px;">' + r.alias + '</div>'
-      + '<div style="font-size:12px;font-weight:600;color:' + colour + ';text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">' + sp + ' &nbsp;&middot;&nbsp; Score: ' + item.score + ' / 30</div>'
-      + '<p style="font-size:14px;line-height:1.75;color:' + colour + ';font-style:italic;margin-bottom:8px;">' + opener + '</p>'
+      + '<div style="font-size:12px;font-weight:600;color:' + labelColour + ';text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">' + sp + ' &nbsp;&middot;&nbsp; Score: ' + score + ' / 30</div>'
+      + startNote
       + '<p style="font-size:14px;line-height:1.75;color:#2C2A25;margin:0;">' + pos + '</p>'
+      + connectionLine
       + '</div>';
   }
 
-  const resultsHtml = emailSignalBlock(emailStrongest,'strong')
-    + emailSignalBlock(emailPrimary,'primary')
-    + emailSignalBlock(emailSecondary,'secondary');
+  const emailCascade = ['TC','CA','SP','CV','AS'];
+  let emailStartSignal = emailCascade[0];
+  let emailLowestScore = scores[emailCascade[0]] || 0;
+  for (let i = 1; i < emailCascade.length; i++) {
+    const dim = emailCascade[i];
+    const sc = scores[dim] || 0;
+    if (sc < emailLowestScore) { emailLowestScore = sc; emailStartSignal = dim; }
+  }
+  const emailUrgentSignals = emailCascade.filter(d => (scores[d]||0) <= 10);
+
+  let resultsHtml = '';
+  emailCascade.forEach((dim, i) => {
+    const sc = scores[dim] || 0;
+    resultsHtml += emailSignalBlock(dim, sc, dim === emailStartSignal, emailUrgentSignals.includes(dim) && dim !== emailStartSignal, i + 1);
+  });
 
   const confirmHtml = '<div style="font-family:Georgia,serif;max-width:600px;margin:0 auto;color:#2C2A25;padding:40px 20px;background:#F5F0E8;">'
     + '<div style="margin-bottom:32px;">'
@@ -1270,10 +1295,11 @@ async function submitBaseline() {
     + '<div style="font-size:28px;font-weight:400;color:#2C2A25;">Your Executive Authority Gap Baseline Results</div>'
     + '</div>'
     + '<p style="font-size:16px;line-height:1.75;margin-bottom:24px;">Hi ' + fn + ',</p>'
-    + '<p style="font-size:16px;line-height:1.75;margin-bottom:32px;">You have completed the Executive Authority Gap Baseline. Below are your three signal readings — your strongest, your primary gap, and your secondary gap. Read all five on screen. These three are where to begin.</p>'
+    + '<p style="font-size:16px;line-height:1.75;margin-bottom:16px;">You have completed the Executive Authority Gap Baseline. Below are your five signal readings in cascade order — from the foundation to the long game. Read them from the top down, not from your lowest score up.</p>'
+    + '<p style="font-size:14px;line-height:1.75;color:#9A9488;font-style:italic;margin-bottom:32px;">A high score further down the cascade does not mean you are secure. Fix the right signal first and watch what happens to the ones connected to it.</p>'
     + resultsHtml
     + '<div style="margin-top:40px;padding:28px;background:#5A2A45;color:#ffffff;">'
-    + '<p style="font-size:15px;line-height:1.75;margin-bottom:20px;">Mornay will be in touch to discuss your results and map your next move.</p>'
+    + '<p style="font-size:15px;line-height:1.75;margin-bottom:20px;">Mornay will be in touch to discuss your results and map your next move.</p>Mornay will be in touch to discuss your results and map your next move.</p>'
     + '</div>'
     + '<p style="font-size:15px;line-height:1.75;margin-top:32px;">Mornay Schoeman<br>Yabda Collective</p>'
     + '<p style="font-size:12px;color:#9A9488;margin-top:32px;">Your results are confidential and will not be shared with anyone.</p>'
